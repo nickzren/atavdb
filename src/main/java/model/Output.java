@@ -11,17 +11,7 @@ import java.sql.ResultSet;
  */
 public class Output {
 
-    public static Variant variant;
-    public static String errorMsg;
-
-    public static void init(String query) throws Exception {
-        variant = null;
-        errorMsg = "";
-
-        initVariant(query);
-    }
-
-    public static void initVariant(String query) throws Exception {
+    public static Variant getVariant(String query) throws Exception {
         String[] tmp = query.split("-");
 
         String sql = "SELECT * "
@@ -36,7 +26,9 @@ public class Output {
         ResultSet rset = stmt.executeQuery();
 
         if (rset.next()) {
-            variant = new Variant(rset);
+            return new Variant(rset);
         }
+        
+        return null;
     }
 }

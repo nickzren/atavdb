@@ -54,7 +54,7 @@
                     </p>
                 </div>
 
-                <%@include file="variant.jsp" %>  
+                <%@include file="result.jsp" %>  
             </div>
         </div>
 

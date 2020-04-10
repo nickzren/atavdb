@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import object.Variant;
 
 /**
  *
@@ -23,17 +24,16 @@ public class Search extends HttpServlet {
 
                 DBManager.init();
 
-                Output.init(query);
+                Variant variant = Output.getVariant(query);
 
                 request.setAttribute("query", query);
-                request.setAttribute("variant", Output.variant);
-                request.setAttribute("errorMsg", Output.errorMsg);
+                request.setAttribute("variant", variant);
             }
 
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (Exception ex) {
             // debug purpose
-//            request.setAttribute("error", ex.toString());
+//            request.setAttribute("errorMsg", ex.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
