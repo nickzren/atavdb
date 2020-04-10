@@ -23,7 +23,7 @@ public class DBManager {
     public static void init() throws Exception {
         if (connection == null || connection.isClosed()) {
             initDataFromSystemConfig();
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(
                     dbUrl + "?"
                     + "user=" + dbUser
@@ -38,12 +38,12 @@ public class DBManager {
     private static void initDataFromSystemConfig() {
         try {
             // server config from enviroment
-            dbUrl = System.getProperty("DB_URL");
-            dbUser = System.getProperty("DB_USER");
-            dbPassword = System.getProperty("DB_PASSWORD");
+//            dbUrl = System.getProperty("DB_URL");
+//            dbUser = System.getProperty("DB_USER");
+//            dbPassword = System.getProperty("DB_PASSWORD");
 
             // local config
-            dbUrl = "jdbc:mysql://localhost:3306/alsdb";
+            dbUrl = "jdbc:mysql://localhost:3306/WalDB";
             dbUser = "test";
             dbPassword = "test";
         } catch (Exception e) {
@@ -52,10 +52,15 @@ public class DBManager {
     }
 
     public static ResultSet executeQuery(String sqlQuery) throws SQLException {
+        System.out.println(sqlQuery);
         return statement.executeQuery(sqlQuery);
     }
 
     public static PreparedStatement prepareStatement(String sqlQuery) throws SQLException {
         return connection.prepareStatement(sqlQuery);
+    }
+    
+    public static void executeUpdate(String sqlQuery) throws SQLException {
+        statement.executeUpdate(sqlQuery);
     }
 }

@@ -1,13 +1,14 @@
 package controller;
 
 import util.DBManager;
-import model.Output;
+import model.VariantManager;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import object.Variant;
+import model.CalledVariant;
+import model.SampleManager;
 
 /**
  *
@@ -23,8 +24,10 @@ public class Search extends HttpServlet {
                 String query = request.getParameter("query").toUpperCase();
 
                 DBManager.init();
+                
+                SampleManager.init();
 
-                Variant variant = Output.getVariant(query);
+                CalledVariant variant = VariantManager.getVariant(query);
 
                 request.setAttribute("query", query);
                 request.setAttribute("variant", variant);

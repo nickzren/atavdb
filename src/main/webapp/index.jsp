@@ -50,7 +50,7 @@
 
                     <p class="text-muted" style="margin-left: 5px">
                         Examples - 
-                        Variant: <a href="Search?query=14-20215709-A-T">14-20215709-A-T</a>
+                        Variant: <a href="Search?query=1-13273-G-C">1-13273-G-C</a>
                     </p>
                 </div>
 

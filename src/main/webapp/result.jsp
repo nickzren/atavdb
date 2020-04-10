@@ -1,7 +1,7 @@
-<%@page import="object.Variant"%>
+<%@page import="model.CalledVariant"%>
 
 <%
-    Variant variant = (Variant) request.getAttribute("variant");
+    CalledVariant variant = (CalledVariant) request.getAttribute("variant");
 %>
 
 <div class="row">    
@@ -10,14 +10,8 @@
             <mark>Query: <%=request.getAttribute("query")%></mark>
                 <%if (variant != null) {%>
             <span class="label label-default" data-toggle="tooltip" 
-                  title="Number of observed alleles in the case population">
-                Allele Count: <%=variant.getAlleleCount()%>
-            </span>
-            &nbsp;
-            <span class="label label-default" data-toggle="tooltip" 
-                  title="Number of samples with at least 10-fold coverage at 
-                  site and that passed quality control">
-                Sample Count: <%=variant.getSampleCount()%>
+                  title="">
+                Sample Count: <%=variant.getNS()%>
             </span>
             &nbsp;
             <span class="label label-default" data-toggle="tooltip" 
