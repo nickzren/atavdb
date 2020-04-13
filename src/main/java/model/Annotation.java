@@ -28,7 +28,7 @@ public class Annotation {
     
     public static final int TRANSCRIPT_LENGTH = 15;
 
-    public void init(ResultSet rset, String chr) throws SQLException {
+    public Annotation(String chr, ResultSet rset) throws SQLException {
         this.chr = chr;
         pos = rset.getInt("POS");
         ref = rset.getString("REF");

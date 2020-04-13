@@ -23,13 +23,11 @@ public class CalledVariant extends AnnotatedVariant {
     public float[] hetFreq = new float[2];
     public float[] af = new float[2];
 
-    public CalledVariant(String chr, ResultSet rset) throws Exception {
+    public CalledVariant(String chr, ResultSet rset) throws Exception {        
         super(chr, rset);
-
-        init();
     }
 
-    private void init() throws Exception {
+    public void init() throws Exception {
         CarrierBlockManager.initCarrierMap(carrierMap, this);
 
         DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap);
@@ -177,18 +175,31 @@ public class CalledVariant extends AnnotatedVariant {
                 + genoCount[Index.HET][Index.CTRL]
                 + genoCount[Index.REF][Index.CTRL];
     }
-
-    // AF = Allele Frequency
-    public float getAF() {
-        int ac = 2 * genoCount[Index.HOM][Index.CASE]
+    
+    // AC = Allele Count
+    public int getAC() {
+        return 2 * genoCount[Index.HOM][Index.CASE]
                 + genoCount[Index.HET][Index.CASE]
                 + 2 * genoCount[Index.HOM][Index.CTRL]
                 + genoCount[Index.HET][Index.CTRL];
-        int totalAC = ac + genoCount[Index.HET][Index.CASE]
+    }
+
+    // AN = Allele Number
+    public int getAN() {
+        return getAC() + genoCount[Index.HET][Index.CASE]
                 + 2 * genoCount[Index.REF][Index.CASE]
                 + genoCount[Index.HET][Index.CTRL]
                 + 2 * genoCount[Index.REF][Index.CTRL];
-
-        return MathManager.devide(ac, totalAC);
+    }
+    
+    // AF = Allele Frequency
+    public float getAF() {
+        return MathManager.devide(getAC(), getAN());
+    }
+    
+    // NH = Number of homozygotes
+    public int getNH() {
+        return genoCount[Index.HOM][Index.CASE] +
+                 genoCount[Index.HOM][Index.CTRL];
     }
 }

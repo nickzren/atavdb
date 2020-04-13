@@ -33,11 +33,11 @@
                     </h2>
 
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             <form class="form-search" action="Search">
                                 <div class="input-group">
                                     <input name="query" class="form-control input-lg tt-input"
-                                           type="text" placeholder="Search for a region or variant" >
+                                           type="text" placeholder="Search for a variant" >
                                     <div class="input-group-btn">
                                         <button class="btn btn-default input-lg tt-input" 
                                                 type="submit">

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.CalledVariant;
+import model.EffectManager;
 import model.SampleManager;
 
 /**
@@ -24,6 +25,8 @@ public class Search extends HttpServlet {
                 String query = request.getParameter("query").toUpperCase();
 
                 DBManager.init();
+                
+                EffectManager.init();
                 
                 SampleManager.init();
 
