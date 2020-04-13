@@ -10,6 +10,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
         <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/all-fontawesome.css">
         <link rel="stylesheet" href="css/main.css">
     </head>
 
@@ -23,23 +24,18 @@
 
                 <address>
                     <strong>Nick Ren</strong><br>
-                    Email: 
                     <a href="mailto: z.ren@columbia.edu" target="_blank">
-                        <i class="fa fa-envelope-o">
+                        <i class="far fa-envelope">
                             z.ren@columbia.edu
                         </i>
                     </a>
                 </address>
 
                 <address>
-                    <strong>
-                        <a class="black" href="http://igm.columbia.edu" target="_blank">
-                            Institute for Genomic Medicine
-                        </a>
-                    </strong><br>
+                    <strong>Institute for Genomic Medicine</strong><br>
                     Columbia University Medical Center<br>
                     701 W 168th Street<br>
-                    Hammer Building 616<br>
+                    Hammer Building 404C<br>
                     New York, NY 10032
                 </address>
             </div>
