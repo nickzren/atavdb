@@ -1,12 +1,12 @@
 <div class="row">    
     <div class="col-md-12">
         <c:if test="${not empty query}" >
-            <mark>Query: ${query}</mark>
+            <h4><mark>Query: ${query}</mark></h4>
             <br><br>
             <c:choose>
                 <c:when test="${empty variant}" >
                     <div class="alert alert-warning" style="width:50%">
-                        No results found from search query.
+                        <i class="fas fa-exclamation-circle"></i>&nbsp;No results found from search query.
                     </div>
                 </c:when>
                 <c:otherwise>
