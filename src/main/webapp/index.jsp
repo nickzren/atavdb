@@ -26,10 +26,11 @@
 
             <div class="container-main">
 
+
                 <div class="jumbotron" style="padding:20px 40px 20px 50px">
                     <h2>Data Browser 
                         <small>
-                             <span class="label label-default">beta</span>
+                            <span class="label label-default">beta</span>
                         </small>
                     </h2>
 
@@ -38,7 +39,11 @@
                             <form class="form-search" action="Search">
                                 <div class="input-group">
                                     <input name="query" class="form-control input-lg tt-input"
-                                           type="text" placeholder="Search for a variant" >
+                                           type="text" placeholder="Search for a variant"
+                                           <c:if test="${empty username}" >
+                                               data-toggle="tooltip" title="Sign In to search"
+                                           </c:if>
+                                           >
                                     <div class="input-group-btn">
                                         <button class="btn btn-default input-lg tt-input" 
                                                 type="submit">
