@@ -7,7 +7,7 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
-        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/all-fontawesome.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/signin.css">

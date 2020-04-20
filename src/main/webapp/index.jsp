@@ -10,11 +10,13 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
-        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/all-fontawesome.css">
         <link rel="stylesheet" href="css/main.css">
 
-        <script src="js/bootstrap.js"></script>
+        <script src="js/jquery-3.4.1.slim.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
     </head>
 
     <body>
@@ -49,7 +51,8 @@
 
                     <p class="text-muted" style="margin-left: 5px">
                         Examples - 
-                        Variant: <a href="Search?query=1-13273-G-C">1-13273-G-C</a>
+                        Variant: <a href="Search?query=1-13273-G-C">1-13273-G-C</a>, 
+                        Variants: <a href="Search?query=2-1010474-G-A,12-64849716-T-C,21-9411609-G-T">2-1010474-G-A,12-64849716-T-C,21-9411609-G-T</a>
                     </p>
                 </div>
 
