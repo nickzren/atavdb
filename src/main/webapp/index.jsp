@@ -26,45 +26,56 @@
 
             <div class="container-main">
 
-
                 <div class="jumbotron" style="padding:20px 40px 20px 50px">
                     <h2>Data Browser 
                         <small>
-                            <span class="label label-default">beta</span>
+                            <span class="badge badge-pill badge-secondary">beta</span>
                         </small>
                     </h2>
 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-9">
                             <form class="form-search" action="Search">
                                 <div class="input-group">
-                                    <input name="query" class="form-control input-lg tt-input"
+                                    <input name="query" class="form-control"
                                            type="text" placeholder="Search for a variant"
                                            <c:if test="${empty username}" >
                                                data-toggle="tooltip" title="Sign In to search"
                                            </c:if>
                                            >
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-default input-lg tt-input" 
-                                                type="submit">
-                                            <i class="glyphicon glyphicon-search"></i></button>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit">
+                                            <i class="fas fa-search"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </form>
                         </div>
+
+                        <div class="col-3 text-center">
+                            <c:import url="/SampleCount" />
+                            <c:if test="${not empty sampleCount}" >
+                                <h2 data-toggle="tooltip" title="Total available samples in ATAVDB">
+                                    <span class="badge badge-success">${sampleCount} Samples</span>
+                                </h2>
+                            </c:if>
+                        </div>
                     </div>
 
-                    <p class="text-muted" style="margin-left: 5px">
-                        Examples - 
-                        Variant: <a href="Search?query=1-13273-G-C">1-13273-G-C</a>, 
-                        Variants: <a href="Search?query=2-1010474-G-A,12-64849716-T-C,21-9411609-G-T">2-1010474-G-A,12-64849716-T-C,21-9411609-G-T</a>
-                    </p>
+                    <div class="row">
+                        <div class="col-9">
+                            <p class="text-muted" style="margin-left: 5px">
+                                Examples - 
+                                Variant: <a href="Search?query=1-13273-G-C">1-13273-G-C</a>, 
+                                Variants: <a href="Search?query=2-1010474-G-A,12-64849716-T-C,21-9411609-G-T">2-1010474-G-A,12-64849716-T-C,21-9411609-G-T</a>
+                            </p>
+                        </div>
+                    </div>
                 </div>
-
+                            
                 <%@include file="result.jsp" %>  
             </div>
         </div>
-
         <%@include file="base/footer.jsp" %>
     </body>
 </html>

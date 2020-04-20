@@ -52,7 +52,6 @@ public class DBManager {
     }
 
     public static ResultSet executeQuery(String sqlQuery) throws SQLException {
-        System.out.println(sqlQuery);
         return statement.executeQuery(sqlQuery);
     }
 
