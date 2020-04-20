@@ -3,6 +3,7 @@ package controller;
 import util.DBManager;
 import model.VariantManager;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +32,10 @@ public class Search extends HttpServlet {
 
                     SampleManager.init();
 
-                    CalledVariant variant = VariantManager.getVariant(query);
+                    ArrayList<CalledVariant> variantList = VariantManager.getVariantList(query);
 
                     request.setAttribute("query", query);
-                    request.setAttribute("variant", variant);
+                    request.setAttribute("variantList", variantList);
                 }
 
                 request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -46,10 +47,6 @@ public class Search extends HttpServlet {
 //            request.setAttribute("error", ex.toString());
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
-    }
-
-    private void setRequest(HttpServletRequest request) {
-
     }
 
     @Override
