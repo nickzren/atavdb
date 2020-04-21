@@ -57,6 +57,22 @@ public class Annotation {
         return isValid;
     }
 
+    public String getEffect() {
+        return effect;
+    }
+
+    public String getHGVS_c() {
+        return HGVS_c;
+    }
+
+    public String getHGVS_p() {
+        return HGVS_p;
+    }
+
+    public String getGeneName() {
+        return geneName;
+    }
+    
     public String getStableId() {
         if (stableId == Data.INTEGER_NA) {
             return Data.STRING_NA;
@@ -73,5 +89,9 @@ public class Annotation {
         idSB.insert(0, "ENST");
 
         return idSB.toString();
+    }
+    
+    public String getPolyphen() {
+        return AnnotatedVariant.getPrediction(polyphenHumdiv, effect);
     }
 }

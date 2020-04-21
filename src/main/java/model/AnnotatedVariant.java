@@ -27,7 +27,7 @@ public class AnnotatedVariant extends Variant {
     private String geneName = "";
 
     private List<String> geneList = new ArrayList<>();
-    private StringJoiner allAnnotationSJ = new StringJoiner(",");
+    private List<Annotation> annotationList = new ArrayList<>();
 
     public AnnotatedVariant(String chr, ResultSet rset) throws Exception {
         super(chr, rset);
@@ -43,17 +43,8 @@ public class AnnotatedVariant extends Variant {
             geneName = annotation.geneName;
         }
 
-        StringJoiner annotationSJ = new StringJoiner("|");
-        annotationSJ.add(annotation.effect);
-        annotationSJ.add(annotation.geneName);
-        annotationSJ.add(getStableId(annotation.stableId));
-        annotationSJ.add(annotation.HGVS_c);
-        annotationSJ.add(annotation.HGVS_p);
-        annotationSJ.add(FormatManager.getFloat(annotation.polyphenHumdiv));
-        annotationSJ.add(FormatManager.getFloat(annotation.polyphenHumvar));
-
-        allAnnotationSJ.add(annotationSJ.toString());
-
+        annotationList.add(annotation);
+        
         polyphenHumdiv = MathManager.max(polyphenHumdiv, annotation.polyphenHumdiv);
         polyphenHumvar = MathManager.max(polyphenHumvar, annotation.polyphenHumvar);
 
@@ -62,8 +53,8 @@ public class AnnotatedVariant extends Variant {
         }
     }
 
-    public String getAllAnnotation() {
-        return allAnnotationSJ.toString();
+    public List<Annotation> getAllAnnotation() {
+        return annotationList;
     }
     
     public void getAnnotationData(StringJoiner sj) {
@@ -77,10 +68,9 @@ public class AnnotatedVariant extends Variant {
         sj.add(FormatManager.getFloat(polyphenHumvar));
         sj.add(getPrediction(polyphenHumvar, effect));
         sj.add(geneName);
-        sj.add(FormatManager.appendDoubleQuote(getAllAnnotation()));
     }
     
-    private static String getPrediction(float score, String effect) {        
+    public static String getPrediction(float score, String effect) {        
         if (score == Data.FLOAT_NA) {
             if (effect.startsWith("missense_variant")
                     || effect.equals("splice_region_variant")) {

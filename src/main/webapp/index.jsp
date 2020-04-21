@@ -21,9 +21,9 @@
 
     <body>
         <div class="container">
-
+            
             <%@include file="base/header.jsp" %>
-
+            
             <div class="container-main">
 
                 <div class="jumbotron" style="padding:20px 40px 20px 50px">
@@ -54,7 +54,7 @@
 
                         <div class="col-3 text-center">
                             <c:import url="/SampleCount" />
-                            <c:if test="${not empty sampleCount}" >
+                            <c:if test="${not empty sampleCount && not empty username}" >
                                 <h2 data-toggle="tooltip" title="Total available samples in ATAVDB">
                                     <span class="badge badge-success">${sampleCount} Samples</span>
                                 </h2>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                            
+               
                 <%@include file="result.jsp" %>  
             </div>
         </div>
