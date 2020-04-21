@@ -32,9 +32,11 @@ public class CarrierBlockManager {
 
     private static void initBlockCarrierMap(Variant var) {
         String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0,PGT,PID_variant_id,HP_GT,HP_variant_id "
-                + "FROM called_variant_chr" + var.getChrStr() + " c,sample s" 
+                + "FROM called_variant_chr" + var.getChrStr() + " c,sample s"
                 + " WHERE block_id = " + currentBlockId
-                + " AND c.sample_id = s.sample_id ";
+                + " AND c.sample_id = s.sample_id "
+                + " AND sample_finished = 1"
+                + " AND sample_failure = 0";
 
         try {
             HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
@@ -78,10 +80,12 @@ public class CarrierBlockManager {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0,PGT,PID_variant_id,HP_GT,HP_variant_id "
-                + "FROM called_variant_chr" + var.getChrStr() + " c,sample s" 
+                + "FROM called_variant_chr" + var.getChrStr() + " c,sample s"
                 + " WHERE block_id = " + blockId
                 + " AND c.sample_id = s.sample_id"
-                + " AND variant_id =" + var.getVariantId();
+                + " AND variant_id =" + var.getVariantId()
+                + " AND sample_finished = 1"
+                + " AND sample_failure = 0";
 
         try {
             ResultSet rs = DBManager.executeQuery(sql);

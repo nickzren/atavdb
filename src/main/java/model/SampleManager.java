@@ -2,7 +2,6 @@ package model;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import util.DBManager;
 
@@ -13,7 +12,6 @@ import util.DBManager;
 public class SampleManager {
 
     private static ArrayList<Sample> sampleList = new ArrayList<>();
-    private static HashMap<Integer, Sample> sampleMap = new HashMap<>();
     private static HashSet<String> sampleNameSet = new HashSet<>();
 
     public static void init() {
@@ -30,8 +28,7 @@ public class SampleManager {
         String sqlCode = "SELECT count(*) as count FROM sample "
                 + "WHERE sample_type != 'custom_capture' "
                 + "and sample_finished = 1 "
-                + "and sample_failure = 0 "
-                + "and sample_name not like 'SRR%'";
+                + "and sample_failure = 0 ";
 
         try {
             ResultSet rs = DBManager.executeQuery(sqlCode);
@@ -48,11 +45,10 @@ public class SampleManager {
     }
 
     private static void initAllSampleFromDB() {
-        String sqlCode = "SELECT * FROM sample "
-                + "WHERE sample_type != 'custom_capture' "
-                + "and sample_finished = 1 "
-                + "and sample_failure = 0 "
-                + "and sample_name not like 'SRR%'";
+        sampleList.clear();
+        sampleNameSet.clear();
+        
+        String sqlCode = "SELECT * FROM sample WHERE AND sample_finished = 1 AND sample_failure = 0 ";
 
         try {
             ResultSet rs = DBManager.executeQuery(sqlCode);
@@ -80,7 +76,6 @@ public class SampleManager {
                         paternalId, maternalId, sex, pheno, sampleType, captureKit);
 
                 sampleList.add(sample);
-                sampleMap.put(sampleId, sample);
             }
 
             rs.close();
