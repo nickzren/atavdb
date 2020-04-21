@@ -78,7 +78,7 @@
         <div class="col-2">
             <h4>Annotations</h4> &nbsp;&nbsp;
         </div>
-        
+
         <c:forEach items="${variantList}" var="variant">
             <c:if test="${variant.getRsNumberStr() != 'NA'}" >
                 <div class="col-1">
@@ -118,6 +118,22 @@
         </c:forEach>
         </tbody>
     </table>
+
+    <br/>
+    
+    <c:forEach items="${variantList}" var="variant">
+        <gnx-summary></gnx-summary>
+        <script src="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.js"></script>
+        <script>
+            let elem = document.querySelector('gnx-summary');
+            elem.variantId = {
+            ref: '${variant.getRefAllele()}',
+            alt: '${variant.getAllele()}',
+            chr: '${variant.getChrStr()}',
+            pos: ${variant.getStartPosition()},
+            };
+        </script>
+    </c:forEach>
 </c:if>        
 
 <script type="text/javascript">

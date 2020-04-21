@@ -10,6 +10,7 @@
 
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
+        <link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/all-fontawesome.css">
         <link rel="stylesheet" href="css/main.css">
