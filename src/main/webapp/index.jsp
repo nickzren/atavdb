@@ -1,4 +1,5 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
     <head>
@@ -11,12 +12,12 @@
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 
         <link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.css">
-        
+
         <!-- datatables css start-->
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"/>
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap4.min.css"/>
         <!-- datatables css end-->
-        
+
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/all-fontawesome.css">
         <link rel="stylesheet" href="css/main.css">
@@ -28,7 +29,7 @@
         </script>
         <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        
+
         <!-- datatables js start-->
         <!-- load jQuery 3.3.1 -->
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -79,9 +80,10 @@
                         <div class="col-3 text-center">
                             <c:import url="/SampleCount" />
                             <c:if test="${not empty sampleCount && not empty username}" >
-                                <h2 data-toggle="tooltip" title="Total available samples in ATAVDB">
-                                    <span class="badge badge-success">${sampleCount} Samples</span>
-                                </h2>
+                                <button data-toggle="tooltip" title="Total available samples in ATAVDB" type="button" class="btn btn-success">
+                                    Total Samples <span class="badge badge-light">
+                                        <fmt:formatNumber type = "number" value = "${sampleCount}"/></span>
+                                </button>
                             </c:if>
                         </div>
                     </div>

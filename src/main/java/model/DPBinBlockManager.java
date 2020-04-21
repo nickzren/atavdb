@@ -81,7 +81,6 @@ public class DPBinBlockManager {
         try {
             String sql = "SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s"
                     + " WHERE block_id = " + blockId + " AND d.sample_id = s.sample_id"
-                    + " AND sample_type != 'custom_capture'"
                     + " AND sample_finished = 1"
                     + " AND sample_failure = 0";
 

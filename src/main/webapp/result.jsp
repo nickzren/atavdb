@@ -16,6 +16,10 @@
 
         table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
     });
+    
+    jQuery_3_4_1(function () {
+        jQuery_3_4_1('[data-toggle="tooltip"]').tooltip();
+    });
 </script>
 
 <c:if test="${not empty query}" >
@@ -154,10 +158,4 @@
             };
         </script>
     </c:forEach>
-</c:if>        
-
-<script type="text/javascript">
-    jQuery_3_4_1(function () {
-        jQuery_3_4_1('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
+</c:if>

@@ -25,10 +25,7 @@ public class SampleManager {
             return true;
         }
 
-        String sqlCode = "SELECT count(*) as count FROM sample "
-                + "WHERE sample_type != 'custom_capture' "
-                + "and sample_finished = 1 "
-                + "and sample_failure = 0 ";
+        String sqlCode = "SELECT count(*) as count FROM sample WHERE sample_finished = 1 AND sample_failure = 0";
 
         try {
             ResultSet rs = DBManager.executeQuery(sqlCode);
@@ -48,7 +45,7 @@ public class SampleManager {
         sampleList.clear();
         sampleNameSet.clear();
         
-        String sqlCode = "SELECT * FROM sample WHERE AND sample_finished = 1 AND sample_failure = 0 ";
+        String sqlCode = "SELECT * FROM sample WHERE sample_finished = 1 AND sample_failure = 0";
 
         try {
             ResultSet rs = DBManager.executeQuery(sqlCode);
