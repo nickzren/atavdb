@@ -1,3 +1,23 @@
+<script type="text/javascript">
+    jQuery_3_3_1(document).ready(function () {
+        var table = jQuery_3_3_1('#variant_table').DataTable({
+            searching: false,
+            paging: false,
+            info: false,
+            lengthChange: false,
+            buttons: [
+                {
+                    extend: 'csv',
+                    text: '<i class="fas fa-file-csv"></i> Download',
+                    className: 'btn btn-info'
+                },
+            ],
+        });
+
+        table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
+    });
+</script>
+
 <c:if test="${not empty query}" >
     <div class="row">
         <div class="col">
@@ -12,57 +32,57 @@
             </div>
         </c:when>
         <c:otherwise>        
-            <table class="table">
+            <table id="variant_table" class="table text-center align-middle">
                 <thead>
-                    <tr class="text-center">
-                        <th class="align-middle" scope="col">Variant ID</th>
-                        <th class="align-middle" scope="col">
+                    <tr>
+                        <th>Variant ID</th>
+                        <th>
                             <div data-toggle="tooltip" title="Function Effect (Ensemble 87)">
                                 Effect
                             </div>
                         </th>
-                        <th class="align-middle" scope="col">
+                        <th>
                             <div data-toggle="tooltip" title="HGNC Gene (Ensemble 87)">
                                 Gene
                             </div>
                         </th>
-                        <th class="align-middle" scope="col">
+                        <th>
                             <div data-toggle="tooltip" title="Allele Acount">
                                 AC
                             </div>
                         </th>
-                        <th class="align-middle" scope="col">
+                        <th>
                             <div data-toggle="tooltip" title="Allele Number (total number of alleles)">
                                 AN
                             </div>
                         </th>
-                        <th class="align-middle" scope="col">
+                        <th>
                             <div data-toggle="tooltip" title="Allele Frequency">
                                 AF
                             </div>
                         </th>
-                        <th class="align-middle" scope="col">
+                        <th>
                             <div data-toggle="tooltip" title="Number of samples having data">
                                 NS
                             </div>
                         </th>
-                        <th class="align-middle" scope="col">Number of homozygotes</th>
+                        <th>Number of homozygotes</th>
                     </tr>
                 </thead>
                 <tbody>
 
                 <c:forEach items="${variantList}" var="variant">
-                    <tr class="text-center">
-                        <td class="align-middle">
+                    <tr>
+                        <td>
                             <a href="Search?query=${variant.getVariantIdStr()}">${variant.getVariantIdStr()}</a>                            
                         </td>
-                        <td class="align-middle">${variant.getEffect()}</td>
-                        <td class="align-middle">${variant.getGeneName()}</td>
-                        <td class="align-middle">${variant.getAC()}</td>
-                        <td class="align-middle">${variant.getAN()}</td>
-                        <td class="align-middle">${variant.getAF()}</td>
-                        <td class="align-middle">${variant.getNS()}</td>
-                        <td class="align-middle">${variant.getNH()}</td>
+                        <td>${variant.getEffect()}</td>
+                        <td>${variant.getGeneName()}</td>
+                        <td>${variant.getAC()}</td>
+                        <td>${variant.getAN()}</td>
+                        <td>${variant.getAF()}</td>
+                        <td>${variant.getNS()}</td>
+                        <td>${variant.getNH()}</td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -91,28 +111,28 @@
         </c:forEach>
     </div>
 
-    <table class="table">
+    <table class="table text-center align-middle">
         <thead>
-            <tr class="text-center">
-                <th class="align-middle" scope="col">Effect</th>
-                <th class="align-middle" scope="col">Gene</th>
-                <th class="align-middle" scope="col">Transcript</th>
-                <th class="align-middle" scope="col">HGVS_c</th>
-                <th class="align-middle" scope="col">HGVS_p</th>
-                <th class="align-middle" scope="col">Polyphen</th>
+            <tr>
+                <th>Effect</th>
+                <th>Gene</th>
+                <th>Transcript</th>
+                <th>HGVS_c</th>
+                <th>HGVS_p</th>
+                <th>Polyphen</th>
             </tr>
         </thead>
 
         <tbody>    
         <c:forEach items="${variantList}" var="variant">
             <c:forEach items="${variant.getAllAnnotation()}" var="annotation">
-                <tr class="text-center">
-                    <td class="align-middle">${annotation.getEffect()}</td>
-                    <td class="align-middle">${annotation.getGeneName()}</td>
-                    <td class="align-middle">${annotation.getStableId()}</td>
-                    <td class="align-middle">${annotation.getHGVS_c()}</td>
-                    <td class="align-middle">${annotation.getHGVS_p()}</td>
-                    <td class="align-middle">${annotation.getPolyphen()}</td>
+                <tr>
+                    <td>${annotation.getEffect()}</td>
+                    <td>${annotation.getGeneName()}</td>
+                    <td>${annotation.getStableId()}</td>
+                    <td>${annotation.getHGVS_c()}</td>
+                    <td>${annotation.getHGVS_p()}</td>
+                    <td>${annotation.getPolyphen()}</td>
                 </tr>
             </c:forEach>
         </c:forEach>
@@ -120,24 +140,24 @@
     </table>
 
     <br/>
-    
+
     <c:forEach items="${variantList}" var="variant">
         <gnx-summary></gnx-summary>
         <script src="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.js"></script>
         <script>
             let elem = document.querySelector('gnx-summary');
             elem.variantId = {
-            ref: '${variant.getRefAllele()}',
-            alt: '${variant.getAllele()}',
-            chr: '${variant.getChrStr()}',
-            pos: ${variant.getStartPosition()},
+                ref: '${variant.getRefAllele()}',
+                alt: '${variant.getAllele()}',
+                chr: '${variant.getChrStr()}',
+                pos: ${variant.getStartPosition()},
             };
         </script>
     </c:forEach>
 </c:if>        
 
 <script type="text/javascript">
-    $(function () {
-    $('[data-toggle="tooltip"]').tooltip();
+    jQuery_3_4_1(function () {
+        jQuery_3_4_1('[data-toggle="tooltip"]').tooltip();
     });
 </script>
