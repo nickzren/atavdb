@@ -47,6 +47,9 @@
                 <div class="col-1 text-center">
                     <a class="btn btn-outline-secondary btn-sm" href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
                 </div>
+                <div class="col-1 text-center">
+                    <a class="btn btn-outline-secondary btn-sm" href="http://trap-score.org/Search?query=${variant.getVariantIdStr()}" target="_blank">TraP</a>
+                </div>
             </c:forEach>
         </c:if>   
     </div>
