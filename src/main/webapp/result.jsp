@@ -32,19 +32,22 @@
             <c:forEach items="${variantList}" var="variant">                
                 <c:if test="${variant.getRsNumberStr() != 'NA'}" >
                     <div class="col-1 text-center">
-                        <a href="https://www.ncbi.nlm.nih.gov/snp/${variant.getRsNumberStr()}" target="_blank">dbSNP</a>
-                    </div>
-                    <div class="col-1 text-center">
                         <a href="https://www.ncbi.nlm.nih.gov/clinvar?term=${variant.getRsNumberStr()}" target="_blank">ClinVar</a>
                     </div>
+                    <div class="col-1 text-center">
+                        <a href="https://www.ncbi.nlm.nih.gov/snp/${variant.getRsNumberStr()}" target="_blank">dbSNP</a>
+                    </div>
                 </c:if>
+                <div class="col-1 text-center">
+                    <a href="https://franklin.genoox.com/variant/snp/chr${variant.getVariantIdStr()}" target="_blank">Franklin</a>
+                </div>
                 <div class="col-1 text-center">
                     <a href="https://gnomad.broadinstitute.org/variant/${variant.getVariantIdStr()}" target="_blank">gnomAD</a>
                 </div>
                 <div class="col-1 text-center">
                     <a href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
                 </div>
-            </c:forEach> 
+            </c:forEach>
         </c:if>   
     </div>
     <br>
@@ -149,13 +152,13 @@
         <gnx-summary></gnx-summary>
         <script src="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.js"></script>
         <script type="text/javascript">
-            let elem = document.querySelector('gnx-summary');
-            elem.variantId = {
-                ref: '${variant.getRefAllele()}',
-                alt: '${variant.getAllele()}',
-                chr: '${variant.getChrStr()}',
-                pos: ${variant.getStartPosition()},
-            };
+    let elem = document.querySelector('gnx-summary');
+    elem.variantId = {
+        ref: '${variant.getRefAllele()}',
+        alt: '${variant.getAllele()}',
+        chr: '${variant.getChrStr()}',
+        pos: ${variant.getStartPosition()},
+    };
         </script>
     </c:forEach>
 </c:if>
