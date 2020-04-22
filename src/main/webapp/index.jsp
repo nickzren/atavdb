@@ -73,6 +73,12 @@
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
+
+                                    <p class="text-muted" style="margin-left: 5px">
+                                        Examples - 
+                                        Variant: <a href="Search?query=12-64849716-T-C">12-64849716-T-C</a>, 
+                                        Variants: <a href="Search?query=2-1010474-G-A,12-64849716-T-C,21-9411609-G-T">2-1010474-G-A,12-64849716-T-C,21-9411609-G-T</a>
+                                    </p>
                                 </div>
                             </form>
                         </div>
@@ -80,21 +86,11 @@
                         <div class="col-3 text-center">
                             <c:import url="/SampleCount" />
                             <c:if test="${not empty sampleCount && not empty username}" >
-                                <button data-toggle="tooltip" title="Total available samples in ATAVDB" type="button" class="btn btn-success">
-                                    Total Samples <span class="badge badge-light">
-                                        <fmt:formatNumber type = "number" value = "${sampleCount}"/></span>
-                                </button>
+                                <div class="bg-light">
+                                    <h2><fmt:formatNumber type = "number" value = "${sampleCount}"/></h2>
+                                    <p><i class="fas fa-dna"></i> NGS Samples</p>
+                                </div>
                             </c:if>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-9">
-                            <p class="text-muted" style="margin-left: 5px">
-                                Examples - 
-                                Variant: <a href="Search?query=1-13273-G-C">1-13273-G-C</a>, 
-                                Variants: <a href="Search?query=2-1010474-G-A,12-64849716-T-C,21-9411609-G-T">2-1010474-G-A,12-64849716-T-C,21-9411609-G-T</a>
-                            </p>
                         </div>
                     </div>
                 </div>

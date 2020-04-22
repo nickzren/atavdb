@@ -42,8 +42,14 @@ public class Variant extends Region {
         return variantId;
     }
 
+    // chr-pos-ref-alt
     public String getVariantIdStr() {
         return variantIdStr;
+    }
+    
+    // chr:g.posref>alt
+    public String getVariantIdStr2() {
+        return "chr" + chrStr + ":g." + getStartPosition() + refAllele + ">" + allele;
     }
 
     public String getType() {

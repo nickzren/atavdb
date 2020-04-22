@@ -16,7 +16,7 @@
 
         table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
     });
-    
+
     jQuery_3_4_1(function () {
         jQuery_3_4_1('[data-toggle="tooltip"]').tooltip();
     });
@@ -108,9 +108,15 @@
                 <div class="col-1">
                     <a href="https://www.ncbi.nlm.nih.gov/snp/${variant.getRsNumberStr()}" target="_blank">dbSNP</a>
                 </div>
+                <div class="col-1">
+                    <a href="https://www.ncbi.nlm.nih.gov/clinvar?term=${variant.getRsNumberStr()}" target="_blank">ClinVar</a>
+                </div>
             </c:if>
             <div class="col-1">
                 <a href="https://gnomad.broadinstitute.org/variant/${variant.getVariantIdStr()}" target="_blank">gnomAD</a>
+            </div>
+            <div class="col-1">
+                <a href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
             </div>
         </c:forEach>
     </div>
