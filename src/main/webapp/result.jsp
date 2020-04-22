@@ -27,6 +27,25 @@
         <div class="col">
             <h4><mark>Query: ${query}</mark></h4>
         </div>
+
+        <c:if test="${variantList.size() == 1 && !query.contains(',')}" >
+            <c:forEach items="${variantList}" var="variant">                
+                <c:if test="${variant.getRsNumberStr() != 'NA'}" >
+                    <div class="col-1 text-center">
+                        <a href="https://www.ncbi.nlm.nih.gov/snp/${variant.getRsNumberStr()}" target="_blank">dbSNP</a>
+                    </div>
+                    <div class="col-1 text-center">
+                        <a href="https://www.ncbi.nlm.nih.gov/clinvar?term=${variant.getRsNumberStr()}" target="_blank">ClinVar</a>
+                    </div>
+                </c:if>
+                <div class="col-1 text-center">
+                    <a href="https://gnomad.broadinstitute.org/variant/${variant.getVariantIdStr()}" target="_blank">gnomAD</a>
+                </div>
+                <div class="col-1 text-center">
+                    <a href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
+                </div>
+            </c:forEach> 
+        </c:if>   
     </div>
     <br>
     <c:choose>
@@ -98,43 +117,20 @@
 <br/>
 
 <c:if test="${variantList.size() == 1 && !query.contains(',')}" >
-    <div class="row">
-        <div class="col-2">
-            <h4>Annotations</h4> &nbsp;&nbsp;
-        </div>
+    <c:forEach items="${variantList}" var="variant">
+        <table class="table text-center align-middle">
+            <thead>
+                <tr>
+                    <th>Effect</th>
+                    <th>Gene</th>
+                    <th>Transcript</th>
+                    <th>HGVS_c</th>
+                    <th>HGVS_p</th>
+                    <th>Polyphen</th>
+                </tr>
+            </thead>
 
-        <c:forEach items="${variantList}" var="variant">
-            <c:if test="${variant.getRsNumberStr() != 'NA'}" >
-                <div class="col-1">
-                    <a href="https://www.ncbi.nlm.nih.gov/snp/${variant.getRsNumberStr()}" target="_blank">dbSNP</a>
-                </div>
-                <div class="col-1">
-                    <a href="https://www.ncbi.nlm.nih.gov/clinvar?term=${variant.getRsNumberStr()}" target="_blank">ClinVar</a>
-                </div>
-            </c:if>
-            <div class="col-1">
-                <a href="https://gnomad.broadinstitute.org/variant/${variant.getVariantIdStr()}" target="_blank">gnomAD</a>
-            </div>
-            <div class="col-1">
-                <a href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
-            </div>
-        </c:forEach>
-    </div>
-
-    <table class="table text-center align-middle">
-        <thead>
-            <tr>
-                <th>Effect</th>
-                <th>Gene</th>
-                <th>Transcript</th>
-                <th>HGVS_c</th>
-                <th>HGVS_p</th>
-                <th>Polyphen</th>
-            </tr>
-        </thead>
-
-        <tbody>    
-        <c:forEach items="${variantList}" var="variant">
+            <tbody>    
             <c:forEach items="${variant.getAllAnnotation()}" var="annotation">
                 <tr>
                     <td>${annotation.getEffect()}</td>
@@ -145,16 +141,14 @@
                     <td>${annotation.getPolyphen()}</td>
                 </tr>
             </c:forEach>
-        </c:forEach>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <br/>
+        <br/>
 
-    <c:forEach items="${variantList}" var="variant">
         <gnx-summary></gnx-summary>
         <script src="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.js"></script>
-        <script>
+        <script type="text/javascript">
             let elem = document.querySelector('gnx-summary');
             elem.variantId = {
                 ref: '${variant.getRefAllele()}',
