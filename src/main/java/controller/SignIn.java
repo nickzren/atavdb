@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import util.LDAP;
 
 /**
  *
@@ -23,11 +24,11 @@ public class SignIn extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException {        
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if (password.equals("test")) {
+        if (LDAP.connect(username, password)) {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
             
