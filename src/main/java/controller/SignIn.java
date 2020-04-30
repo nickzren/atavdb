@@ -29,7 +29,7 @@ public class SignIn extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        if (LDAP.connect(username, password)) {
+        if (LDAP.isMCAccountValid(username, password)) {
             if (VerifyUserGroup.isAuthorized(username)) {
                 HttpSession session = request.getSession();
                 session.setAttribute("username", username);
@@ -40,7 +40,7 @@ public class SignIn extends HttpServlet {
                 request.getRequestDispatcher("signin.jsp").include(request, response);
             }
         } else {
-            request.setAttribute("error", "Invalid username/password.");
+            request.setAttribute("error", "Invalid CUMC MC account username/password.");
             request.getRequestDispatcher("signin.jsp").include(request, response);
         }
     }

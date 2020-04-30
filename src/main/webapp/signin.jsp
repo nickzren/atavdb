@@ -26,7 +26,7 @@
                 <br/>
 
                 <c:if test="${not empty error}" >
-                    <div class="alert alert-danger" role="alert">
+                    <div class="alert alert-warning" role="alert">
                         <i class="fas fa-exclamation-circle"></i>&nbsp;<strong>${error}</strong>
                     </div>
                 </c:if>

@@ -12,7 +12,10 @@ public class LDAP {
 
     private final static String IGM_LDAP_SERVER = "ldap://rbwdcmc001.mc.cumc.columbia.edu:389";
 
-    public static boolean connect(String username, String password) {
+    /*
+        check whether user has a valid CUMC MC account
+    */
+    public static boolean isMCAccountValid(String username, String password) {
         try {
             Properties props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");

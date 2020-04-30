@@ -13,6 +13,9 @@ public class VerifyUserGroup {
 
     private final static String IGM_CORE_VERIFY_USER_GROUP_URL = "https://core.igm.cumc.columbia.edu/api/verifyusergroup/?";
 
+    /*
+        check whether user has atavdb group in igm core
+    */
     public static boolean isAuthorized(String username) {
         try {
             URL url = new URL(IGM_CORE_VERIFY_USER_GROUP_URL + "username=" + username + "&groupname=atavdb");
