@@ -13,14 +13,21 @@
         <link rel="stylesheet" href="css/signin.css">
     </head>
 
-    <body class="text-center">
-        <div>
-            <form class="form-signin" action="SignIn" method="post">
+    <body>
+        <div class="form-signin">
+            <form action="SignIn" method="post">
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <label for="username" class="sr-only">MC domain username</label>
-                <input type="text" name="username" id="username" class="form-control" placeholder="MC domain username" required="" autofocus="">
-                <label for="password" class="sr-only">MC domain password</label>
-                <input type="password" name="password" id="password" class="form-control" placeholder="MC domain password" required="">
+
+                <div class="form-label-group">
+                    <input type="text" id="inputUsername" name="username" class="form-control" placeholder="MC username (usually your UNI)" required autofocus>
+                    <label for="inputUsername">MC username (usually your UNI)</label>
+                </div>
+
+                <div class="form-label-group">
+                    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="MC password" required>
+                    <label for="inputPassword">MC password</label>
+                </div>
+
                 <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fas fa-sign-in-alt"></i>&nbsp;Sign in</button>
 
                 <br/>
@@ -29,13 +36,12 @@
                     <div class="alert alert-warning" role="alert">
                         <i class="fas fa-exclamation-circle"></i>&nbsp;<strong>${error}</strong>
                     </div>
+                    <br/>
                 </c:if>
 
-                <br/>
-
-                <div class="alert alert-info">
-                    New account registration required to be added from <a href="https://core.igm.cumc.columbia.edu/" target="_blank">IGM Core</a>.
-                </div>
+<!--                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>&nbsp;New account registration from <a href="https://core.igm.cumc.columbia.edu/" target="_blank">IGM Core</a>.
+                </div>-->
 
                 <small class="form-text text-muted">
                     By signing in to IGM's ATAVDB, you agree to 
