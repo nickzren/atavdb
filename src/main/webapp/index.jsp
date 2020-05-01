@@ -54,10 +54,10 @@
                 <div class="jumbotron" style="padding:20px 40px 20px 50px">
                     <h2>Data Browser 
                         <small>
+                            <span class="badge badge-pill badge-secondary">hg19</span>
                             <span class="badge badge-pill badge-secondary">beta</span>
                         </small>
                     </h2>
-
                     <div class="row">
                         <div class="col-9">
                             <form class="form-search" action="Search">
