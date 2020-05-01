@@ -44,9 +44,8 @@
                 </div>-->
 
                 <small class="form-text text-muted">
-                    By signing in to IGM's ATAVDB, you agree to 
-                    <a href="http://policylibrary.columbia.edu/acceptable-usage-information-resources-policy" target="_blank">Columbia University?s 
-                        Acceptable Use Policy.</a>
+                    By using these resources, you agree to abide by Columbia University's 
+                    <a href="http://policylibrary.columbia.edu/acceptable-usage-information-resources-policy" target="_blank">Acceptable Usage of Information Resources Policy.</a>
                 </small>
             </form>
         </div>    
