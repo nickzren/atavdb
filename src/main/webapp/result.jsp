@@ -9,7 +9,7 @@
                 {
                     extend: 'csv',
                     text: '<i class="fas fa-file-csv"></i> Download',
-                    className: 'btn btn-info'
+                    className: 'btn btn-light'
                 },
             ],
         });
@@ -22,7 +22,7 @@
                 {
                     extend: 'csv',
                     text: '<i class="fas fa-file-csv"></i> Download',
-                    className: 'btn btn-info'
+                    className: 'btn btn-light'
                 },
             ],
         });
@@ -74,7 +74,7 @@
                 <i class="fas fa-exclamation-circle"></i>&nbsp;No results found from search query.
             </div>
         </c:when>
-        <c:otherwise>        
+        <c:otherwise>
             <table id="variant_table" class="table text-center align-middle">
                 <thead>
                     <tr>
