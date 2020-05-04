@@ -3,6 +3,7 @@ package model;
 import global.Data;
 import global.Index;
 import java.sql.ResultSet;
+import java.util.Collection;
 import java.util.HashMap;
 import util.MathManager;
 
@@ -157,11 +158,15 @@ public class CalledVariant extends AnnotatedVariant {
                 return "./.";
         }
     }
-
+    
     public Carrier getCarrier(int sampleId) {
         return carrierMap.get(sampleId);
     }
 
+    public Collection<Carrier> getCarriers() {
+        return carrierMap.values();
+    }
+    
     public int getQcFailSample(byte pheno) {
         return qcFailSample[pheno];
     }

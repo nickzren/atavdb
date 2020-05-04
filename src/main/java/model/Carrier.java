@@ -1,6 +1,7 @@
 package model;
 
 import global.Data;
+import global.Index;
 import java.sql.ResultSet;
 import util.FormatManager;
 import util.MathManager;
@@ -12,7 +13,8 @@ import util.MathManager;
 public class Carrier extends NonCarrier {
 
     public static final String[] FILTER = {"PASS", "LIKELY", "INTERMEDIATE", "FAIL"};
-    
+
+    Sample sample;
     private short dp;
     private short adRef;
     private short adAlt;
@@ -31,6 +33,7 @@ public class Carrier extends NonCarrier {
 
     public Carrier(ResultSet rs) throws Exception {
         sampleId = rs.getInt("sample_id");
+        sample = SampleManager.getSample(sampleId);
         gt = rs.getByte("GT");
         dp = rs.getShort("DP");
         dpBin = Data.SHORT_NA;
@@ -130,5 +133,24 @@ public class Carrier extends NonCarrier {
 
     public int getHPVariantId() {
         return hpVariantId;
+    }
+
+    public String getGTStr() {
+        switch (gt) {
+            case Index.HOM:
+                return "hom";
+            case Index.HET:
+                return "het";
+            case Index.REF:
+                return "hom ref";
+            case Data.BYTE_NA:
+                return Data.STRING_NA;
+            default:
+                return Data.STRING_NA;
+        }
+    }
+
+    public int getExperimentId() {
+        return sample.getExperimentId();
     }
 }

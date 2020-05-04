@@ -23,7 +23,7 @@ public class SampleCount extends HttpServlet {
         } catch (Exception ex) {
             // debug purpose
 //            request.setAttribute("error", ex.toString());
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+//            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
 

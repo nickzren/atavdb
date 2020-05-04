@@ -2,7 +2,7 @@ package model;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import util.DBManager;
 
 /**
@@ -12,7 +12,7 @@ import util.DBManager;
 public class SampleManager {
 
     private static ArrayList<Sample> sampleList = new ArrayList<>();
-    private static HashSet<String> sampleNameSet = new HashSet<>();
+    private static HashMap<Integer, Sample> sampleMap = new HashMap<>();
 
     public static void init() {
         if (checkSampleCount()) {
@@ -43,7 +43,6 @@ public class SampleManager {
 
     private static void initAllSampleFromDB() {
         sampleList.clear();
-        sampleNameSet.clear();
         
         String sqlCode = "SELECT * FROM sample WHERE sample_finished = 1 AND sample_failure = 0";
 
@@ -54,25 +53,19 @@ public class SampleManager {
                 int sampleId = rs.getInt("sample_id");
                 String familyId = rs.getString("sample_name").trim();
                 String individualId = rs.getString("sample_name").trim();
-
-                if (!sampleNameSet.contains(individualId)) {
-                    sampleNameSet.add(individualId);
-                } else {
-                    // do not allow duplicate samples
-                    continue;
-                }
-
                 String paternalId = "0";
                 String maternalId = "0";
                 byte sex = 1; // male
                 byte pheno = 1; // control
                 String sampleType = rs.getString("sample_type").trim();
                 String captureKit = rs.getString("capture_kit").trim();
+                int experimentId = rs.getInt("experiment_id");
 
                 Sample sample = new Sample(sampleId, familyId, individualId,
-                        paternalId, maternalId, sex, pheno, sampleType, captureKit);
+                        paternalId, maternalId, sex, pheno, sampleType, captureKit, experimentId);
 
                 sampleList.add(sample);
+                sampleMap.put(sampleId, sample);
             }
 
             rs.close();
@@ -86,5 +79,9 @@ public class SampleManager {
 
     public static ArrayList<Sample> getList() {
         return sampleList;
+    }
+    
+    public static Sample getSample(int sampleId) {
+        return sampleMap.get(sampleId);
     }
 }

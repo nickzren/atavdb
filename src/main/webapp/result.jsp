@@ -1,6 +1,6 @@
 <script type="text/javascript">
     jQuery_3_3_1(document).ready(function () {
-        var table = jQuery_3_3_1('#variant_table').DataTable({
+        var variant_table = jQuery_3_3_1('#variant_table').DataTable({
             searching: false,
             paging: false,
             info: false,
@@ -14,7 +14,20 @@
             ],
         });
 
-        table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
+        variant_table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
+        
+        var carrier_table = jQuery_3_3_1('#carrier_table').DataTable({
+            lengthChange: false,
+            buttons: [
+                {
+                    extend: 'csv',
+                    text: '<i class="fas fa-file-csv"></i> Download',
+                    className: 'btn btn-info'
+                },
+            ],
+        });
+
+        carrier_table.buttons().container().appendTo('#carrier_table_wrapper .col-md-6:eq(0)');
     });
 
     jQuery_3_4_1(function () {
@@ -53,7 +66,8 @@
             </c:forEach>
         </c:if>   
     </div>
-    <br>
+    <br/>
+    <br/>
     <c:choose>
         <c:when test="${empty variantList}" >
             <div class="alert alert-warning" style="width:50%">
@@ -121,6 +135,7 @@
 </c:if>
 
 <br/>
+<br/>
 
 <c:if test="${variantList.size() == 1 && !query.contains(',')}" >
     <c:forEach items="${variantList}" var="variant">
@@ -151,7 +166,61 @@
         </table>
 
         <br/>
+        <br/>
 
+        <table id="carrier_table" class="table text-center align-middle">
+            <thead>
+                <tr>
+                    <th>
+                        <div data-toggle="tooltip" title="Sample experiment_id in sequenceDB">
+                            Experiment ID
+                        </div>
+                    </th>
+                    <th>
+                        <div data-toggle="tooltip" title="Phenotype">
+                            Phenotype
+                        </div>
+                    </th>
+                    <th>
+                        <div data-toggle="tooltip" title="Genotype">
+                            GT
+                        </div>
+                    </th>
+                    <th>
+                        <div data-toggle="tooltip" title="Read Depth">
+                            DP
+                        </div>
+                    </th>
+                    <th>
+                        <div data-toggle="tooltip" title="Genotype Quality">
+                            GQ
+                        </div>
+                    </th>
+                    <th>
+                        <div data-toggle="tooltip" title="">
+                            Filter
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            <c:forEach items="${variant.getCarriers()}" var="carrier">
+                <tr>
+                    <td>${carrier.getExperimentId()}</td>
+                    <td></td>
+                    <td>${carrier.getGTStr()}</td>
+                    <td>${carrier.getDP()}</td>
+                    <td>${carrier.getGQ()}</td>
+                    <td>${carrier.getFILTER()}</td>
+                </tr>
+            </c:forEach>
+
+            </tbody>
+        </table>
+
+        <br/>
+        <br/>
+        
         <gnx-summary></gnx-summary>
         <script src="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.js"></script>
         <script type="text/javascript">
