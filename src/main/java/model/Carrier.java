@@ -153,4 +153,12 @@ public class Carrier extends NonCarrier {
     public int getExperimentId() {
         return sample.getExperimentId();
     }
+
+    public String getGender() {
+        return sample.getGender();
+    }
+
+    public String getPhenotype() {
+        return sample.getBroadPhenotype();
+    }
 }

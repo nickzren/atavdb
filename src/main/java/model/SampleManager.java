@@ -55,14 +55,20 @@ public class SampleManager {
                 String individualId = rs.getString("sample_name").trim();
                 String paternalId = "0";
                 String maternalId = "0";
+                String seqGender = rs.getString("seq_gender").trim();
                 byte sex = 1; // male
+                if(seqGender.equals("F")) {
+                    sex = 2;
+                }
                 byte pheno = 1; // control
                 String sampleType = rs.getString("sample_type").trim();
                 String captureKit = rs.getString("capture_kit").trim();
                 int experimentId = rs.getInt("experiment_id");
+                String broadPhenotype = rs.getString("broad_phenotype").trim();
 
                 Sample sample = new Sample(sampleId, familyId, individualId,
-                        paternalId, maternalId, sex, pheno, sampleType, captureKit, experimentId);
+                        paternalId, maternalId, sex, pheno, sampleType, captureKit
+                        , experimentId, broadPhenotype);
 
                 sampleList.add(sample);
                 sampleMap.put(sampleId, sample);

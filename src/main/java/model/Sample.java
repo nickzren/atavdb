@@ -3,6 +3,7 @@ package model;
 import global.Data;
 import global.Index;
 import java.util.ArrayList;
+import util.FormatManager;
 
 /**
  *
@@ -17,12 +18,13 @@ public class Sample {
     private String name; // sample name
     private String paternalId;
     private String maternalId;
-    private byte sex;
+    private byte sex; // male 1, female 2
     private byte pheno; // ctrl 0 , case 1
     private float quantitativeTrait;
     private String type;
     private String captureKit;
     private int experimentId;
+    private String broadPhenotype;
 
     // covariate
     private ArrayList<Double> covariateList = new ArrayList<>();
@@ -31,10 +33,10 @@ public class Sample {
 
     public Sample(int sampled_id, String family_id, String child_id,
             String paternal_id, String maternal_id, byte _sex, byte _pheno,
-            String sample_type, String _captureKit, int experimentId) {
+            String sample_type, String captureKit, int experimentId, String broadPhenotype) {
         id = sampled_id;
         type = sample_type;
-        captureKit = _captureKit;
+        this.captureKit = captureKit;
 
         familyId = family_id;
         name = child_id;
@@ -43,6 +45,8 @@ public class Sample {
         sex = _sex;
         pheno = (byte) (_pheno - 1);
         quantitativeTrait = Data.FLOAT_NA;
+        this.experimentId = experimentId;
+        this.broadPhenotype = broadPhenotype;
     }
 
     public int getId() {
@@ -60,11 +64,11 @@ public class Sample {
     public String getType() {
         return type;
     }
-    
+
     public void setType(String value) {
         type = value;
     }
-    
+
     public String getPhenotype() {
         if (pheno == 0) {
             return "ctrl";
@@ -76,7 +80,7 @@ public class Sample {
     public String getCaptureKit() {
         return captureKit;
     }
-    
+
     public void setCaptureKit(String value) {
         captureKit = value;
     }
@@ -111,7 +115,7 @@ public class Sample {
 
     public void setQuantitativeTrait(float value) {
         quantitativeTrait = value;
-    } 
+    }
 
     public float getQuantitativeTrait() {
         return quantitativeTrait;
@@ -149,8 +153,20 @@ public class Sample {
     public ArrayList<Double> getCovariateList() {
         return covariateList;
     }
-    
+
     public int getExperimentId() {
         return experimentId;
+    }
+
+    public String getGender() {
+        if (sex == 2) {
+            return "F";
+        }
+
+        return "M";
+    }
+    
+    public String getBroadPhenotype() {
+        return FormatManager.getString(broadPhenotype);
     }
 }

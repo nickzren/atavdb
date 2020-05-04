@@ -177,7 +177,12 @@
                         </div>
                     </th>
                     <th>
-                        <div data-toggle="tooltip" title="Phenotype">
+                        <div data-toggle="tooltip" title="seqGender in sequenceDB">
+                            Gender
+                        </div>
+                    </th>
+                    <th>
+                        <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
                             Phenotype
                         </div>
                     </th>
@@ -198,7 +203,7 @@
                     </th>
                     <th>
                         <div data-toggle="tooltip" title="">
-                            Filter
+                            FILTER
                         </div>
                     </th>
                 </tr>
@@ -207,7 +212,8 @@
             <c:forEach items="${variant.getCarriers()}" var="carrier">
                 <tr>
                     <td>${carrier.getExperimentId()}</td>
-                    <td></td>
+                    <td>${carrier.getGender()}</td>
+                    <td>${carrier.getPhenotype()}</td>
                     <td>${carrier.getGTStr()}</td>
                     <td>${carrier.getDP()}</td>
                     <td>${carrier.getGQ()}</td>
