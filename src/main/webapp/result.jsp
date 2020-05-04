@@ -15,7 +15,7 @@
         });
 
         variant_table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
-        
+
         var carrier_table = jQuery_3_3_1('#carrier_table').DataTable({
             lengthChange: false,
             buttons: [
@@ -75,61 +75,67 @@
             </div>
         </c:when>
         <c:otherwise>
-            <table id="variant_table" class="table text-center align-middle">
-                <thead>
-                    <tr>
-                        <th>Variant ID</th>
-                        <th>
-                            <div data-toggle="tooltip" title="Function Effect (Ensemble 87)">
-                                Effect
-                            </div>
-                        </th>
-                        <th>
-                            <div data-toggle="tooltip" title="HGNC Gene (Ensemble 87)">
-                                Gene
-                            </div>
-                        </th>
-                        <th>
-                            <div data-toggle="tooltip" title="Allele Acount">
-                                AC
-                            </div>
-                        </th>
-                        <th>
-                            <div data-toggle="tooltip" title="Allele Number (total number of alleles)">
-                                AN
-                            </div>
-                        </th>
-                        <th>
-                            <div data-toggle="tooltip" title="Allele Frequency">
-                                AF
-                            </div>
-                        </th>
-                        <th>
-                            <div data-toggle="tooltip" title="Number of samples having data">
-                                NS
-                            </div>
-                        </th>
-                        <th>Number of homozygotes</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Variants</h5>
 
-                <c:forEach items="${variantList}" var="variant">
-                    <tr>
-                        <td>
-                            <a href="Search?query=${variant.getVariantIdStr()}">${variant.getVariantIdStr()}</a>                            
-                        </td>
-                        <td>${variant.getEffect()}</td>
-                        <td>${variant.getGeneName()}</td>
-                        <td>${variant.getAC()}</td>
-                        <td>${variant.getAN()}</td>
-                        <td>${variant.getAF()}</td>
-                        <td>${variant.getNS()}</td>
-                        <td>${variant.getNH()}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    <table id="variant_table" class="table text-center align-middle">
+                        <thead>
+                            <tr>
+                                <th>Variant ID</th>
+                                <th>
+                                    <div data-toggle="tooltip" title="Function Effect (Ensemble 87)">
+                                        Effect
+                                    </div>
+                                </th>
+                                <th>
+                                    <div data-toggle="tooltip" title="HGNC Gene (Ensemble 87)">
+                                        Gene
+                                    </div>
+                                </th>
+                                <th>
+                                    <div data-toggle="tooltip" title="Allele Acount">
+                                        AC
+                                    </div>
+                                </th>
+                                <th>
+                                    <div data-toggle="tooltip" title="Allele Number (total number of alleles)">
+                                        AN
+                                    </div>
+                                </th>
+                                <th>
+                                    <div data-toggle="tooltip" title="Allele Frequency">
+                                        AF
+                                    </div>
+                                </th>
+                                <th>
+                                    <div data-toggle="tooltip" title="Number of samples having data">
+                                        NS
+                                    </div>
+                                </th>
+                                <th>Number of homozygotes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        <c:forEach items="${variantList}" var="variant">
+                            <tr>
+                                <td>
+                                    <a href="Search?query=${variant.getVariantIdStr()}">${variant.getVariantIdStr()}</a>                            
+                                </td>
+                                <td>${variant.getEffect()}</td>
+                                <td>${variant.getGeneName()}</td>
+                                <td>${variant.getAC()}</td>
+                                <td>${variant.getAN()}</td>
+                                <td>${variant.getAF()}</td>
+                                <td>${variant.getNS()}</td>
+                                <td>${variant.getNH()}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </c:otherwise>
     </c:choose>
 </c:if>
@@ -139,94 +145,106 @@
 
 <c:if test="${variantList.size() == 1 && !query.contains(',')}" >
     <c:forEach items="${variantList}" var="variant">
-        <table class="table text-center align-middle">
-            <thead>
-                <tr>
-                    <th>Effect</th>
-                    <th>Gene</th>
-                    <th>Transcript</th>
-                    <th>HGVS_c</th>
-                    <th>HGVS_p</th>
-                    <th>Polyphen</th>
-                </tr>
-            </thead>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Annotations</h5>
 
-            <tbody>    
-            <c:forEach items="${variant.getAllAnnotation()}" var="annotation">
-                <tr>
-                    <td>${annotation.getEffect()}</td>
-                    <td>${annotation.getGeneName()}</td>
-                    <td>${annotation.getStableId()}</td>
-                    <td>${annotation.getHGVS_c()}</td>
-                    <td>${annotation.getHGVS_p()}</td>
-                    <td>${annotation.getPolyphen()}</td>
-                </tr>
-            </c:forEach>
-            </tbody>
-        </table>
+                <table class="table text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th>Effect</th>
+                            <th>Gene</th>
+                            <th>Transcript</th>
+                            <th>HGVS_c</th>
+                            <th>HGVS_p</th>
+                            <th>Polyphen</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>    
+                    <c:forEach items="${variant.getAllAnnotation()}" var="annotation">
+                        <tr>
+                            <td>${annotation.getEffect()}</td>
+                            <td>${annotation.getGeneName()}</td>
+                            <td>${annotation.getStableId()}</td>
+                            <td>${annotation.getHGVS_c()}</td>
+                            <td>${annotation.getHGVS_p()}</td>
+                            <td>${annotation.getPolyphen()}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br/>
+        <br/>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Carriers</h5>
+
+                <table id="carrier_table" class="table text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div data-toggle="tooltip" title="Sample experiment_id in sequenceDB">
+                                    Experiment ID
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="seqGender in sequenceDB">
+                                    Gender
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
+                                    Phenotype
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Genotype">
+                                    GT
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Read Depth">
+                                    DP
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Genotype Quality">
+                                    GQ
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="">
+                                    FILTER
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${variant.getCarriers()}" var="carrier">
+                        <tr>
+                            <td>${carrier.getExperimentId()}</td>
+                            <td>${carrier.getGender()}</td>
+                            <td>${carrier.getPhenotype()}</td>
+                            <td>${carrier.getGTStr()}</td>
+                            <td>${carrier.getDP()}</td>
+                            <td>${carrier.getGQ()}</td>
+                            <td>${carrier.getFILTER()}</td>
+                        </tr>
+                    </c:forEach>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <br/>
         <br/>
 
-        <table id="carrier_table" class="table text-center align-middle">
-            <thead>
-                <tr>
-                    <th>
-                        <div data-toggle="tooltip" title="Sample experiment_id in sequenceDB">
-                            Experiment ID
-                        </div>
-                    </th>
-                    <th>
-                        <div data-toggle="tooltip" title="seqGender in sequenceDB">
-                            Gender
-                        </div>
-                    </th>
-                    <th>
-                        <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
-                            Phenotype
-                        </div>
-                    </th>
-                    <th>
-                        <div data-toggle="tooltip" title="Genotype">
-                            GT
-                        </div>
-                    </th>
-                    <th>
-                        <div data-toggle="tooltip" title="Read Depth">
-                            DP
-                        </div>
-                    </th>
-                    <th>
-                        <div data-toggle="tooltip" title="Genotype Quality">
-                            GQ
-                        </div>
-                    </th>
-                    <th>
-                        <div data-toggle="tooltip" title="">
-                            FILTER
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-            <c:forEach items="${variant.getCarriers()}" var="carrier">
-                <tr>
-                    <td>${carrier.getExperimentId()}</td>
-                    <td>${carrier.getGender()}</td>
-                    <td>${carrier.getPhenotype()}</td>
-                    <td>${carrier.getGTStr()}</td>
-                    <td>${carrier.getDP()}</td>
-                    <td>${carrier.getGQ()}</td>
-                    <td>${carrier.getFILTER()}</td>
-                </tr>
-            </c:forEach>
-
-            </tbody>
-        </table>
-
-        <br/>
-        <br/>
-        
         <gnx-summary></gnx-summary>
         <script src="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.js"></script>
         <script type="text/javascript">
