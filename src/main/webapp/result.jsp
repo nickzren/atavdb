@@ -1,9 +1,9 @@
 <script type="text/javascript">
     jQuery_3_3_1(document).ready(function () {
         var variant_table = jQuery_3_3_1('#variant_table').DataTable({
-            searching: false,
-            paging: false,
-            info: false,
+//            searching: false,
+//            paging: false,
+//            info: false,
             lengthChange: false,
             buttons: [
                 {
@@ -183,62 +183,72 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Carriers</h5>
+                <c:set var = "af_to_display_carrier" value = "0.5"/>
+                <c:choose>
+                    <c:when test="${variant.getAF() <= af_to_display_carrier}" >
+                        <table id="carrier_table" class="table text-center align-middle">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div data-toggle="tooltip" title="Sample experiment_id in sequenceDB">
+                                            Experiment ID
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div data-toggle="tooltip" title="seqGender in sequenceDB">
+                                            Gender
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
+                                            Phenotype
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div data-toggle="tooltip" title="Genotype">
+                                            GT
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div data-toggle="tooltip" title="Read Depth">
+                                            DP
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div data-toggle="tooltip" title="Genotype Quality">
+                                            GQ
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div data-toggle="tooltip" title="">
+                                            FILTER
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach items="${variant.getCarriers()}" var="carrier">
+                                <tr>
+                                    <td>${carrier.getExperimentId()}</td>
+                                    <td>${carrier.getGender()}</td>
+                                    <td>${carrier.getPhenotype()}</td>
+                                    <td>${carrier.getGTStr()}</td>
+                                    <td>${carrier.getDP()}</td>
+                                    <td>${carrier.getGQ()}</td>
+                                    <td>${carrier.getFILTER()}</td>
+                                </tr>
+                            </c:forEach>
 
-                <table id="carrier_table" class="table text-center align-middle">
-                    <thead>
-                        <tr>
-                            <th>
-                                <div data-toggle="tooltip" title="Sample experiment_id in sequenceDB">
-                                    Experiment ID
-                                </div>
-                            </th>
-                            <th>
-                                <div data-toggle="tooltip" title="seqGender in sequenceDB">
-                                    Gender
-                                </div>
-                            </th>
-                            <th>
-                                <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
-                                    Phenotype
-                                </div>
-                            </th>
-                            <th>
-                                <div data-toggle="tooltip" title="Genotype">
-                                    GT
-                                </div>
-                            </th>
-                            <th>
-                                <div data-toggle="tooltip" title="Read Depth">
-                                    DP
-                                </div>
-                            </th>
-                            <th>
-                                <div data-toggle="tooltip" title="Genotype Quality">
-                                    GQ
-                                </div>
-                            </th>
-                            <th>
-                                <div data-toggle="tooltip" title="">
-                                    FILTER
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="${variant.getCarriers()}" var="carrier">
-                        <tr>
-                            <td>${carrier.getExperimentId()}</td>
-                            <td>${carrier.getGender()}</td>
-                            <td>${carrier.getPhenotype()}</td>
-                            <td>${carrier.getGTStr()}</td>
-                            <td>${carrier.getDP()}</td>
-                            <td>${carrier.getGQ()}</td>
-                            <td>${carrier.getFILTER()}</td>
-                        </tr>
-                    </c:forEach>
-
-                    </tbody>
-                </table>
+                            </tbody>
+                        </table>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-circle"></i>&nbsp;
+                            <strong>Not displaying carriers data when AF > ${af_to_display_carrier}</strong>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
 
