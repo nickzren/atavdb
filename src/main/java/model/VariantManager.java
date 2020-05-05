@@ -17,70 +17,38 @@ public class VariantManager {
 
             SampleManager.init();
 
-            getVariantList("1-13273-G-C");
+            getVariantList("1-13273-G-C", Data.QUERT_TYPE[1]);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static ArrayList<CalledVariant> getVariantList(String query) throws Exception {
-        String[] tmp = query.split("-"); // chr-pos-ref-alt
-        if (tmp.length == 4) {
-            String chr = tmp[0];
-            String pos = tmp[1];
-            String ref = tmp[2];
-            String alt = tmp[3];
-
-            ArrayList<CalledVariant> list = new ArrayList<>();
-            CalledVariant calledVar = getVariant(chr, pos, ref, alt);
-            if (calledVar != null) {
-                list.add(calledVar);
-            }
-
-            return list;
-        } else { // gene search
-            return getVariantListByGene(query);
-        }
-    }
-
-    public static CalledVariant getVariant(String chr, String pos, String ref, String alt) throws Exception {
-        CalledVariant calledVar = null;
-        String sql = "SELECT variant_id, POS, REF, ALT, rs_number, transcript_stable_id, "
-                + "effect_id, HGVS_c, HGVS_p, polyphen_humdiv, polyphen_humvar, gene "
-                + "FROM variant_chr" + chr + " "
-                + "WHERE POS = " + pos + " AND REF = '" + ref + "' AND ALT = '" + alt + "' "
-                + "ORDER BY POS,variant_id,effect_id,transcript_stable_id;";
-
-        ResultSet rset = DBManager.executeConcurReadOnlyQuery(sql);
-
-        while (rset.next()) {
-            Annotation annotation = new Annotation(chr, rset);
-            
-            if (calledVar == null) {
-                calledVar = new CalledVariant(chr, rset);
-            }
-            
-            calledVar.update(annotation);
-        }
-        
-        rset.close();
-
-        return calledVar;
-    }
-
-    public static ArrayList<CalledVariant> getVariantListByGene(String gene) throws Exception {
+    public static ArrayList<CalledVariant> getVariantList(String query, String queryType) throws Exception {
         ArrayList<CalledVariant> list = new ArrayList<>();
 
-        String chr = getChr(gene);
+        String chr = "";
+        String whereSQL = "";
 
-        if (chr.equals(Data.STRING_NA)) {
+        if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
+            String[] tmp = query.split("-");
+            chr = tmp[0];
+            whereSQL = "WHERE POS = " + tmp[1] + " AND REF = '" + tmp[2] + "' AND ALT = '" + tmp[3] + "' ";
+        } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
+            chr = GeneManager.getChr(query);
+            whereSQL = "WHERE gene = '" + query + "' ";
+        } else if(queryType.equals(Data.QUERT_TYPE[3])) { // region chr:start-end
+            String[] tmp = query.split(":");
+            chr = tmp[0];
+            tmp = tmp[1].split("-");
+            whereSQL = "WHERE POS BETWEEN " + tmp[0] + " AND " + tmp[1] + " ";
+        } else {
             return list;
         }
 
         String sql = "SELECT variant_id, POS, REF, ALT, rs_number, transcript_stable_id, "
                 + "effect_id, HGVS_c, HGVS_p, polyphen_humdiv, polyphen_humvar, gene "
                 + "FROM variant_chr" + chr + " "
-                + "WHERE gene = '" + gene + "' "
+                + whereSQL
                 + "ORDER BY POS,variant_id,effect_id,transcript_stable_id;";
 
         ResultSet rset = DBManager.executeConcurReadOnlyQuery(sql);
@@ -99,22 +67,9 @@ public class VariantManager {
 
             calledVar.update(annotation);
         }
+        
         rset.close();
 
         return list;
-    }
-
-    private static String getChr(String gene) throws Exception {
-        String sql = "SELECT chrom FROM hgnc WHERE gene = '" + gene + "'";
-
-        ResultSet rset = DBManager.executeQuery(sql);
-
-        if (rset.next()) {
-            return rset.getString("chrom");
-        }
-
-        rset.close();
-
-        return Data.STRING_NA;
     }
 }

@@ -78,7 +78,8 @@
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
                                     Variant: <a href="Search?query=12-64849716-T-C">12-64849716-T-C</a>, 
-                                    Gene: <a href="Search?query=TBK1">TBK1</a>
+                                    Gene: <a href="Search?query=TBK1">TBK1</a>, 
+                                    Region: <a href="Search?query=21:33032075-33040899">21:33032075-33040899</a>
                                 </p>
 
                                 <div class="row align-items-center">

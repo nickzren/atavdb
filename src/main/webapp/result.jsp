@@ -38,33 +38,47 @@
 <c:if test="${not empty query}" >
     <div class="row">
         <div class="col">
-            <h4><mark>Query: ${query}</mark></h4>
+            <h4><mark>${queryType}: ${query}</mark></h4>
         </div>
 
-        <c:if test="${variantList.size() == 1 && !query.contains(',')}" >
+        <c:if test="${queryType == 'Variant'}" >
             <c:forEach items="${variantList}" var="variant">                
                 <c:if test="${variant.getRsNumberStr() != 'NA'}" >
-                    <div class="col-1 text-center">
+                    <div class="col-auto">
                         <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/clinvar?term=${variant.getRsNumberStr()}" target="_blank">ClinVar</a>
                     </div>
-                    <div class="col-1 text-center">
+                    <div class="col-auto">
                         <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/snp/${variant.getRsNumberStr()}" target="_blank">dbSNP</a>
                     </div>
                 </c:if>
-                <div class="col-1 text-center">
+                <div class="col-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://franklin.genoox.com/variant/snp/chr${variant.getVariantIdStr()}" target="_blank">Franklin</a>
                 </div>
-                <div class="col-1 text-center">
+                <div class="col-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://gnomad.broadinstitute.org/variant/${variant.getVariantIdStr()}" target="_blank">gnomAD</a>
                 </div>
-                <div class="col-1 text-center">
+                <div class="col-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
                 </div>
-                <div class="col-1 text-center">
+                <div class="col-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="http://trap-score.org/Search?query=${variant.getVariantIdStr()}" target="_blank">TraP</a>
                 </div>
+                <div class="col-auto">
+                    <a class="btn btn-outline-secondary btn-sm" href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${variant.getChrStr()}${variant.getStartPosition()}-${variant.getStartPosition()}" target="_blank">UCSC</a>
+                </div>
             </c:forEach>
-        </c:if>   
+        </c:if>
+
+        <c:if test="${queryType=='Gene'}" >
+            <div class="col-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="http://genic-intolerance.org/Search?query=${query}" target="_blank">RVIS</a>
+            </div>
+        </c:if>
+        <c:if test="${queryType=='Region'}" >
+            <div class="col-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${query}" target="_blank">UCSC</a>
+            </div>
+        </c:if>
     </div>
     <br/>
     <br/>
@@ -143,7 +157,7 @@
 <br/>
 <br/>
 
-<c:if test="${variantList.size() == 1}" >
+<c:if test="${queryType == 'Variant'}" >
     <c:forEach items="${variantList}" var="variant">
         <div class="card">
             <div class="card-body">
