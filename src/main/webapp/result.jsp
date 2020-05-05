@@ -4,7 +4,7 @@
 //            searching: false,
 //            paging: false,
 //            info: false,
-            lengthChange: false,
+//            lengthChange: false,
             buttons: [
                 {
                     extend: 'csv',
@@ -17,7 +17,7 @@
         variant_table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
 
         var carrier_table = jQuery_3_3_1('#carrier_table').DataTable({
-            lengthChange: false,
+//            lengthChange: false,
             buttons: [
                 {
                     extend: 'csv',
@@ -143,7 +143,7 @@
 <br/>
 <br/>
 
-<c:if test="${variantList.size() == 1 && !query.contains(',')}" >
+<c:if test="${variantList.size() == 1}" >
     <c:forEach items="${variantList}" var="variant">
         <div class="card">
             <div class="card-body">

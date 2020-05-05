@@ -16,6 +16,10 @@ public class DBManager {
     private static Connection connection;
     private static Statement statement;
 
+    // this is just for collecting annotation data
+    private static Connection concurReadOnlyConn;
+    private static Statement concurReadOnlyStmt;
+
     private static String dbUrl;
     private static String dbUser;
     private static String dbPassword;
@@ -24,15 +28,30 @@ public class DBManager {
         if (connection == null || connection.isClosed()) {
             initDataFromSystemConfig();
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection(
-                    dbUrl + "?"
-                    + "user=" + dbUser
-                    + "&password=" + dbPassword
-                    + "&serverTimezone=UTC");
+            connection = getConnection();
             statement = connection.createStatement();
+
+            concurReadOnlyConn = getConnection();
+            concurReadOnlyStmt = concurReadOnlyConn.createStatement(
+                    java.sql.ResultSet.TYPE_FORWARD_ONLY,
+                    java.sql.ResultSet.CONCUR_READ_ONLY); // The ResultSet object cannot be updated using the ResultSet interface.
+            concurReadOnlyStmt.setFetchSize(Integer.MIN_VALUE);
         } else if (statement.isClosed()) {
             statement = connection.createStatement();
+        } else if(concurReadOnlyStmt.isClosed()) {
+            concurReadOnlyStmt = concurReadOnlyConn.createStatement(
+                    java.sql.ResultSet.TYPE_FORWARD_ONLY,
+                    java.sql.ResultSet.CONCUR_READ_ONLY); 
+            concurReadOnlyStmt.setFetchSize(Integer.MIN_VALUE);
         }
+    }
+
+    private static Connection getConnection() throws Exception {
+        return DriverManager.getConnection(
+                dbUrl + "?"
+                + "user=" + dbUser
+                + "&password=" + dbPassword
+                + "&serverTimezone=UTC");
     }
 
     private static void initDataFromSystemConfig() {
@@ -58,8 +77,12 @@ public class DBManager {
     public static PreparedStatement prepareStatement(String sqlQuery) throws SQLException {
         return connection.prepareStatement(sqlQuery);
     }
-    
+
     public static void executeUpdate(String sqlQuery) throws SQLException {
         statement.executeUpdate(sqlQuery);
+    }
+
+    public static ResultSet executeConcurReadOnlyQuery(String sqlQuery) throws SQLException {
+        return concurReadOnlyStmt.executeQuery(sqlQuery);
     }
 }

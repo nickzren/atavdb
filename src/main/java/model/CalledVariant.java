@@ -26,9 +26,11 @@ public class CalledVariant extends AnnotatedVariant {
 
     public CalledVariant(String chr, ResultSet rset) throws Exception {        
         super(chr, rset);
+        
+        init();
     }
 
-    public void init() throws Exception {
+    private void init() throws Exception {
         CarrierBlockManager.initCarrierMap(carrierMap, this);
 
         DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap);

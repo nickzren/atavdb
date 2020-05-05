@@ -61,7 +61,6 @@
 
                         <div class="row">
                             <div class="col-9">
-
                                 <div class="input-group">
                                     <input name="query" class="form-control"
                                            type="text" placeholder="Search for a variant"
@@ -74,37 +73,38 @@
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
+                                </div>
 
-                                    <p class="text-muted" style="margin-left: 5px">
-                                        Examples - 
-                                        Variant: <a href="Search?query=12-64849716-T-C">12-64849716-T-C</a>, 
-                                        Variants: <a href="Search?query=2-1010474-G-A,12-64849716-T-C,21-9411609-G-T">2-1010474-G-A,12-64849716-T-C,21-9411609-G-T</a>
-                                    </p>
+                                <p class="text-muted" style="margin-left: 5px">
+                                    Examples - 
+                                    Variant: <a href="Search?query=12-64849716-T-C">12-64849716-T-C</a>, 
+                                    Gene: <a href="Search?query=TBK1">TBK1</a>
+                                </p>
 
-                                    <div class="row align-items-center">
-                                       <label class="col-sm-2 col-form-label col-form-label-lg">Filters:</label>
+                                <div class="row align-items-center">
+                                    <!--<label class="col-sm-1 col-form-label col-form-label-lg">Filters:</label>-->
 
-                                        <div class="btn-group col-auto ">
-                                            <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Max AF
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Not apply</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">0.01</a>
-                                                <a class="dropdown-item" href="#">0.005</a>
-                                                <a class="dropdown-item" href="#">0.001</a>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="form-check col-auto">
-                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                            <label class="form-check-label" for="defaultCheck1">
-                                                High quality variants only
-                                            </label>
+                                    <div class="btn-group col-auto " style="margin-left: 5px">
+                                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Max AF
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#">Not apply</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">0.01</a>
+                                            <a class="dropdown-item" href="#">0.005</a>
+                                            <a class="dropdown-item" href="#">0.001</a>
                                         </div>
                                     </div>
+
+                                    <div class="form-check col-auto">
+                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                        <label class="form-check-label" for="defaultCheck1">
+                                            High quality variants
+                                        </label>
+                                    </div>
                                 </div>
+
 
                             </div>
 

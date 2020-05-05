@@ -35,6 +35,8 @@ public class SampleManager {
                     return true;
                 }
             }
+            
+            rs.close();
         } catch (Exception e) {
         }
 
