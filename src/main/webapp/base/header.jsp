@@ -8,6 +8,7 @@
         <div class="collapse navbar-collapse justify-content-end">
             <div class="navbar-nav">
                 <a class="nav-item nav-link home-link" href="index.jsp">Home</a>
+                <a class="nav-item nav-link home-link" href="terms.jsp">Terms</a>
                 <a class="nav-item nav-link home-link" href="contact.jsp">Contact</a>
                 <c:choose>
                     <c:when test="${not empty username}" >
