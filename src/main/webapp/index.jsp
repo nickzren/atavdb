@@ -9,7 +9,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
 
         <link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.css">
 

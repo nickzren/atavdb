@@ -71,6 +71,21 @@
 
         <c:if test="${queryType=='Gene'}" >
             <div class="col-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://decipher.sanger.ac.uk/gene/${query}" target="_blank">DECIPHER</a>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${query}" target="_blank">Ensembl</a>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene=${query}" target="_blank">GeneCards</a>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://www.genenames.org/tools/search/#!/genes?query=${query}" target="_blank">HGNC</a>
+            </div>       
+            <div class="col-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://omim.org/search?search=${query}" target="_blank">OMIM</a>
+            </div>
+            <div class="col-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="http://genic-intolerance.org/Search?query=${query}" target="_blank">RVIS</a>
             </div>
         </c:if>
