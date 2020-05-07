@@ -20,9 +20,9 @@ public class CalledVariant extends AnnotatedVariant {
 
     private int[] qcFailSample = new int[2];
     public int[][] genoCount = new int[5][2];
-    public float[] homFreq = new float[2];
-    public float[] hetFreq = new float[2];
-    public float[] af = new float[2];
+    private int ac;
+    private int an;
+    public float af;
 
     public CalledVariant(String chr, ResultSet rset, Filter filter) throws Exception {
         super(chr, rset);
@@ -39,9 +39,9 @@ public class CalledVariant extends AnnotatedVariant {
 
             initGenoCovArray();
 
-            calculateAlleleFreq();
-
-            calculateGenotypeFreq();
+            calculateAF();
+            
+            isValid = filter.isMaxAFValid(af);
         }
     }
 
@@ -114,56 +114,14 @@ public class CalledVariant extends AnnotatedVariant {
         dpBin[s] = bin;
     }
 
-    public void calculate() {
-        calculateAlleleFreq();
-
-        calculateGenotypeFreq();
-    }
-
-    private void calculateAlleleFreq() {
-        int caseAC = 2 * genoCount[Index.HOM][Index.CASE]
-                + genoCount[Index.HET][Index.CASE];
-        int caseTotalAC = caseAC + genoCount[Index.HET][Index.CASE]
-                + 2 * genoCount[Index.REF][Index.CASE];
-
-        // (2*hom + maleHom + het) / (2*hom + maleHom + 2*het + 2*ref + maleRef)
-        af[Index.CASE] = MathManager.devide(caseAC, caseTotalAC);
-
-        int ctrlAC = 2 * genoCount[Index.HOM][Index.CTRL]
+    private void calculateAF() {
+        ac = 2 * genoCount[Index.HOM][Index.CTRL]
                 + genoCount[Index.HET][Index.CTRL];
-        int ctrlTotalAC = ctrlAC + genoCount[Index.HET][Index.CTRL]
+       
+        an = ac + genoCount[Index.HET][Index.CTRL]
                 + 2 * genoCount[Index.REF][Index.CTRL];
-
-        af[Index.CTRL] = MathManager.devide(ctrlAC, ctrlTotalAC);
-    }
-
-    private void calculateGenotypeFreq() {
-        int totalCaseGenotypeCount
-                = genoCount[Index.HOM][Index.CASE]
-                + genoCount[Index.HET][Index.CASE]
-                + genoCount[Index.REF][Index.CASE];
-
-        int totalCtrlGenotypeCount
-                = genoCount[Index.HOM][Index.CTRL]
-                + genoCount[Index.HET][Index.CTRL]
-                + genoCount[Index.REF][Index.CTRL];
-
-        // hom / (hom + het + ref)
-        homFreq[Index.CASE] = MathManager.devide(
-                genoCount[Index.HOM][Index.CASE], totalCaseGenotypeCount);
-        homFreq[Index.CTRL] = MathManager.devide(
-                genoCount[Index.HOM][Index.CTRL], totalCtrlGenotypeCount);
-
-        hetFreq[Index.CASE] = MathManager.devide(genoCount[Index.HET][Index.CASE], totalCaseGenotypeCount);
-        hetFreq[Index.CTRL] = MathManager.devide(genoCount[Index.HET][Index.CTRL], totalCtrlGenotypeCount);
-    }
-
-    public short getDPBin(int index) {
-        if (index == Data.INTEGER_NA) {
-            return Data.SHORT_NA;
-        }
-
-        return dpBin[index];
+        
+        af = MathManager.devide(ac, an);
     }
 
     public byte getGT(int index) {
@@ -203,38 +161,29 @@ public class CalledVariant extends AnnotatedVariant {
 
     // NS = Number of Samples With Data
     public int getNS() {
-        return genoCount[Index.HOM][Index.CASE]
-                + genoCount[Index.HET][Index.CASE]
-                + genoCount[Index.REF][Index.CASE]
-                + genoCount[Index.HOM][Index.CTRL]
+        return genoCount[Index.HOM][Index.CTRL]
                 + genoCount[Index.HET][Index.CTRL]
                 + genoCount[Index.REF][Index.CTRL];
     }
 
     // AC = Allele Count
     public int getAC() {
-        return 2 * genoCount[Index.HOM][Index.CASE]
-                + genoCount[Index.HET][Index.CASE]
-                + 2 * genoCount[Index.HOM][Index.CTRL]
-                + genoCount[Index.HET][Index.CTRL];
+        return ac;
     }
 
     // AN = Allele Number
     public int getAN() {
-        return getAC() + genoCount[Index.HET][Index.CASE]
-                + 2 * genoCount[Index.REF][Index.CASE]
-                + genoCount[Index.HET][Index.CTRL]
-                + 2 * genoCount[Index.REF][Index.CTRL];
+        return an;
     }
 
     // AF = Allele Frequency
     public float getAF() {
-        return MathManager.devide(getAC(), getAN());
+        return af;
     }
 
     // NH = Number of homozygotes
     public int getNH() {
-        return genoCount[Index.HOM][Index.CASE]
-                + genoCount[Index.HOM][Index.CTRL];
+        return genoCount[Index.HOM][Index.CTRL];
     }
+    
 }

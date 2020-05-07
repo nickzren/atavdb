@@ -110,4 +110,12 @@ public class Filter {
     public boolean isQueryValid() {
         return query != null && !query.isEmpty();
     }
+    
+    public boolean isMaxAFValid(double value) {
+        if (maxAF == Data.NO_FILTER) {
+            return true;
+        }
+
+        return value <= maxAF;
+    }
 }

@@ -117,7 +117,7 @@
 
                                     <div class="form-group col-auto" style="margin-left: 5px">
                                         <label for="inputMaxAF">Max AF:</label>
-                                        <c:set var="af_list" value="${['Not apply','0.01','0.005','0.001']}"/>
+                                        <c:set var="af_list" value="${['Not apply','0.5','0.01','0.005','0.001']}"/>
                                         <c:if test="${empty maxAF}" >
                                             <c:set var="maxAF" value="Not apply"/>
                                         </c:if>
