@@ -24,22 +24,50 @@ public class CalledVariant extends AnnotatedVariant {
     public float[] hetFreq = new float[2];
     public float[] af = new float[2];
 
-    public CalledVariant(String chr, ResultSet rset, Filter filter) throws Exception {        
+    public CalledVariant(String chr, ResultSet rset, Filter filter) throws Exception {
         super(chr, rset);
-        
+
         init(filter);
     }
 
     private void init(Filter filter) throws Exception {
         CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
 
-        DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter);
+        if (isValid
+                && initCarrierData(filter)) {
+            DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter);
 
-        initGenoCovArray();
+            initGenoCovArray();
 
-        calculateAlleleFreq();
+            calculateAlleleFreq();
 
-        calculateGenotypeFreq();
+            calculateGenotypeFreq();
+        }
+    }
+
+    private boolean initCarrierData(Filter filter) {
+        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
+            // single variant carriers data process
+            CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
+
+            if (!Filter.isMinVarPresentValid(carrierMap.size())) {
+                isValid = false;
+            }
+        } else {
+            // block variants carriers data process
+            CarrierBlockManager.init(this, filter);
+
+            carrierMap = CarrierBlockManager.getVarCarrierMap(variantId);
+
+            if (carrierMap == null) {
+                carrierMap = new HashMap<>();
+                isValid = false;
+            } else if (!Filter.isMinVarPresentValid(carrierMap.size())) {
+                isValid = false;
+            }
+        }
+
+        return isValid;
     }
 
     // initialize genotype & dpBin array for better compute performance use
@@ -160,7 +188,7 @@ public class CalledVariant extends AnnotatedVariant {
                 return "./.";
         }
     }
-    
+
     public Carrier getCarrier(int sampleId) {
         return carrierMap.get(sampleId);
     }
@@ -168,7 +196,7 @@ public class CalledVariant extends AnnotatedVariant {
     public Collection<Carrier> getCarriers() {
         return carrierMap.values();
     }
-    
+
     public int getQcFailSample(byte pheno) {
         return qcFailSample[pheno];
     }
@@ -182,7 +210,7 @@ public class CalledVariant extends AnnotatedVariant {
                 + genoCount[Index.HET][Index.CTRL]
                 + genoCount[Index.REF][Index.CTRL];
     }
-    
+
     // AC = Allele Count
     public int getAC() {
         return 2 * genoCount[Index.HOM][Index.CASE]
@@ -198,15 +226,15 @@ public class CalledVariant extends AnnotatedVariant {
                 + genoCount[Index.HET][Index.CTRL]
                 + 2 * genoCount[Index.REF][Index.CTRL];
     }
-    
+
     // AF = Allele Frequency
     public float getAF() {
         return MathManager.devide(getAC(), getAN());
     }
-    
+
     // NH = Number of homozygotes
     public int getNH() {
-        return genoCount[Index.HOM][Index.CASE] +
-                 genoCount[Index.HOM][Index.CTRL];
+        return genoCount[Index.HOM][Index.CASE]
+                + genoCount[Index.HOM][Index.CTRL];
     }
 }

@@ -18,9 +18,10 @@ public class SampleCount extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            Filter filter = new Filter(request);
             DBManager.init();
+            Filter filter = new Filter(request);
             SampleManager.init(filter);
+            DBManager.close();
             request.setAttribute("sampleCount", SampleManager.getTotalSampleNum());
         } catch (Exception ex) {
             // debug purpose

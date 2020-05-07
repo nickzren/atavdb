@@ -29,34 +29,38 @@ public class AnnotatedVariant extends Variant {
     private List<String> geneList = new ArrayList<>();
     private List<Annotation> annotationList = new ArrayList<>();
 
+    public boolean isValid = true;
+
     public AnnotatedVariant(String chr, ResultSet rset) throws Exception {
         super(chr, rset);
     }
 
     public void update(Annotation annotation) {
-        if (effect.isEmpty()) { // init most damaging effect annotations
-            stableId = annotation.stableId;
-            effect = annotation.effect;
-            effectID = annotation.effectID;
-            HGVS_c = annotation.HGVS_c;
-            HGVS_p = annotation.HGVS_p;
-            geneName = annotation.geneName;
-        }
+        if (isValid) {
+            if (effect.isEmpty()) { // init most damaging effect annotations
+                stableId = annotation.stableId;
+                effect = annotation.effect;
+                effectID = annotation.effectID;
+                HGVS_c = annotation.HGVS_c;
+                HGVS_p = annotation.HGVS_p;
+                geneName = annotation.geneName;
+            }
 
-        annotationList.add(annotation);
-        
-        polyphenHumdiv = MathManager.max(polyphenHumdiv, annotation.polyphenHumdiv);
-        polyphenHumvar = MathManager.max(polyphenHumvar, annotation.polyphenHumvar);
+            annotationList.add(annotation);
 
-        if (!geneList.contains(annotation.geneName)) {
-            geneList.add(annotation.geneName);
+            polyphenHumdiv = MathManager.max(polyphenHumdiv, annotation.polyphenHumdiv);
+            polyphenHumvar = MathManager.max(polyphenHumvar, annotation.polyphenHumvar);
+
+            if (!geneList.contains(annotation.geneName)) {
+                geneList.add(annotation.geneName);
+            }
         }
     }
 
     public List<Annotation> getAllAnnotation() {
         return annotationList;
     }
-    
+
     public void getAnnotationData(StringJoiner sj) {
         sj.add(getStableId(stableId));
         sj.add(Boolean.toString(hasCCDS));
@@ -69,8 +73,8 @@ public class AnnotatedVariant extends Variant {
         sj.add(getPrediction(polyphenHumvar, effect));
         sj.add(geneName);
     }
-    
-    public static String getPrediction(float score, String effect) {        
+
+    public static String getPrediction(float score, String effect) {
         if (score == Data.FLOAT_NA) {
             if (effect.startsWith("missense_variant")
                     || effect.equals("splice_region_variant")) {
@@ -131,5 +135,9 @@ public class AnnotatedVariant extends Variant {
 
     public List<String> getGeneList() {
         return geneList;
+    }
+
+    public boolean isValid() {
+        return isValid;
     }
 }

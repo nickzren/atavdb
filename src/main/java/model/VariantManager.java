@@ -19,18 +19,20 @@ public class VariantManager {
 
             SampleManager.init(filter);
 
-            getVariantList("1-13273-G-C", Data.QUERT_TYPE[1], filter);
+            getVariantList(filter);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static ArrayList<CalledVariant> getVariantList(String query, String queryType, Filter filter) throws Exception {
+    public static ArrayList<CalledVariant> getVariantList(Filter filter) throws Exception {
         ArrayList<CalledVariant> list = new ArrayList<>();
 
         String chr = "";
         String whereSQL = "";
-
+        
+        String query = filter.getQuery();
+        String queryType = filter.getQueryType();
         if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
             String[] tmp = query.split("-");
             chr = tmp[0];
@@ -64,7 +66,10 @@ public class VariantManager {
                 currentVariantId = rset.getInt("variant_id");
 
                 calledVar = new CalledVariant(chr, rset, filter);
-                list.add(calledVar);
+                
+                if(calledVar.isValid()) {
+                    list.add(calledVar);
+                } 
             }
 
             calledVar.update(annotation);
