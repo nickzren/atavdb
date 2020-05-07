@@ -5,6 +5,8 @@ package global;
  * @author nick
  */
 public class Data {
+    public static final int NO_FILTER = Integer.MAX_VALUE;
+    public static final String NO_FILTER_STR = "";
     public static final byte BYTE_NA = Byte.MIN_VALUE;
     public static final short SHORT_NA = Short.MIN_VALUE;
     public static final int INTEGER_NA = Integer.MIN_VALUE;

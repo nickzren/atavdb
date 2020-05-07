@@ -13,17 +13,19 @@ public class VariantManager {
 
     public static void main(String[] args) {
         try {
+            Filter filter = new Filter();
+            
             DBManager.init();
 
-            SampleManager.init();
+            SampleManager.init(filter);
 
-            getVariantList("1-13273-G-C", Data.QUERT_TYPE[1]);
+            getVariantList("1-13273-G-C", Data.QUERT_TYPE[1], filter);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static ArrayList<CalledVariant> getVariantList(String query, String queryType) throws Exception {
+    public static ArrayList<CalledVariant> getVariantList(String query, String queryType, Filter filter) throws Exception {
         ArrayList<CalledVariant> list = new ArrayList<>();
 
         String chr = "";
@@ -61,7 +63,7 @@ public class VariantManager {
             if (currentVariantId != rset.getInt("variant_id")) {
                 currentVariantId = rset.getInt("variant_id");
 
-                calledVar = new CalledVariant(chr, rset);
+                calledVar = new CalledVariant(chr, rset, filter);
                 list.add(calledVar);
             }
 

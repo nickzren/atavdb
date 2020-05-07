@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import model.Filter;
 import model.SampleManager;
 import util.DBManager;
 
@@ -17,8 +18,9 @@ public class SampleCount extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            Filter filter = new Filter(request);
             DBManager.init();
-            SampleManager.init();
+            SampleManager.init(filter);
             request.setAttribute("sampleCount", SampleManager.getTotalSampleNum());
         } catch (Exception ex) {
             // debug purpose

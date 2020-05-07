@@ -24,16 +24,16 @@ public class CalledVariant extends AnnotatedVariant {
     public float[] hetFreq = new float[2];
     public float[] af = new float[2];
 
-    public CalledVariant(String chr, ResultSet rset) throws Exception {        
+    public CalledVariant(String chr, ResultSet rset, Filter filter) throws Exception {        
         super(chr, rset);
         
-        init();
+        init(filter);
     }
 
-    private void init() throws Exception {
-        CarrierBlockManager.initCarrierMap(carrierMap, this);
+    private void init(Filter filter) throws Exception {
+        CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
 
-        DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap);
+        DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter);
 
         initGenoCovArray();
 

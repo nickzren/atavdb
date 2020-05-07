@@ -42,7 +42,8 @@ public class DPBinBlockManager {
 
     public static void initCarrierAndNonCarrierByDPBin(Variant var,
             HashMap<Integer, Carrier> carrierMap,
-            HashMap<Integer, NonCarrier> noncarrierMap) {
+            HashMap<Integer, NonCarrier> noncarrierMap,
+            Filter filter) {
         int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
 
         int blockId = Math.floorDiv(var.getStartPosition(), DP_BIN_BLOCK_SIZE);
@@ -68,7 +69,7 @@ public class DPBinBlockManager {
             currentBlockId = blockId;
             currentBlockList.clear();
 
-            initBlockDPBin(carrierMap, noncarrierMap, var, posIndex, blockId);
+            initBlockDPBin(carrierMap, noncarrierMap, var, posIndex, blockId, filter);
         }
     }
 
@@ -77,12 +78,14 @@ public class DPBinBlockManager {
             HashMap<Integer, NonCarrier> noncarrierMap,
             Variant var,
             int posIndex,
-            int blockId) {
+            int blockId,
+            Filter filter) {
         try {
             String sql = "SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s"
                     + " WHERE block_id = " + blockId + " AND d.sample_id = s.sample_id"
-                    + " AND sample_finished = 1"
-                    + " AND sample_failure = 0";
+                    + " AND sample_finished=1"
+                    + " AND sample_failure=0"
+                    + filter.getPhenotypeSQL();
 
             ResultSet rs = DBManager.executeQuery(sql);
             while (rs.next()) {

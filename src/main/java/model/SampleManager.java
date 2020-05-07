@@ -14,18 +14,20 @@ public class SampleManager {
     private static ArrayList<Sample> sampleList = new ArrayList<>();
     private static HashMap<Integer, Sample> sampleMap = new HashMap<>();
 
-    public static void init() {
-        if (checkSampleCount()) {
-            initAllSampleFromDB();
+    public static void init(Filter filter) {
+        if (checkSampleCount(filter)) {
+            initAllSampleFromDB(filter);
         }
     }
 
-    private static boolean checkSampleCount() {
+    private static boolean checkSampleCount(Filter filter) {
         if (sampleList.isEmpty()) {
             return true;
         }
 
-        String sqlCode = "SELECT count(*) as count FROM sample WHERE sample_finished = 1 AND sample_failure = 0";
+        String sqlCode = "SELECT count(*) as count FROM sample "
+                + "WHERE sample_finished=1 AND sample_failure=0"
+                + filter.getPhenotypeSQL();
 
         try {
             ResultSet rs = DBManager.executeQuery(sqlCode);
@@ -35,7 +37,7 @@ public class SampleManager {
                     return true;
                 }
             }
-            
+
             rs.close();
         } catch (Exception e) {
         }
@@ -43,10 +45,12 @@ public class SampleManager {
         return false;
     }
 
-    private static void initAllSampleFromDB() {
+    private static void initAllSampleFromDB(Filter filter) {
         sampleList.clear();
-        
-        String sqlCode = "SELECT * FROM sample WHERE sample_finished = 1 AND sample_failure = 0";
+
+        String sqlCode = "SELECT * FROM sample "
+                + "WHERE sample_finished=1 AND sample_failure=0"
+                + filter.getPhenotypeSQL();
 
         try {
             ResultSet rs = DBManager.executeQuery(sqlCode);
@@ -59,7 +63,7 @@ public class SampleManager {
                 String maternalId = "0";
                 String seqGender = rs.getString("seq_gender").trim();
                 byte sex = 1; // male
-                if(seqGender.equals("F")) {
+                if (seqGender.equals("F")) {
                     sex = 2;
                 }
                 byte pheno = 1; // control
@@ -69,8 +73,8 @@ public class SampleManager {
                 String broadPhenotype = rs.getString("broad_phenotype").trim();
 
                 Sample sample = new Sample(sampleId, familyId, individualId,
-                        paternalId, maternalId, sex, pheno, sampleType, captureKit
-                        , experimentId, broadPhenotype);
+                        paternalId, maternalId, sex, pheno, sampleType, captureKit,
+                        experimentId, broadPhenotype);
 
                 sampleList.add(sample);
                 sampleMap.put(sampleId, sample);
@@ -88,7 +92,7 @@ public class SampleManager {
     public static ArrayList<Sample> getList() {
         return sampleList;
     }
-    
+
     public static Sample getSample(int sampleId) {
         return sampleMap.get(sampleId);
     }

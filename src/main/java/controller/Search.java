@@ -15,6 +15,7 @@ import model.EffectManager;
 import model.GeneManager;
 import model.RegionManager;
 import model.SampleManager;
+import model.Filter;
 
 /**
  *
@@ -29,17 +30,19 @@ public class Search extends HttpServlet {
             if (session.getAttribute("username") != null) {
                 String query = request.getParameter("query");
                 if (query != null && !query.isEmpty()) {
+                    Filter filter = new Filter(request);
+                    
                     DBManager.init();
 
                     EffectManager.init();
 
-                    SampleManager.init();
+                    SampleManager.init(filter);
 
                     RegionManager.init();
 
                     String queryType = getQueryType(query);
 
-                    ArrayList<CalledVariant> variantList = VariantManager.getVariantList(query, queryType);
+                    ArrayList<CalledVariant> variantList = VariantManager.getVariantList(query, queryType, filter);
 
                     request.setAttribute("query", query);
                     request.setAttribute("queryType", queryType);

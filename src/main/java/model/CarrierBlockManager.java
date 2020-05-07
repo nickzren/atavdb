@@ -18,7 +18,7 @@ public class CarrierBlockManager {
 
     private static HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap = new HashMap<>(); // variantId <SampleId, CarrierMap> 
 
-    public static void init(Variant var) {
+    public static void init(Variant var, Filter filter) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         if (currentBlockId != blockId) {
@@ -26,17 +26,18 @@ public class CarrierBlockManager {
 
             blockCarrierMap.clear();
 
-            initBlockCarrierMap(var);
+            initBlockCarrierMap(var, filter);
         }
     }
 
-    private static void initBlockCarrierMap(Variant var) {
+    private static void initBlockCarrierMap(Variant var, Filter filter) {
         String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0,PGT,PID_variant_id,HP_GT,HP_variant_id "
                 + "FROM called_variant_chr" + var.getChrStr() + " c,sample s"
                 + " WHERE block_id = " + currentBlockId
-                + " AND c.sample_id = s.sample_id "
-                + " AND sample_finished = 1"
-                + " AND sample_failure = 0";
+                + " AND c.sample_id=s.sample_id "
+                + " AND sample_finished=1"
+                + " AND sample_failure=0"
+                + filter.getPhenotypeSQL();
 
         try {
             HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
@@ -76,16 +77,17 @@ public class CarrierBlockManager {
         }
     }
 
-    public static void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var) {
+    public static void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, Filter filter) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0,PGT,PID_variant_id,HP_GT,HP_variant_id "
                 + "FROM called_variant_chr" + var.getChrStr() + " c,sample s"
-                + " WHERE block_id = " + blockId
-                + " AND c.sample_id = s.sample_id"
-                + " AND variant_id =" + var.getVariantId()
-                + " AND sample_finished = 1"
-                + " AND sample_failure = 0";
+                + " WHERE block_id=" + blockId
+                + " AND c.sample_id=s.sample_id"
+                + " AND variant_id=" + var.getVariantId()
+                + " AND sample_finished=1"
+                + " AND sample_failure=0"
+                + filter.getPhenotypeSQL();
 
         try {
             ResultSet rs = DBManager.executeQuery(sql);

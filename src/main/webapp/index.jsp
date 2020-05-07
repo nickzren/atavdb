@@ -67,6 +67,9 @@
                                            <c:if test="${empty username}" >
                                                data-toggle="tooltip" title="Sign In to search"
                                            </c:if>
+                                           <c:if test="${not empty query}" >
+                                               value="${query}"
+                                           </c:if>
                                            >
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">
@@ -82,31 +85,63 @@
                                     Region: <a href="Search?query=21:33032075-33040899">21:33032075-33040899</a>
                                 </p>
 
+                                <c:set var="phenotype_list" value="${['Not apply','amyotrophic lateral sclerosis',
+                                                                     'autoimmune disease','bone disease',
+                                                                     'brain malformation','cancer','cardiovascular disease',
+                                                                     'congenital disorder','control','control mild neuropsychiatric disease',
+                                                                     'dementia','dermatological disease','diseases that affect the ear',
+                                                                     'endocrine disorder','epilepsy','febrile seizures','fetal ultrasound anomaly',
+                                                                     'gastrointestinal disease','healthy family member','hematological disease',
+                                                                     'infectious disease','intellectual disability','kidney and urological disease',
+                                                                     'liver disease','metabolic disease','neurodegenerative','nonhuman','obsessive compulsive disorder',
+                                                                     'ophthalmic disease','other','other neurodevelopmental disease','other neurological disease',
+                                                                     'other neuropsychiatric disease','primary immune deficiency','pulmonary disease',
+                                                                     'schizophrenia','sudden death','alzheimers disease','cerebral palsy']}"/>
                                 <div class="row align-items-center">
-                                    <!--<label class="col-sm-1 col-form-label col-form-label-lg">Filters:</label>-->
-
-                                    <div class="btn-group col-auto " style="margin-left: 5px">
-                                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Max AF
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="#">Not apply</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">0.01</a>
-                                            <a class="dropdown-item" href="#">0.005</a>
-                                            <a class="dropdown-item" href="#">0.001</a>
-                                        </div>
+                                    <div class="form-group col-auto" style="margin-left: 5px">
+                                        <label for="inputPhenotype">Phenotype:</label>
+                                        <c:if test="${empty phenotype}" >
+                                            <c:set var="phenotype" value="Not apply"/>
+                                        </c:if>
+                                        <select id="inputPhenotype" name="phenotype" class="form-control">
+                                            <c:forEach items="${phenotype_list}" var="p">
+                                                <option value="${p}" 
+                                                        <c:if test="${phenotype == p}" >
+                                                            selected
+                                                        </c:if>
+                                                        >${p}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
 
-                                    <div class="form-check col-auto">
-                                        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                        <label class="form-check-label" for="defaultCheck1">
-                                            High quality variants
-                                        </label>
+                                    <div class="form-group col-auto" style="margin-left: 5px">
+                                        <label for="inputMaxAF">Max AF:</label>
+                                        <c:set var="af_list" value="${['Not apply','0.01','0.005','0.001']}"/>
+                                        <c:if test="${empty maxAF}" >
+                                            <c:set var="maxAF" value="Not apply"/>
+                                        </c:if>
+                                        <select id="inputMaxAF" name="maxAF" class="form-control">
+                                            <c:forEach items="${af_list}" var="af">
+                                                <option value="${af}" 
+                                                        <c:if test="${maxAF == af}" >
+                                                            selected
+                                                        </c:if>
+                                                        >${af}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+
+                                    <div class="custom-control custom-switch col-auto" style="margin-left: 18px">
+                                        <input type="checkbox" class="custom-control-input" id="input_high_quality_variants" name="isHighQualityVariants" 
+                                               <c:if test="${not empty isHighQualityVariants}" >
+                                                   checked
+                                               </c:if>
+                                               >
+                                        <label class="custom-control-label" for="input_high_quality_variants">High quality variants</label>
                                     </div>
                                 </div>
-
-
                             </div>
 
                             <div class="col-3 text-center">
