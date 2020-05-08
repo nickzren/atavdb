@@ -59,6 +59,10 @@ public class NonCarrier {
     public short getDPBin() {
         return dpBin;
     }
+    
+    public boolean is10xCovered() {
+        return dpBin != Data.SHORT_NA && dpBin >= 10;
+    }
 
     public void applyCoverageFilter(FilterManager filter) {
         if (!filter.isMinDpBinValid(dpBin)) {

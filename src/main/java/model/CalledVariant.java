@@ -24,6 +24,8 @@ public class CalledVariant extends AnnotatedVariant {
     private int ac;
     private int an;
     public float af;
+    
+    private int coveredSample; // 10x covered sample count
 
     public CalledVariant(String chr, ResultSet rset, FilterManager filter) throws Exception {
         super(chr, rset);
@@ -84,13 +86,13 @@ public class CalledVariant extends AnnotatedVariant {
         for (Sample sample : SampleManager.getList()) {
             Carrier carrier = carrierMap.get(sample.getId());
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());
-
-            boolean isCoveredSampleValid;
             
             if (carrier != null) {
-                isCoveredSampleValid = filter.isMinDpBinValid(carrier.getDPBin());
-
-                if (!isCoveredSampleValid) {
+                if(carrier.is10xCovered()) {
+                    coveredSample++;
+                } 
+                
+                if (!filter.isMinDpBinValid(carrier.getDPBin())) {
                     carrier.setGT(Data.BYTE_NA);
                     carrier.setDPBin(Data.SHORT_NA);
                 }
@@ -105,9 +107,11 @@ public class CalledVariant extends AnnotatedVariant {
                 }
 
             } else if (noncarrier != null) {
-                isCoveredSampleValid = filter.isMinDpBinValid(noncarrier.getDPBin());
-
-                if (!isCoveredSampleValid) {
+                if(noncarrier.is10xCovered()) {
+                    coveredSample++;
+                }
+                
+                if (!filter.isMinDpBinValid(noncarrier.getDPBin())) {
                     noncarrier.setGT(Data.BYTE_NA);
                     noncarrier.setDPBin(Data.SHORT_NA);
                 }
@@ -116,7 +120,6 @@ public class CalledVariant extends AnnotatedVariant {
                 addSampleGeno(noncarrier.getGT(), sample);
             } else {
                 setGenoDPBin(Data.BYTE_NA, Data.SHORT_NA, sample.getIndex());
-                isCoveredSampleValid = false;
             }
         }
 
@@ -212,4 +215,8 @@ public class CalledVariant extends AnnotatedVariant {
         return genoCount[Index.HOM][Index.CTRL];
     }
 
+    // Number of samples are over 10x coverage
+    public int get10xSample() {
+        return coveredSample;
+    }
 }
