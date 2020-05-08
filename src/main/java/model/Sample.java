@@ -19,7 +19,6 @@ public class Sample {
     private String paternalId;
     private String maternalId;
     private byte sex; // male 1, female 2
-    private byte pheno; // ctrl 0 , case 1
     private float quantitativeTrait;
     private String type;
     private String captureKit;
@@ -43,7 +42,6 @@ public class Sample {
         paternalId = paternal_id;
         maternalId = maternal_id;
         sex = _sex;
-        pheno = (byte) (_pheno - 1);
         quantitativeTrait = Data.FLOAT_NA;
         this.experimentId = experimentId;
         this.broadPhenotype = broadPhenotype;
@@ -67,14 +65,6 @@ public class Sample {
 
     public void setType(String value) {
         type = value;
-    }
-
-    public String getPhenotype() {
-        if (pheno == 0) {
-            return "ctrl";
-        } else {
-            return "case";
-        }
     }
 
     public String getCaptureKit() {
@@ -105,14 +95,6 @@ public class Sample {
         return sex;
     }
 
-    public void setPheno(byte value) {
-        pheno = value;
-    }
-
-    public byte getPheno() {
-        return pheno;
-    }
-
     public void setQuantitativeTrait(float value) {
         quantitativeTrait = value;
     }
@@ -127,10 +109,6 @@ public class Sample {
 
     public boolean isFemale() {
         return !isMale();
-    }
-
-    public boolean isCase() {
-        return pheno == Index.CASE;
     }
 
     public boolean isFamily() {

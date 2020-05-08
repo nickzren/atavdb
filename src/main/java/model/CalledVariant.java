@@ -16,15 +16,12 @@ public class CalledVariant extends AnnotatedVariant {
 
     private HashMap<Integer, Carrier> carrierMap = new HashMap<>();
     private HashMap<Integer, NonCarrier> noncarrierMap = new HashMap<>();
-    private byte[] gt = new byte[SampleManager.getTotalSampleNum()];
-    private short[] dpBin = new short[SampleManager.getTotalSampleNum()];
 
-    private int[] qcFailSample = new int[2];
-    public int[][] genoCount = new int[5][2];
+    public int[] genoCount = new int[5];
     private int ac;
     private int an;
     public float af;
-    
+
     private int coveredSample; // 10x covered sample count
 
     public CalledVariant(String chr, ResultSet rset, FilterManager filter) throws Exception {
@@ -86,41 +83,35 @@ public class CalledVariant extends AnnotatedVariant {
         for (Sample sample : SampleManager.getList()) {
             Carrier carrier = carrierMap.get(sample.getId());
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());
-            
+
             if (carrier != null) {
-                if(carrier.is10xCovered()) {
+                if (carrier.is10xCovered()) {
                     coveredSample++;
-                } 
-                
+                }
+
                 if (!filter.isMinDpBinValid(carrier.getDPBin())) {
                     carrier.setGT(Data.BYTE_NA);
                     carrier.setDPBin(Data.SHORT_NA);
                 }
-                
-                setGenoDPBin(carrier.getGT(), carrier.getDPBin(), sample.getIndex());
+
                 addSampleGeno(carrier.getGT(), sample);
 
                 if (carrier.getGT() == Data.BYTE_NA) {
                     // have to remove it for init Non-carrier map
-                    qcFailSample[sample.getPheno()]++;
                     carrierMap.remove(sample.getId());
                 }
-
             } else if (noncarrier != null) {
-                if(noncarrier.is10xCovered()) {
+                if (noncarrier.is10xCovered()) {
                     coveredSample++;
                 }
-                
+
                 if (!filter.isMinDpBinValid(noncarrier.getDPBin())) {
                     noncarrier.setGT(Data.BYTE_NA);
                     noncarrier.setDPBin(Data.SHORT_NA);
                 }
-                
-                setGenoDPBin(noncarrier.getGT(), noncarrier.getDPBin(), sample.getIndex());
+
                 addSampleGeno(noncarrier.getGT(), sample);
-            } else {
-                setGenoDPBin(Data.BYTE_NA, Data.SHORT_NA, sample.getIndex());
-            }
+            } 
         }
 
         noncarrierMap = null; // free memory
@@ -128,52 +119,23 @@ public class CalledVariant extends AnnotatedVariant {
 
     public void addSampleGeno(byte geno, Sample sample) {
         if (geno != Data.BYTE_NA) {
-            genoCount[geno][sample.getPheno()]++;
+            genoCount[geno]++;
         }
     }
 
     public void deleteSampleGeno(byte geno, Sample sample) {
         if (geno != Data.BYTE_NA) {
-            genoCount[geno][sample.getPheno()]--;
+            genoCount[geno]--;
         }
     }
 
-    private void setGenoDPBin(byte geno, short bin, int s) {
-        gt[s] = geno;
-        dpBin[s] = bin;
-    }
 
     private void calculateAF() {
-        ac = 2 * genoCount[Index.HOM][Index.CTRL]
-                + genoCount[Index.HET][Index.CTRL];
+        ac = 2 * genoCount[Index.HOM] + genoCount[Index.HET];
 
-        an = ac + genoCount[Index.HET][Index.CTRL]
-                + 2 * genoCount[Index.REF][Index.CTRL];
+        an = ac + genoCount[Index.HET] + 2 * genoCount[Index.REF];
 
         af = MathManager.devide(ac, an);
-    }
-
-    public byte getGT(int index) {
-        if (index == Data.INTEGER_NA) {
-            return Data.BYTE_NA;
-        }
-
-        return gt[index];
-    }
-
-    public String getGT4VCF(int index) {
-        byte gt = getGT(index);
-
-        switch (gt) {
-            case Index.HOM:
-                return "1/1";
-            case Index.HET:
-                return "1/0";
-            case Index.REF:
-                return "0/0";
-            default:
-                return "./.";
-        }
     }
 
     public Carrier getCarrier(int sampleId) {
@@ -184,15 +146,9 @@ public class CalledVariant extends AnnotatedVariant {
         return carrierMap.values();
     }
 
-    public int getQcFailSample(byte pheno) {
-        return qcFailSample[pheno];
-    }
-
     // NS = Number of Samples With Data
     public int getNS() {
-        return genoCount[Index.HOM][Index.CTRL]
-                + genoCount[Index.HET][Index.CTRL]
-                + genoCount[Index.REF][Index.CTRL];
+        return genoCount[Index.HOM] + genoCount[Index.HET] + genoCount[Index.REF];
     }
 
     // AC = Allele Count
@@ -212,7 +168,7 @@ public class CalledVariant extends AnnotatedVariant {
 
     // NH = Number of homozygotes
     public int getNH() {
-        return genoCount[Index.HOM][Index.CTRL];
+        return genoCount[Index.HOM];
     }
 
     // Number of samples are over 10x coverage
