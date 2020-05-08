@@ -60,6 +60,12 @@ public class NonCarrier {
         return dpBin;
     }
 
+    public void applyCoverageFilter(FilterManager filter) {
+        if (!filter.isMinDpBinValid(dpBin)) {
+            gt = Data.BYTE_NA;
+        }
+    }
+    
     public boolean isValid() {
         return gt != Data.BYTE_NA;
     }

@@ -13,7 +13,7 @@ import model.CalledVariant;
 import model.EffectManager;
 import model.RegionManager;
 import model.SampleManager;
-import model.Filter;
+import model.FilterManager;
 
 /**
  *
@@ -28,7 +28,7 @@ public class Search extends HttpServlet {
             if (session.getAttribute("username") != null) {
                 DBManager.init();
                 
-                Filter filter = new Filter(request);
+                FilterManager filter = new FilterManager(request);
                 if (filter.isQueryValid()) {
                     EffectManager.init();
 

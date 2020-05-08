@@ -5,6 +5,7 @@ import global.Index;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.HashMap;
+import util.FormatManager;
 import util.MathManager;
 
 /**
@@ -24,33 +25,35 @@ public class CalledVariant extends AnnotatedVariant {
     private int an;
     public float af;
 
-    public CalledVariant(String chr, ResultSet rset, Filter filter) throws Exception {
+    public CalledVariant(String chr, ResultSet rset, FilterManager filter) throws Exception {
         super(chr, rset);
 
         init(filter);
     }
 
-    private void init(Filter filter) throws Exception {
+    private void init(FilterManager filter) throws Exception {
         CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
 
         if (isValid
                 && initCarrierData(filter)) {
             DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter);
 
-            initGenoCovArray();
+            initGenoCovArray(filter);
 
-            calculateAF();
-            
-            isValid = filter.isMaxAFValid(af);
+            if (checkGenoCountValid()) {
+                calculateAF();
+
+                isValid = filter.isMaxAFValid(af);
+            }
         }
     }
 
-    private boolean initCarrierData(Filter filter) {
+    private boolean initCarrierData(FilterManager filter) {
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
             // single variant carriers data process
             CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
 
-            if (!Filter.isMinVarPresentValid(carrierMap.size())) {
+            if (!FilterManager.isMinVarPresentValid(carrierMap.size())) {
                 isValid = false;
             }
         } else {
@@ -62,7 +65,7 @@ public class CalledVariant extends AnnotatedVariant {
             if (carrierMap == null) {
                 carrierMap = new HashMap<>();
                 isValid = false;
-            } else if (!Filter.isMinVarPresentValid(carrierMap.size())) {
+            } else if (!FilterManager.isMinVarPresentValid(carrierMap.size())) {
                 isValid = false;
             }
         }
@@ -70,13 +73,28 @@ public class CalledVariant extends AnnotatedVariant {
         return isValid;
     }
 
+    private boolean checkGenoCountValid() {
+        isValid = FilterManager.isMinVarPresentValid(carrierMap.size());
+
+        return isValid;
+    }
+
     // initialize genotype & dpBin array for better compute performance use
-    private void initGenoCovArray() {
+    private void initGenoCovArray(FilterManager filter) {
         for (Sample sample : SampleManager.getList()) {
             Carrier carrier = carrierMap.get(sample.getId());
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());
 
+            boolean isCoveredSampleValid;
+            
             if (carrier != null) {
+                isCoveredSampleValid = filter.isMinDpBinValid(carrier.getDPBin());
+
+                if (!isCoveredSampleValid) {
+                    carrier.setGT(Data.BYTE_NA);
+                    carrier.setDPBin(Data.SHORT_NA);
+                }
+                
                 setGenoDPBin(carrier.getGT(), carrier.getDPBin(), sample.getIndex());
                 addSampleGeno(carrier.getGT(), sample);
 
@@ -87,10 +105,18 @@ public class CalledVariant extends AnnotatedVariant {
                 }
 
             } else if (noncarrier != null) {
+                isCoveredSampleValid = filter.isMinDpBinValid(noncarrier.getDPBin());
+
+                if (!isCoveredSampleValid) {
+                    noncarrier.setGT(Data.BYTE_NA);
+                    noncarrier.setDPBin(Data.SHORT_NA);
+                }
+                
                 setGenoDPBin(noncarrier.getGT(), noncarrier.getDPBin(), sample.getIndex());
                 addSampleGeno(noncarrier.getGT(), sample);
             } else {
                 setGenoDPBin(Data.BYTE_NA, Data.SHORT_NA, sample.getIndex());
+                isCoveredSampleValid = false;
             }
         }
 
@@ -117,10 +143,10 @@ public class CalledVariant extends AnnotatedVariant {
     private void calculateAF() {
         ac = 2 * genoCount[Index.HOM][Index.CTRL]
                 + genoCount[Index.HET][Index.CTRL];
-       
+
         an = ac + genoCount[Index.HET][Index.CTRL]
                 + 2 * genoCount[Index.REF][Index.CTRL];
-        
+
         af = MathManager.devide(ac, an);
     }
 
@@ -177,13 +203,13 @@ public class CalledVariant extends AnnotatedVariant {
     }
 
     // AF = Allele Frequency
-    public float getAF() {
-        return af;
+    public String getAF() {
+        return FormatManager.getFloat(af);
     }
 
     // NH = Number of homozygotes
     public int getNH() {
         return genoCount[Index.HOM][Index.CTRL];
     }
-    
+
 }

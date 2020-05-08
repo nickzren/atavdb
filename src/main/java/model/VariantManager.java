@@ -13,7 +13,7 @@ public class VariantManager {
 
     public static void main(String[] args) {
         try {
-            Filter filter = new Filter();
+            FilterManager filter = new FilterManager();
             
             DBManager.init();
 
@@ -25,7 +25,7 @@ public class VariantManager {
         }
     }
 
-    public static ArrayList<CalledVariant> getVariantList(Filter filter) throws Exception {
+    public static ArrayList<CalledVariant> getVariantList(FilterManager filter) throws Exception {
         ArrayList<CalledVariant> list = new ArrayList<>();
 
         String chr = "";

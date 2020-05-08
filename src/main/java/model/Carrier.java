@@ -161,4 +161,20 @@ public class Carrier extends NonCarrier {
     public String getPhenotype() {
         return sample.getBroadPhenotype();
     }
+
+    public void applyQualityFilter(FilterManager filter, boolean isSnv) {
+        if (gt != Data.BYTE_NA) {
+            if (!filter.isFilterValid(filterValue)
+                    || !filter.isMinGqValid(gq)
+                    || !filter.isMaxSorValid(sor, isSnv)
+                    || !filter.isMaxFsValid(fs, isSnv)
+                    || !filter.isMinMqValid(mq)
+                    || !filter.isMinQdValid(qd)
+                    || !filter.isMinQualValid(qual)
+                    || !filter.isMinRprsValid(readPosRankSum)
+                    || !filter.isMinMqrsValid(mqRankSum)) {
+                gt = Data.BYTE_NA;
+            }
+        }
+    }
 }

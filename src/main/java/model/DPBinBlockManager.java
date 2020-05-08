@@ -20,7 +20,7 @@ public class DPBinBlockManager {
     private static HashMap<Character, Short> dpBin = new HashMap<>();
     private static HashMap<Short, Byte> dpBinIndex = new HashMap<>();
 
-    public static void init() {
+    static {
         dpBin.put('b', Data.SHORT_NA);
         dpBin.put('c', (short) 10);
         dpBin.put('d', (short) 20);
@@ -43,7 +43,7 @@ public class DPBinBlockManager {
     public static void initCarrierAndNonCarrierByDPBin(Variant var,
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
-            Filter filter) {
+            FilterManager filter) {
         int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
 
         int blockId = Math.floorDiv(var.getStartPosition(), DP_BIN_BLOCK_SIZE);
@@ -53,12 +53,18 @@ public class DPBinBlockManager {
                 Carrier carrier = carrierMap.get(sampleDPBin.getSampleId());
 
                 if (carrier != null) {
+                    carrier.applyQualityFilter(filter, var.isSnv());
+
                     if (carrier.isValid()) {
                         carrier.setDPBin(sampleDPBin.getDPBin(posIndex));
+
+                        carrier.applyCoverageFilter(filter);
                     }
                 } else {
                     NonCarrier noncarrier = new NonCarrier(sampleDPBin.getSampleId(),
                             sampleDPBin.getDPBin(posIndex));
+
+                    noncarrier.applyCoverageFilter(filter);
 
                     if (noncarrier.isValid()) {
                         noncarrierMap.put(noncarrier.getSampleId(), noncarrier);
@@ -79,7 +85,7 @@ public class DPBinBlockManager {
             Variant var,
             int posIndex,
             int blockId,
-            Filter filter) {
+            FilterManager filter) {
         try {
             String sql = "SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s"
                     + " WHERE block_id = " + blockId + " AND d.sample_id = s.sample_id"
@@ -96,8 +102,12 @@ public class DPBinBlockManager {
                 if (carrier != null) {
                     if (carrier.isValid()) {
                         carrier.setDPBin(noncarrier.getDPBin());
+
+                        carrier.applyCoverageFilter(filter);
                     }
                 } else {
+                    noncarrier.applyCoverageFilter(filter);
+
                     if (noncarrier.isValid()) {
                         noncarrierMap.put(noncarrier.getSampleId(), noncarrier);
                     }

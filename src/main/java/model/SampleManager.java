@@ -14,13 +14,13 @@ public class SampleManager {
     private static ArrayList<Sample> sampleList = new ArrayList<>();
     private static HashMap<Integer, Sample> sampleMap = new HashMap<>();
 
-    public static void init(Filter filter) {
+    public static void init(FilterManager filter) {
         if (checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
         }
     }
 
-    private static boolean checkSampleCount(Filter filter) {
+    private static boolean checkSampleCount(FilterManager filter) {
         if (sampleList.isEmpty()) {
             return true;
         }
@@ -45,7 +45,7 @@ public class SampleManager {
         return false;
     }
 
-    private static void initAllSampleFromDB(Filter filter) {
+    private static void initAllSampleFromDB(FilterManager filter) {
         sampleList.clear();
 
         String sqlCode = "SELECT * FROM sample "
