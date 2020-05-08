@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.CalledVariant;
 import model.EffectManager;
-import model.RegionManager;
 import model.SampleManager;
 import model.FilterManager;
 
@@ -33,8 +32,6 @@ public class Search extends HttpServlet {
                     EffectManager.init();
 
                     SampleManager.init(filter);
-
-                    RegionManager.init();
 
                     ArrayList<CalledVariant> variantList = VariantManager.getVariantList(filter);
                     

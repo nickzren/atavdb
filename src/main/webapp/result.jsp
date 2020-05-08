@@ -224,53 +224,57 @@
                         <table id="carrier_table" class="table text-center align-middle">
                             <thead>
                                 <tr>
-                                    <th>
-                                        <div data-toggle="tooltip" title="Sample experiment_id in sequenceDB">
-                                            Experiment ID
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div data-toggle="tooltip" title="seqGender in sequenceDB">
-                                            Gender
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
-                                            Phenotype
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div data-toggle="tooltip" title="Genotype">
-                                            GT
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div data-toggle="tooltip" title="Read Depth">
-                                            DP
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div data-toggle="tooltip" title="Genotype Quality">
-                                            GQ
-                                        </div>
-                                    </th>
-                                    <th>
-                                        <div data-toggle="tooltip" title="">
-                                            FILTER
-                                        </div>
-                                    </th>
-                                </tr>
+                            <c:if test="${not empty is_authorized}" >
+                                <th>
+                                    <div data-toggle="tooltip" title="Sample experiment_id in sequenceDB">
+                                        Experiment ID
+                                    </div>
+                                </th>
+                            </c:if>
+                            <th>
+                                <div data-toggle="tooltip" title="seqGender in sequenceDB">
+                                    Gender
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
+                                    Phenotype
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Genotype">
+                                    GT
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Read Depth">
+                                    DP
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Genotype Quality">
+                                    GQ
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="">
+                                    FILTER
+                                </div>
+                            </th>
+                            </tr>
                             </thead>
                             <tbody>
                             <c:forEach items="${variant.getCarriers()}" var="carrier">
                                 <tr>
+                                <c:if test="${not empty is_authorized}" >
                                     <td>${carrier.getExperimentId()}</td>
-                                    <td>${carrier.getGender()}</td>
-                                    <td>${carrier.getPhenotype()}</td>
-                                    <td>${carrier.getGTStr()}</td>
-                                    <td>${carrier.getDP()}</td>
-                                    <td>${carrier.getGQ()}</td>
-                                    <td>${carrier.getFILTER()}</td>
+                                </c:if>
+                                <td>${carrier.getGender()}</td>
+                                <td>${carrier.getPhenotype()}</td>
+                                <td>${carrier.getGTStr()}</td>
+                                <td>${carrier.getDP()}</td>
+                                <td>${carrier.getGQ()}</td>
+                                <td>${carrier.getFILTER()}</td>
                                 </tr>
                             </c:forEach>
 

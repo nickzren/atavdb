@@ -30,15 +30,14 @@ public class SignIn extends HttpServlet {
         String password = request.getParameter("password");
 
         if (LDAP.isMCAccountValid(username, password)) {
-            if (VerifyUserGroup.isAuthorized(username)) {
-                HttpSession session = request.getSession();
-                session.setAttribute("username", username);
+            HttpSession session = request.getSession();
+            session.setAttribute("username", username);
 
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            } else {
-                request.setAttribute("error", "Unauthorized to access.");
-                request.getRequestDispatcher("signin.jsp").include(request, response);
+            if (VerifyUserGroup.isAuthorized(username)) {
+                session.setAttribute("is_authorized", true);
             }
+
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Invalid CUMC MC account username/password.");
             request.getRequestDispatcher("signin.jsp").include(request, response);
