@@ -218,6 +218,18 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Carriers</h5>
+                
+                <div class="row">      
+                    <c:forEach items="${genders}" var="gender">
+                        <div class="col-auto">
+                            <span class="badge badge-light">${variant.getGenderCount()[gender.getIndex()]}
+                            ${gender.getName()}</span> 
+                        </div>
+                    </c:forEach>
+                </div>
+
+                <br/>
+
                 <c:set var = "af_to_display_carrier" value = "0.5"/>
                 <c:choose>
                     <c:when test="${variant.getAF() <= af_to_display_carrier}" >
@@ -264,7 +276,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <c:forEach items="${variant.getCarriers()}" var="carrier">
+                            <c:forEach items="${variant.getCarriers()}" var="carrier">                                
                                 <tr>
                                 <c:if test="${not empty is_authorized}" >
                                     <td>${carrier.getExperimentId()}</td>

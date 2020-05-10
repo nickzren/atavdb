@@ -155,7 +155,7 @@ public class Carrier extends NonCarrier {
     }
 
     public String getGender() {
-        return sample.getGender();
+        return sample.getGender().name();
     }
 
     public String getPhenotype() {

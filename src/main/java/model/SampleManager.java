@@ -1,5 +1,6 @@
 package model;
 
+import global.Enum.Gender;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,18 +63,17 @@ public class SampleManager {
                 String paternalId = "0";
                 String maternalId = "0";
                 String seqGender = rs.getString("seq_gender").trim();
-                byte sex = 1; // male
-                if (seqGender.equals("F")) {
-                    sex = 2;
+                Gender gender = Gender.AMBIGUOUS;
+                if(seqGender != null) {
+                    gender = Gender.valueOf(seqGender);
                 }
-                byte pheno = 1; // control
                 String sampleType = rs.getString("sample_type").trim();
                 String captureKit = rs.getString("capture_kit").trim();
                 int experimentId = rs.getInt("experiment_id");
                 String broadPhenotype = rs.getString("broad_phenotype").trim();
 
                 Sample sample = new Sample(sampleId, familyId, individualId,
-                        paternalId, maternalId, sex, pheno, sampleType, captureKit,
+                        paternalId, maternalId, gender, sampleType, captureKit,
                         experimentId, broadPhenotype);
 
                 sampleList.add(sample);

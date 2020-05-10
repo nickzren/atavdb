@@ -1,6 +1,7 @@
 package model;
 
 import global.Data;
+import global.Enum.Gender;
 import global.Index;
 import java.sql.ResultSet;
 import java.util.Collection;
@@ -17,7 +18,8 @@ public class CalledVariant extends AnnotatedVariant {
     private HashMap<Integer, Carrier> carrierMap = new HashMap<>();
     private HashMap<Integer, NonCarrier> noncarrierMap = new HashMap<>();
 
-    public int[] genoCount = new int[5];
+    private int[] genoCount = new int[3];
+    private int[] genderCount = new int[3];
     private int ac;
     private int an;
     public float af;
@@ -39,11 +41,10 @@ public class CalledVariant extends AnnotatedVariant {
 
             initGenoCovArray(filter);
 
-            if (checkGenoCountValid()) {
-                calculateAF();
+            calculateAF();
 
-                isValid = filter.isMaxAFValid(af);
-            }
+            isValid = FilterManager.isMinVarPresentValid(carrierMap.size())
+                    && filter.isMaxAFValid(af);
         }
     }
 
@@ -94,7 +95,8 @@ public class CalledVariant extends AnnotatedVariant {
                     carrier.setDPBin(Data.SHORT_NA);
                 }
 
-                addSampleGeno(carrier.getGT(), sample);
+                countGeno(carrier.getGT());
+                countGender(carrier.getGT(), sample);
 
                 if (carrier.getGT() == Data.BYTE_NA) {
                     // have to remove it for init Non-carrier map
@@ -110,25 +112,24 @@ public class CalledVariant extends AnnotatedVariant {
                     noncarrier.setDPBin(Data.SHORT_NA);
                 }
 
-                addSampleGeno(noncarrier.getGT(), sample);
-            } 
+                countGeno(noncarrier.getGT());
+            }
         }
 
         noncarrierMap = null; // free memory
     }
 
-    public void addSampleGeno(byte geno, Sample sample) {
+    public void countGeno(byte geno) {
         if (geno != Data.BYTE_NA) {
             genoCount[geno]++;
         }
     }
 
-    public void deleteSampleGeno(byte geno, Sample sample) {
-        if (geno != Data.BYTE_NA) {
-            genoCount[geno]--;
+    public void countGender(byte geno, Sample sample) {
+        if (geno == Index.HOM || geno == Index.HET) {
+            genderCount[sample.getGender().getIndex()]++;
         }
     }
-
 
     private void calculateAF() {
         ac = 2 * genoCount[Index.HOM] + genoCount[Index.HET];
@@ -174,5 +175,22 @@ public class CalledVariant extends AnnotatedVariant {
     // Number of samples are over 10x coverage
     public int get10xSample() {
         return coveredSample;
+    }
+
+    public int[] getGenderCount() {
+        return genderCount;
+    }
+
+    public int getMaleCount() {
+        return genderCount[Gender.M.getIndex()];
+    }
+
+    public int getFemaleCount() {
+        return genderCount[Gender.F.getIndex()];
+
+    }
+
+    public int getAMBIGUOUSCount() {
+        return genderCount[Gender.AMBIGUOUS.getIndex()];
     }
 }

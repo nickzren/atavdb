@@ -1,7 +1,6 @@
 package model;
 
-import global.Data;
-import global.Index;
+import global.Enum.Gender;
 import java.util.ArrayList;
 import util.FormatManager;
 
@@ -18,8 +17,7 @@ public class Sample {
     private String name; // sample name
     private String paternalId;
     private String maternalId;
-    private byte sex; // male 1, female 2
-    private float quantitativeTrait;
+    private Gender gender;
     private String type;
     private String captureKit;
     private int experimentId;
@@ -31,7 +29,7 @@ public class Sample {
     private int index;
 
     public Sample(int sampled_id, String family_id, String child_id,
-            String paternal_id, String maternal_id, byte _sex, byte _pheno,
+            String paternal_id, String maternal_id, Gender gender,
             String sample_type, String captureKit, int experimentId, String broadPhenotype) {
         id = sampled_id;
         type = sample_type;
@@ -41,8 +39,7 @@ public class Sample {
         name = child_id;
         paternalId = paternal_id;
         maternalId = maternal_id;
-        sex = _sex;
-        quantitativeTrait = Data.FLOAT_NA;
+        this.gender = gender;
         this.experimentId = experimentId;
         this.broadPhenotype = broadPhenotype;
     }
@@ -91,20 +88,8 @@ public class Sample {
         return maternalId;
     }
 
-    public int getSex() {
-        return sex;
-    }
-
-    public void setQuantitativeTrait(float value) {
-        quantitativeTrait = value;
-    }
-
-    public float getQuantitativeTrait() {
-        return quantitativeTrait;
-    }
-
     public boolean isMale() {
-        return sex == 1;
+        return gender == Gender.M;
     }
 
     public boolean isFemale() {
@@ -136,12 +121,8 @@ public class Sample {
         return experimentId;
     }
 
-    public String getGender() {
-        if (sex == 2) {
-            return "F";
-        }
-
-        return "M";
+    public Gender getGender() {
+        return gender;
     }
     
     public String getBroadPhenotype() {
