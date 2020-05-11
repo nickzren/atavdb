@@ -38,9 +38,9 @@ public class Enum {
     };
 
     public enum Gender {
-        M("MALE", (byte) 0),
-        F("FEMALE", (byte) 1),
-        AMBIGUOUS("AMBIGUOUS", (byte) 2);
+        M("Male", (byte) 0),
+        F("Female", (byte) 1),
+        Ambiguous("Ambiguous", (byte) 2);
 
         private String name;
         private byte index;

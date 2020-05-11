@@ -63,7 +63,7 @@ public class SampleManager {
                 String paternalId = "0";
                 String maternalId = "0";
                 String seqGender = rs.getString("seq_gender").trim();
-                Gender gender = Gender.AMBIGUOUS;
+                Gender gender = Gender.Ambiguous;
                 if(seqGender != null) {
                     gender = Gender.valueOf(seqGender);
                 }
