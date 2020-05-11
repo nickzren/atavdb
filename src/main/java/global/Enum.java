@@ -10,11 +10,23 @@ import java.util.Map;
 public class Enum {
 
     public enum FILTER {
-        PASS(1), LIKELY(2), INTERMEDIATE(3), FAIL(4);
-        private int value;
+        PASS((byte) 1), LIKELY((byte) 2), INTERMEDIATE((byte) 3), FAIL((byte) 4);
+        private byte value;
+        
+        private static Map map = new HashMap<>();
 
-        private FILTER(int value) {
+        static {
+            for (FILTER filter : FILTER.values()) {
+                map.put(filter.value, filter);
+            }
+        }
+
+        private FILTER(byte value) {
             this.value = value;
+        }
+        
+        public static FILTER valueOf(byte filter) {
+            return (FILTER) map.get(filter);
         }
 
         public int getValue() {

@@ -1,6 +1,7 @@
 package model;
 
 import global.Data;
+import global.Enum.FILTER;
 import global.Enum.GT;
 import java.sql.ResultSet;
 import util.FormatManager;
@@ -11,8 +12,6 @@ import util.MathManager;
  * @author nick
  */
 public class Carrier extends NonCarrier {
-
-    public static final String[] FILTER = {"PASS", "LIKELY", "INTERMEDIATE", "FAIL"};
 
     Sample sample;
     private short dp;
@@ -112,7 +111,7 @@ public class Carrier extends NonCarrier {
     }
 
     public String getFILTER() {
-        return FILTER[filterValue - 1];
+        return FILTER.valueOf(filterValue).name();
     }
 
     public String getPercAltRead() {
