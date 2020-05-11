@@ -1,7 +1,7 @@
 package model;
 
 import global.Data;
-import global.Index;
+import global.Enum.GT;
 import java.sql.ResultSet;
 import util.FormatManager;
 import util.MathManager;
@@ -136,18 +136,7 @@ public class Carrier extends NonCarrier {
     }
 
     public String getGTStr() {
-        switch (gt) {
-            case Index.HOM:
-                return "hom";
-            case Index.HET:
-                return "het";
-            case Index.REF:
-                return "hom ref";
-            case Data.BYTE_NA:
-                return Data.STRING_NA;
-            default:
-                return Data.STRING_NA;
-        }
+        return GT.valueOf(gt).getName();        
     }
 
     public int getExperimentId() {
@@ -163,7 +152,7 @@ public class Carrier extends NonCarrier {
     }
 
     public void applyQualityFilter(FilterManager filter, boolean isSnv) {
-        if (gt != Data.BYTE_NA) {
+        if (gt != GT.NA.value()) {
             if (!filter.isFilterValid(filterValue)
                     || !filter.isMinGqValid(gq)
                     || !filter.isMaxSorValid(sor, isSnv)
@@ -173,7 +162,7 @@ public class Carrier extends NonCarrier {
                     || !filter.isMinQualValid(qual)
                     || !filter.isMinRprsValid(readPosRankSum)
                     || !filter.isMinMqrsValid(mqRankSum)) {
-                gt = Data.BYTE_NA;
+                gt = GT.NA.value();
             }
         }
     }

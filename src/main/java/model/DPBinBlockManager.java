@@ -1,7 +1,6 @@
 package model;
 
 import global.Data;
-import global.Index;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,13 +26,6 @@ public class DPBinBlockManager {
         dpBin.put('e', (short) 30);
         dpBin.put('f', (short) 50);
         dpBin.put('g', (short) 200);
-
-        dpBinIndex.put(Data.SHORT_NA, Data.BYTE_NA);
-        dpBinIndex.put((short) 10, Index.DP_BIN_10);
-        dpBinIndex.put((short) 20, Index.DP_BIN_20);
-        dpBinIndex.put((short) 30, Index.DP_BIN_30);
-        dpBinIndex.put((short) 50, Index.DP_BIN_50);
-        dpBinIndex.put((short) 200, Index.DP_BIN_200);
     }
 
     public static void add(SampleDPBin sampleDPBin) {
@@ -121,10 +113,6 @@ public class DPBinBlockManager {
 
     public static short getCoverageByBin(Character bin) {
         return dpBin.get(bin);
-    }
-
-    public static byte getCoverageByBinIndex(short bin) {
-        return dpBinIndex.get(bin);
     }
 
     public static HashMap<Character, Short> getCoverageBin() {

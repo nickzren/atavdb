@@ -1,7 +1,7 @@
 package model;
 
 import global.Data;
-import global.Index;
+import global.Enum.GT;
 
 /**
  *
@@ -34,9 +34,9 @@ public class NonCarrier {
 
     private void initGenotype() {
         if (dpBin == Data.SHORT_NA) {
-            gt = Data.BYTE_NA;
+            gt = GT.NA.value();
         } else {
-            gt = Index.REF;
+            gt = GT.REF.value();
         }
     }
 
@@ -71,7 +71,7 @@ public class NonCarrier {
     }
     
     public boolean isValid() {
-        return gt != Data.BYTE_NA;
+        return gt != GT.NA.value();
     }
 }
 

@@ -1,8 +1,7 @@
 package model;
 
 import global.Data;
-import global.Enum.Gender;
-import global.Index;
+import global.Enum.GT;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.HashMap;
@@ -73,12 +72,6 @@ public class CalledVariant extends AnnotatedVariant {
         return isValid;
     }
 
-    private boolean checkGenoCountValid() {
-        isValid = FilterManager.isMinVarPresentValid(carrierMap.size());
-
-        return isValid;
-    }
-
     // initialize genotype & dpBin array for better compute performance use
     private void initGenoCovArray(FilterManager filter) {
         for (Sample sample : SampleManager.getList()) {
@@ -91,7 +84,7 @@ public class CalledVariant extends AnnotatedVariant {
                 }
 
                 if (!filter.isMinDpBinValid(carrier.getDPBin())) {
-                    carrier.setGT(Data.BYTE_NA);
+                    carrier.setGT(GT.NA.value());
                     carrier.setDPBin(Data.SHORT_NA);
                 }
 
@@ -108,7 +101,7 @@ public class CalledVariant extends AnnotatedVariant {
                 }
 
                 if (!filter.isMinDpBinValid(noncarrier.getDPBin())) {
-                    noncarrier.setGT(Data.BYTE_NA);
+                    noncarrier.setGT(GT.NA.value());
                     noncarrier.setDPBin(Data.SHORT_NA);
                 }
 
@@ -126,15 +119,15 @@ public class CalledVariant extends AnnotatedVariant {
     }
 
     public void countGender(byte geno, Sample sample) {
-        if (geno == Index.HOM || geno == Index.HET) {
+        if (geno == GT.HOM.value()|| geno == GT.HET.value()) {
             genderCount[sample.getGender().getIndex()]++;
         }
     }
 
     private void calculateAF() {
-        ac = 2 * genoCount[Index.HOM] + genoCount[Index.HET];
+        ac = 2 * genoCount[GT.HOM.value()] + genoCount[GT.HET.value()];
 
-        an = ac + genoCount[Index.HET] + 2 * genoCount[Index.REF];
+        an = ac + genoCount[GT.HET.value()] + 2 * genoCount[GT.REF.value()];
 
         af = MathManager.devide(ac, an);
     }
@@ -149,7 +142,7 @@ public class CalledVariant extends AnnotatedVariant {
 
     // NS = Number of Samples With Data
     public int getNS() {
-        return genoCount[Index.HOM] + genoCount[Index.HET] + genoCount[Index.REF];
+        return genoCount[GT.HOM.value()] + genoCount[GT.HET.value()] + genoCount[GT.REF.value()];
     }
 
     // AC = Allele Count
@@ -169,7 +162,7 @@ public class CalledVariant extends AnnotatedVariant {
 
     // NH = Number of homozygotes
     public int getNH() {
-        return genoCount[Index.HOM];
+        return genoCount[GT.HOM.value()];
     }
 
     // Number of samples are over 10x coverage
@@ -179,18 +172,5 @@ public class CalledVariant extends AnnotatedVariant {
 
     public int[] getGenderCount() {
         return genderCount;
-    }
-
-    public int getMaleCount() {
-        return genderCount[Gender.M.getIndex()];
-    }
-
-    public int getFemaleCount() {
-        return genderCount[Gender.F.getIndex()];
-
-    }
-
-    public int getAMBIGUOUSCount() {
-        return genderCount[Gender.AMBIGUOUS.getIndex()];
     }
 }
