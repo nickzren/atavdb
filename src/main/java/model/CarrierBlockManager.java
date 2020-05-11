@@ -31,7 +31,7 @@ public class CarrierBlockManager {
     }
 
     private static void initBlockCarrierMap(Variant var, FilterManager filter) {
-        String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0,PGT,PID_variant_id,HP_GT,HP_variant_id "
+        String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 "
                 + "FROM called_variant_chr" + var.getChrStr() + " c,sample s"
                 + " WHERE block_id = " + currentBlockId
                 + " AND c.sample_id=s.sample_id "
@@ -80,7 +80,7 @@ public class CarrierBlockManager {
     public static void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, FilterManager filter) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
-        String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0,PGT,PID_variant_id,HP_GT,HP_variant_id "
+        String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 "
                 + "FROM called_variant_chr" + var.getChrStr() + " c,sample s"
                 + " WHERE block_id=" + blockId
                 + " AND c.sample_id=s.sample_id"

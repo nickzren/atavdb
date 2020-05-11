@@ -5,7 +5,6 @@ import global.Enum.FILTER;
 import global.Enum.GT;
 import java.sql.ResultSet;
 import util.FormatManager;
-import util.MathManager;
 
 /**
  *
@@ -27,8 +26,6 @@ public class Carrier extends NonCarrier {
     private float readPosRankSum;
     private float mqRankSum;
     private byte filterValue; // PASS(1), LIKELY(2), INTERMEDIATE(3), FAIL(4)
-    private int pidVariantId;
-    private int hpVariantId;
 
     public Carrier(ResultSet rs) throws Exception {
         sampleId = rs.getInt("sample_id");
@@ -48,18 +45,6 @@ public class Carrier extends NonCarrier {
         readPosRankSum = FormatManager.getFloat(rs, "ReadPosRankSum");
         mqRankSum = FormatManager.getFloat(rs, "MQRankSum");
         filterValue = rs.getByte("FILTER+0");
-        // PGT = 1 indicate variant is in phase
-        if (rs.getByte("PGT") == 1) {
-            pidVariantId = FormatManager.getInt(rs, "PID_variant_id");
-        } else {
-            pidVariantId = Data.INTEGER_NA;
-        }
-        // HP_GT = 1 indicate variant is in phase
-        if (rs.getByte("HP_GT") == 1) {
-            hpVariantId = FormatManager.getInt(rs, "HP_variant_id");
-        } else {
-            hpVariantId = Data.INTEGER_NA;
-        }
     }
 
     public short getDP() {
@@ -112,26 +97,6 @@ public class Carrier extends NonCarrier {
 
     public String getFILTER() {
         return FILTER.valueOf(filterValue).name();
-    }
-
-    public String getPercAltRead() {
-        return FormatManager.getFloat(MathManager.devide(adAlt, dp));
-    }
-
-    public double getPercentAltReadBinomialP() {
-        if (adAlt == Data.SHORT_NA || adRef == Data.SHORT_NA) {
-            return Data.DOUBLE_NA;
-        } else {
-            return MathManager.getBinomialLessThan(adAlt + adRef, adAlt, 0.5f);
-        }
-    }
-
-    public int getPIDVariantId() {
-        return pidVariantId;
-    }
-
-    public int getHPVariantId() {
-        return hpVariantId;
     }
 
     public String getGTStr() {
