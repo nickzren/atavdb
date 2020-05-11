@@ -25,7 +25,7 @@ public class Carrier extends NonCarrier {
     private int qual;
     private float readPosRankSum;
     private float mqRankSum;
-    private byte filterValue; // PASS(1), LIKELY(2), INTERMEDIATE(3), FAIL(4)
+    private byte filterValue;
 
     public Carrier(ResultSet rs) throws Exception {
         sampleId = rs.getInt("sample_id");
@@ -44,7 +44,7 @@ public class Carrier extends NonCarrier {
         qual = FormatManager.getInt(rs, "QUAL");
         readPosRankSum = FormatManager.getFloat(rs, "ReadPosRankSum");
         mqRankSum = FormatManager.getFloat(rs, "MQRankSum");
-        filterValue = rs.getByte("FILTER+0");
+        filterValue = FormatManager.getByte(rs, "FILTER+0");
     }
 
     public short getDP() {
@@ -96,11 +96,11 @@ public class Carrier extends NonCarrier {
     }
 
     public String getFILTER() {
-        return FILTER.valueOf(filterValue).name();
+        return FILTER.valueOf(filterValue);
     }
 
     public String getGTStr() {
-        return GT.valueOf(gt).getName();        
+        return GT.valueOf(gt);        
     }
 
     public int getExperimentId() {

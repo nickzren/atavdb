@@ -28,7 +28,7 @@ public class FilterManager {
     private final static int minQual = 50;
     private final static float minRPRS = -3;
     private final static float minMQRS = -10;
-    private static final int[] validFILTER = {
+    private static final byte[] validFILTER = {
         Enum.FILTER.PASS.getValue(),
         Enum.FILTER.LIKELY.getValue(),
         Enum.FILTER.INTERMEDIATE.getValue()};
@@ -143,7 +143,7 @@ public class FilterManager {
             return true;
         }
 
-        for (int tmp : validFILTER) {
+        for (byte tmp : validFILTER) {
             if (value == tmp) {
                 return true;
             }

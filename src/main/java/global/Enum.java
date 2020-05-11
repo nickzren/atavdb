@@ -1,7 +1,6 @@
 package global;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Stream;
 
 /**
  *
@@ -10,26 +9,30 @@ import java.util.Map;
 public class Enum {
 
     public enum FILTER {
-        PASS((byte) 1), LIKELY((byte) 2), INTERMEDIATE((byte) 3), FAIL((byte) 4);
-        private byte value;
+        NA((byte) Data.BYTE_NA), 
+        PASS((byte) 1), 
+        LIKELY((byte) 2), 
+        INTERMEDIATE((byte) 3), 
+        FAIL((byte) 4);
         
-        private static Map map = new HashMap<>();
+        private byte value;
 
-        static {
-            for (FILTER filter : FILTER.values()) {
-                map.put(filter.value, filter);
-            }
-        }
+        private static final String[] array 
+                = Stream.of(FILTER.values()).map(FILTER::name).toArray(String[]::new);
 
         private FILTER(byte value) {
             this.value = value;
         }
-        
-        public static FILTER valueOf(byte filter) {
-            return (FILTER) map.get(filter);
+
+        public static String valueOf(byte filter) {
+            if(filter == NA.value) {
+                return NA.name();
+            } else {
+                return array[filter];
+            }
         }
 
-        public int getValue() {
+        public byte getValue() {
             return value;
         }
     };
@@ -57,33 +60,29 @@ public class Enum {
     }
 
     public enum GT {
-        HOM("HOM", (byte) 2),
-        HET("HET", (byte) 1),
         REF("REF", (byte) 0),
+        HET("HET", (byte) 1),
+        HOM("HOM", (byte) 2),
         NA(Data.STRING_NA, (byte) Data.BYTE_NA);
 
         private String name;
         private byte value;
-
-        private static Map map = new HashMap<>();
-
-        static {
-            for (GT gt : GT.values()) {
-                map.put(gt.value, gt);
-            }
-        }
+        
+        private static final String[] array 
+                = Stream.of(GT.values()).map(GT::name).toArray(String[]::new);
+        
 
         private GT(String name, byte value) {
             this.name = name;
             this.value = value;
         }
 
-        public static GT valueOf(byte gt) {
-            return (GT) map.get(gt);
-        }
-
-        public String getName() {
-            return name;
+        public static String valueOf(byte gt) {
+            if(gt == NA.value) {
+                return NA.name;
+            } else {
+                return array[gt];
+            }
         }
 
         public byte value() {
@@ -93,6 +92,5 @@ public class Enum {
 
     public static void main(String[] args) {
 
-        System.out.println(Enum.Gender.F.getIndex());
     }
 }

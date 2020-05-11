@@ -108,7 +108,12 @@
                 <div class="card-body">
                     <h5 class="card-title">Variants</h5>
 
-                    <table id="variant_table" class="table text-center align-middle">
+                    <c:set var = "variant_table" value = "variant_table"/>
+                    <c:if test="${queryType == 'Variant'}" >
+                        <c:set var = "variant_table" value = ""/>
+                    </c:if>
+
+                    <table id="${variant_table}" class="table text-center align-middle">
                         <thead>
                             <tr>
                                 <th>Variant ID</th>
@@ -218,12 +223,12 @@
         <div class="card">
             <div class="card-body">
                 <h5 class="card-title">Carriers</h5>
-                
+
                 <div class="row">      
                     <c:forEach items="${genders}" var="gender">
                         <div class="col-auto">
                             <span class="badge badge-light">${variant.getGenderCount()[gender.getIndex()]}
-                            ${gender.getName()}</span> 
+                                ${gender.getName()}</span> 
                         </div>
                     </c:forEach>
                 </div>
