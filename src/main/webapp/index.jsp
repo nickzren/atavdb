@@ -98,7 +98,8 @@
                                                                      'other neuropsychiatric disease','primary immune deficiency','pulmonary disease',
                                                                      'schizophrenia','sudden death','alzheimers disease','cerebral palsy']}"/>
                                 <div class="row align-items-center">
-                                    <div class="form-group col-auto" style="margin-left: 5px">
+                                    <div class="form-group col-auto" style="margin-left: 5px"
+                                         data-toggle="tooltip" title="Search variants by selected phenotype">
                                         <label for="inputPhenotype">Phenotype:</label>
                                         <c:if test="${empty phenotype}" >
                                             <c:set var="phenotype" value="Not apply"/>
@@ -114,8 +115,9 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-
-                                    <div class="form-group col-auto" style="margin-left: 5px">
+                                    
+                                    <div class="form-group col-auto" style="margin-left: 5px" 
+                                         data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
                                         <label for="inputMaxAF">Max AF:</label>
                                         <c:set var="af_list" value="${['Not apply','0.5','0.01','0.005','0.001']}"/>
                                         <c:if test="${empty maxAF}" >
@@ -133,7 +135,10 @@
                                         </select>
                                     </div>
 
-                                    <div class="custom-control custom-switch col-auto" style="margin-left: 18px">
+                                    <div class="custom-control custom-switch col-auto" style="margin-left: 18px"
+                                         data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
+                                         SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
+                                         MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
                                         <input type="checkbox" class="custom-control-input" id="input_high_quality_variants" name="isHighQualityVariants" 
                                                <c:if test="${not empty isHighQualityVariants}" >
                                                    checked
