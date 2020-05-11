@@ -284,7 +284,11 @@
                             <c:forEach items="${variant.getCarriers()}" var="carrier">                                
                                 <tr>
                                 <c:if test="${not empty is_authorized}" >
-                                    <td>${carrier.getExperimentId()}</td>
+                                    <td>
+                                        <a href="https://sequence.igm.cumc.columbia.edu/search.php?action=viewSample&experiment_id=${carrier.getExperimentId()}" target="_blank">
+                                            ${carrier.getExperimentId()}
+                                        </a>
+                                    </td>
                                 </c:if>
                                 <td>${carrier.getGender()}</td>
                                 <td>${carrier.getPhenotype()}</td>
