@@ -80,9 +80,9 @@
 
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
-                                    Variant: <a href="Search?query=12-64849716-T-C">12-64849716-T-C</a>, 
+                                    Variant: <a href="Search?query=12-64875787-T-A">12-64875787-T-A</a>, 
                                     Gene: <a href="Search?query=TBK1">TBK1</a>, 
-                                    Region: <a href="Search?query=21:33032075-33040899">21:33032075-33040899</a>
+                                    Region: <a href="Search?query=2:166889788-166895788">2:166889788-166895788</a>
                                 </p>
 
                                 <c:set var="phenotype_list" value="${['Not apply','amyotrophic lateral sclerosis',
@@ -119,7 +119,7 @@
                                     <div class="form-group col-auto" style="margin-left: 5px" 
                                          data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
                                         <label for="inputMaxAF">Max AF:</label>
-                                        <c:set var="af_list" value="${['Not apply','0.5','0.01','0.005','0.001']}"/>
+                                        <c:set var="af_list" value="${['Not apply','0.01','0.005','0.001']}"/>
                                         <c:if test="${empty maxAF}" >
                                             <c:set var="maxAF" value="Not apply"/>
                                         </c:if>

@@ -14,7 +14,7 @@ public class VariantManager {
     public static void main(String[] args) {
         try {
             FilterManager filter = new FilterManager();
-            
+
             DBManager.init();
 
             SampleManager.init(filter);
@@ -29,8 +29,9 @@ public class VariantManager {
         ArrayList<CalledVariant> list = new ArrayList<>();
 
         String chr = "";
+        String joinSQL = "";// codingandsplice_effect
         String whereSQL = "";
-        
+
         String query = filter.getQuery();
         String queryType = filter.getQueryType();
         if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
@@ -39,19 +40,22 @@ public class VariantManager {
             whereSQL = "WHERE POS = " + tmp[1] + " AND REF = '" + tmp[2] + "' AND ALT = '" + tmp[3] + "' ";
         } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
             chr = GeneManager.getChr(query);
-            whereSQL = "WHERE gene = '" + query + "' ";
-        } else if(queryType.equals(Data.QUERT_TYPE[3])) { // region chr:start-end
+            joinSQL = ",codingandsplice_effect e ";
+            whereSQL = "WHERE gene = '" + query + "' AND v.effect_id = e.id ";
+        } else if (queryType.equals(Data.QUERT_TYPE[3])) { // region chr:start-end
             String[] tmp = query.split(":");
             chr = tmp[0];
             tmp = tmp[1].split("-");
-            whereSQL = "WHERE POS BETWEEN " + tmp[0] + " AND " + tmp[1] + " ";
+            joinSQL = ",codingandsplice_effect e ";
+            whereSQL = "WHERE POS BETWEEN " + tmp[0] + " AND " + tmp[1] + " AND v.effect_id = e.id ";
         } else {
             return list;
         }
 
         String sql = "SELECT variant_id, POS, REF, ALT, rs_number, transcript_stable_id, "
                 + "effect_id, HGVS_c, HGVS_p, polyphen_humdiv, polyphen_humvar, gene "
-                + "FROM variant_chr" + chr + " "
+                + "FROM variant_chr" + chr + " v "
+                + joinSQL
                 + whereSQL
                 + "ORDER BY POS,variant_id,effect_id,transcript_stable_id;";
 
@@ -66,15 +70,15 @@ public class VariantManager {
                 currentVariantId = rset.getInt("variant_id");
 
                 calledVar = new CalledVariant(chr, rset, filter);
-                
-                if(calledVar.isValid()) {
+
+                if (calledVar.isValid()) {
                     list.add(calledVar);
-                } 
+                }
             }
 
             calledVar.update(annotation);
         }
-        
+
         rset.close();
 
         return list;
