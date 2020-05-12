@@ -37,6 +37,7 @@ public class CarrierBlockManager {
                 + " AND c.sample_id=s.sample_id "
                 + " AND sample_finished=1"
                 + " AND sample_failure=0"
+                + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
 
         try {
@@ -87,6 +88,7 @@ public class CarrierBlockManager {
                 + " AND variant_id=" + var.getVariantId()
                 + " AND sample_finished=1"
                 + " AND sample_failure=0"
+                + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
 
         try {
@@ -96,7 +98,7 @@ public class CarrierBlockManager {
                 Carrier carrier = new Carrier(rs);
 
                 carrier.applyQualityFilter(filter, var.isSnv());
-                
+
                 carrierMap.put(carrier.getSampleId(), carrier);
             }
 

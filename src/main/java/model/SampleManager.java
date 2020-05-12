@@ -28,6 +28,7 @@ public class SampleManager {
 
         String sqlCode = "SELECT count(*) as count FROM sample "
                 + "WHERE sample_finished=1 AND sample_failure=0"
+                + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
 
         try {
@@ -51,6 +52,7 @@ public class SampleManager {
 
         String sqlCode = "SELECT * FROM sample "
                 + "WHERE sample_finished=1 AND sample_failure=0"
+                + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
 
         try {

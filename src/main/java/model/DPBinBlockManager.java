@@ -83,6 +83,7 @@ public class DPBinBlockManager {
                     + " WHERE block_id = " + blockId + " AND d.sample_id = s.sample_id"
                     + " AND sample_finished=1"
                     + " AND sample_failure=0"
+                    + " AND sample_type!='custom_capture'"
                     + filter.getPhenotypeSQL();
 
             ResultSet rs = DBManager.executeQuery(sql);
