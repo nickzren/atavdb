@@ -26,7 +26,7 @@ public class Search extends HttpServlet {
             HttpSession session = request.getSession();
             if (session.getAttribute("username") != null) {
                 DBManager.init();
-                
+
                 FilterManager filter = new FilterManager(request);
                 if (filter.isQueryValid()) {
                     EffectManager.init();
@@ -34,12 +34,16 @@ public class Search extends HttpServlet {
                     SampleManager.init(filter);
 
                     ArrayList<CalledVariant> variantList = VariantManager.getVariantList(filter);
-                    
+
+                    if (variantList.isEmpty()) {
+                        request.setAttribute("message", "No results found from search query.");
+                    }
+
                     request.setAttribute("variantList", variantList);
                 }
-                
+
                 DBManager.close();
-                
+
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             } else {
                 request.getRequestDispatcher("signin.jsp").forward(request, response);

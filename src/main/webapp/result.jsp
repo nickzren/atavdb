@@ -109,87 +109,90 @@
         </div>
     </c:if>
 
-    <c:choose>
-        <c:when test="${empty variantList}" >
-            <div class="alert alert-warning" style="width:50%">
-                <i class="fas fa-exclamation-circle"></i>&nbsp;No results found from search query.
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Variants</h5>
-
-                    <c:set var = "variant_table" value = "variant_table"/>
-                    <c:if test="${queryType == 'Variant'}" >
-                        <c:set var = "variant_table" value = ""/>
-                    </c:if>
-
-                    <table id="${variant_table}" class="table text-center align-middle">
-                        <thead>
-                            <tr>
-                                <th>Variant ID</th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Function Effect (Ensemble 87)">
-                                        Effect
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="HGNC Gene (Ensemble 87)">
-                                        Gene
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Allele Acount">
-                                        AC
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Allele Number (total number of alleles)">
-                                        AN
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Allele Frequency">
-                                        AF
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Number of samples having data">
-                                        NS
-                                    </div>
-                                </th>
-                                <th>Number of homozygotes</th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Number of samples are over 10x coverage">
-                                        10x Sample
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:forEach items="${variantList}" var="variant">
-                            <tr>
-                                <td>
-                                    <a href="Search?query=${variant.getVariantIdStr()}">${variant.getVariantIdStr()}</a>                            
-                                </td>
-                                <td>${variant.getEffect()}</td>
-                                <td>${variant.getGeneName()}</td>
-                                <td>${variant.getAC()}</td>
-                                <td>${variant.getAN()}</td>
-                                <td>${variant.getAF()}</td>
-                                <td>${variant.getNS()}</td>
-                                <td>${variant.getNH()}</td>
-                                <td>${variant.get10xSample()}</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
+    <c:if test="${not empty message}" >
+        <div class="row">
+            <div class="col-auto">
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>&nbsp;${message}
                 </div>
             </div>
-        </c:otherwise>
-    </c:choose>
+        </div>
+    </c:if>
+
+    <c:if test="${not empty variantList}" >
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Variants</h5>
+
+                <c:set var = "variant_table" value = "variant_table"/>
+                <c:if test="${queryType == 'Variant'}" >
+                    <c:set var = "variant_table" value = ""/>
+                </c:if>
+
+                <table id="${variant_table}" class="table text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th>Variant ID</th>
+                            <th>
+                                <div data-toggle="tooltip" title="Function Effect (Ensemble 87)">
+                                    Effect
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="HGNC Gene (Ensemble 87)">
+                                    Gene
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Allele Acount">
+                                    AC
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Allele Number (total number of alleles)">
+                                    AN
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Allele Frequency">
+                                    AF
+                                </div>
+                            </th>
+                            <th>
+                                <div data-toggle="tooltip" title="Number of samples having data">
+                                    NS
+                                </div>
+                            </th>
+                            <th>Number of homozygotes</th>
+                            <th>
+                                <div data-toggle="tooltip" title="Number of samples are over 10x coverage">
+                                    10x Sample
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    <c:forEach items="${variantList}" var="variant">
+                        <tr>
+                            <td>
+                                <a href="Search?query=${variant.getVariantIdStr()}">${variant.getVariantIdStr()}</a>                            
+                            </td>
+                            <td>${variant.getEffect()}</td>
+                            <td>${variant.getGeneName()}</td>
+                            <td>${variant.getAC()}</td>
+                            <td>${variant.getAN()}</td>
+                            <td>${variant.getAF()}</td>
+                            <td>${variant.getNS()}</td>
+                            <td>${variant.getNH()}</td>
+                            <td>${variant.get10xSample()}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </c:if>
 </c:if>
 
 <br/>
