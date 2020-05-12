@@ -32,6 +32,7 @@ public class FilterManager {
         Enum.FILTER.PASS.getValue(),
         Enum.FILTER.LIKELY.getValue(),
         Enum.FILTER.INTERMEDIATE.getValue()};
+    private String error;
 
     public FilterManager() {
     }
@@ -39,6 +40,14 @@ public class FilterManager {
     public FilterManager(HttpServletRequest request) throws Exception {
         query = request.getParameter("query");
         queryType = getQueryType(query);
+
+        if (request.getSession().getAttribute("is_authorized") == null
+                && (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) // gene / region
+        {
+            error = "Account is not authorized to search gene or region.";
+            request.setAttribute("error", error);
+        }
+
         String maxAFStr = request.getParameter("maxAF");
         String phenotypeStr = request.getParameter("phenotype");
         String isHighQualityVariantsStr = request.getParameter("isHighQualityVariants");
@@ -49,7 +58,6 @@ public class FilterManager {
         request.setAttribute("phenotype", phenotypeStr);
         request.setAttribute("isHighQualityVariants", isHighQualityVariantsStr);
         request.setAttribute("genders", Enum.Gender.values());
-        
 
         maxAF = getFloat(maxAFStr);
         phenotype = phenotypeStr;
@@ -82,7 +90,7 @@ public class FilterManager {
     }
 
     private String getQueryType(String query) throws Exception {
-        if (isQueryValid()) {
+        if (query != null && !query.isEmpty()) {
             if (query.split("-").length == 4) {
                 String[] tmp = query.split("-");
                 if (RegionManager.isChrValid(tmp[0]) // check valid chr 
@@ -127,7 +135,7 @@ public class FilterManager {
     }
 
     public boolean isQueryValid() {
-        return query != null && !query.isEmpty();
+        return !queryType.equals(Data.QUERT_TYPE[0]) && error == null;
     }
 
     public boolean isMaxAFValid(double value) {
@@ -263,7 +271,7 @@ public class FilterManager {
 
         return false;
     }
-    
+
     public boolean isMinRprsValid(float value) {
         if (!isHighQualityVariants) {
             return true;

@@ -95,8 +95,20 @@
             </div>
         </c:if>
     </div>
+
     <br/>
     <br/>
+
+    <c:if test="${not empty error}" >
+        <div class="row">
+            <div class="col-auto">
+                <div class="alert alert-warning" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>&nbsp;${error}
+                </div>
+            </div>
+        </div>
+    </c:if>
+
     <c:choose>
         <c:when test="${empty variantList}" >
             <div class="alert alert-warning" style="width:50%">
@@ -235,7 +247,7 @@
 
                 <br/>
 
-                <c:set var = "af_to_display_carrier" value = "0.5"/>
+                <c:set var = "af_to_display_carrier" value = "1"/>
                 <c:choose>
                     <c:when test="${variant.getAF() <= af_to_display_carrier}" >
                         <table id="carrier_table" class="table text-center align-middle">
