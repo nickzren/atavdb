@@ -44,7 +44,7 @@ public class FilterManager {
         if (request.getSession().getAttribute("is_authorized") == null
                 && (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) // gene / region
         {
-            error = "Account is not authorized to search gene or region.";
+            error = "Permission denied.";
             request.setAttribute("error", error);
         }
 
