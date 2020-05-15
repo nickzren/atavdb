@@ -18,7 +18,7 @@ public class CalledVariant extends AnnotatedVariant {
     private HashMap<Integer, NonCarrier> noncarrierMap = new HashMap<>();
 
     private int[] genoCount = new int[3];
-    private int[] genderCount = new int[3];
+    private int[] genderCount = new int[4];
     private int ac;
     private int an;
     public float af;

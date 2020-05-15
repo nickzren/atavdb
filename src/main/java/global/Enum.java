@@ -40,7 +40,8 @@ public class Enum {
     public enum Gender {
         M("Male", (byte) 0),
         F("Female", (byte) 1),
-        Ambiguous("Ambiguous", (byte) 2);
+        Ambiguous("Ambiguous", (byte) 2),
+        NA("NA", (byte) 3);
 
         private String name;
         private byte index;

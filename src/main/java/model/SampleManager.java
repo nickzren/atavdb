@@ -13,13 +13,13 @@ public class SampleManager {
 
     private static ArrayList<Sample> sampleList = new ArrayList<>();
 
-    public static void init(FilterManager filter) {
+    public static void init(FilterManager filter) throws Exception {
         if (checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
         }
     }
 
-    private static boolean checkSampleCount(FilterManager filter) {
+    private static boolean checkSampleCount(FilterManager filter) throws Exception {
         if (sampleList.isEmpty()) {
             return true;
         }
@@ -29,59 +29,45 @@ public class SampleManager {
                 + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
 
-        try {
-            ResultSet rs = DBManager.executeQuery(sqlCode);
+        ResultSet rs = DBManager.executeQuery(sqlCode);
 
-            if (rs.next()) {
-                if (sampleList.size() != rs.getInt("count")) {
-                    return true;
-                }
+        if (rs.next()) {
+            if (sampleList.size() != rs.getInt("count")) {
+                return true;
             }
-
-            rs.close();
-        } catch (Exception e) {
         }
+
+        rs.close();
 
         return false;
     }
 
-    private static void initAllSampleFromDB(FilterManager filter) {
+    private static void initAllSampleFromDB(FilterManager filter) throws Exception {
         sampleList.clear();
 
-        String sqlCode = "SELECT * FROM sample "
+        String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype FROM sample "
                 + "WHERE sample_finished=1 AND sample_failure=0"
                 + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
 
-        try {
-            ResultSet rs = DBManager.executeQuery(sqlCode);
+        ResultSet rs = DBManager.executeQuery(sqlCode);
 
-            while (rs.next()) {
-                int sampleId = rs.getInt("sample_id");
-                String familyId = rs.getString("sample_name").trim();
-                String individualId = rs.getString("sample_name").trim();
-                String paternalId = "0";
-                String maternalId = "0";
-                String seqGender = rs.getString("seq_gender").trim();
-                Gender gender = Gender.Ambiguous;
-                if(seqGender != null) {
-                    gender = Gender.valueOf(seqGender);
-                }
-                String sampleType = rs.getString("sample_type").trim();
-                String captureKit = rs.getString("capture_kit").trim();
-                int experimentId = rs.getInt("experiment_id");
-                String broadPhenotype = rs.getString("broad_phenotype").trim();
-
-                Sample sample = new Sample(sampleId, familyId, individualId,
-                        paternalId, maternalId, gender, sampleType, captureKit,
-                        experimentId, broadPhenotype);
-
-                sampleList.add(sample);
+        while (rs.next()) {
+            int sampleId = rs.getInt("sample_id");
+            String seqGender = rs.getString("seq_gender");
+            Gender gender = Gender.NA;
+            if (seqGender != null) {
+                gender = Gender.valueOf(seqGender);
             }
+            int experimentId = rs.getInt("experiment_id");
+            String broadPhenotype = rs.getString("broad_phenotype");
 
-            rs.close();
-        } catch (Exception e) {
+            Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype);
+
+            sampleList.add(sample);
         }
+
+        rs.close();
     }
 
     public static int getTotalSampleNum() {
