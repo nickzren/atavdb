@@ -57,7 +57,6 @@ public class FilterManager {
         request.setAttribute("maxAF", maxAFStr);
         request.setAttribute("phenotype", phenotypeStr);
         request.setAttribute("isHighQualityVariants", isHighQualityVariantsStr);
-        request.setAttribute("genders", Enum.Gender.values());
 
         maxAF = getFloat(maxAFStr);
         phenotype = phenotypeStr;

@@ -24,6 +24,10 @@ public class Search extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
+            if (session.getAttribute("genders") == null) {
+                request.getSession().setAttribute("genders", global.Enum.Gender.values());
+            }
+
             if (session.getAttribute("username") != null) {
                 DBManager.init();
 
