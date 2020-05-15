@@ -46,11 +46,11 @@
 
     <body>
         <div class="container">
-
+            
             <%@include file="base/header.jsp" %>
 
             <div class="container-main">
-                <form class="form-search" action="Search">
+                <form id="form-search" class="form-search" action="Search">
                     <div class="jumbotron" style="padding:20px 40px 20px 50px">
                         <h2>Data Browser 
                             <small>
@@ -62,7 +62,7 @@
                         <div class="row">
                             <div class="col-9">
                                 <div class="input-group">
-                                    <input name="query" class="form-control"
+                                    <input id="query" name="query" class="form-control"
                                            type="text" placeholder="Search for a variant"
                                            <c:if test="${empty username}" >
                                                data-toggle="tooltip" title="Sign In to search"
@@ -80,9 +80,12 @@
 
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
-                                    Variant: <a href="Search?query=12-64875787-T-A">12-64875787-T-A</a>, 
-                                    Gene: <a href="Search?query=TBK1">TBK1</a>, 
-                                    Region: <a href="Search?query=2:166889788-166895788">2:166889788-166895788</a>
+                                    Variant: <a href="#" onclick="document.getElementById('query').value='12-64875725-C-A'; 
+                                        document.getElementById('form-search').submit();">12-64875725-C-A</a>, 
+                                    Gene: <a href="#" onclick="document.getElementById('query').value='TBK1'; 
+                                        document.getElementById('form-search').submit();">TBK1</a>, 
+                                    Region: <a href="#" onclick="document.getElementById('query').value='2:166889788-166895788'; 
+                                        document.getElementById('form-search').submit();">2:166889788-166895788</a>
                                 </p>
 
                                 <c:set var="phenotype_list" value="${['Not apply','amyotrophic lateral sclerosis',
