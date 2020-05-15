@@ -32,8 +32,6 @@ public class CalledVariant extends AnnotatedVariant {
     }
 
     private void init(FilterManager filter) throws Exception {
-        CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
-
         if (isValid
                 && initCarrierData(filter)) {
             DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter);
@@ -44,6 +42,12 @@ public class CalledVariant extends AnnotatedVariant {
 
             isValid = FilterManager.isMinVarPresentValid(carrierMap.size())
                     && filter.isMaxAFValid(af);
+
+            // if gene / region search then free carriers
+            // if variant search when af > 0.01 then free carriers
+            if (!filter.getQueryType().equals((Data.QUERT_TYPE[1])) || af > 0.01) {
+                carrierMap = null;
+            }
         }
     }
 
@@ -88,12 +92,13 @@ public class CalledVariant extends AnnotatedVariant {
                     carrier.setDPBin(Data.SHORT_NA);
                 }
 
-                countGeno(carrier.getGT());
-                countGender(carrier.getGT(), sample);
-
-                if (carrier.getGT() == Data.BYTE_NA) {
+                if (carrier.getGT() == GT.NA.value()) {
                     // have to remove it for init Non-carrier map
                     carrierMap.remove(sample.getId());
+                } else {
+                    countGeno(carrier.getGT());
+                    countGender(carrier.getGT(), sample);
+                    carrier.setSample(sample);
                 }
             } else if (noncarrier != null) {
                 if (noncarrier.is10xCovered()) {
@@ -113,13 +118,13 @@ public class CalledVariant extends AnnotatedVariant {
     }
 
     public void countGeno(byte geno) {
-        if (geno != Data.BYTE_NA) {
+        if (geno != GT.NA.value()) {
             genoCount[geno]++;
         }
     }
 
     public void countGender(byte geno, Sample sample) {
-        if (geno == GT.HOM.value()|| geno == GT.HET.value()) {
+        if (geno == GT.HOM.value() || geno == GT.HET.value()) {
             genderCount[sample.getGender().getIndex()]++;
         }
     }
@@ -137,7 +142,7 @@ public class CalledVariant extends AnnotatedVariant {
     }
 
     public Collection<Carrier> getCarriers() {
-        return carrierMap.values();
+        return carrierMap == null ? null : carrierMap.values();
     }
 
     // NS = Number of Samples With Data

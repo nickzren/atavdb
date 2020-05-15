@@ -31,19 +31,31 @@ public class CarrierBlockManager {
     }
 
     private static void initBlockCarrierMap(Variant var, FilterManager filter) {
-        String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 "
-                + "FROM called_variant_chr" + var.getChrStr() + " c,sample s"
-                + " WHERE block_id = " + currentBlockId
-                + " AND c.sample_id=s.sample_id "
-                + " AND sample_finished=1"
-                + " AND sample_failure=0"
-                + " AND sample_type!='custom_capture'"
-                + filter.getPhenotypeSQL();
+        StringBuilder sqlSB = new StringBuilder();
+
+        sqlSB.append("SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 ");
+        sqlSB.append("FROM called_variant_chr").append(var.getChrStr()).append(" c,");
+
+        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) // variant 
+        {
+            sqlSB.append("full_impact,");
+        } else { // gene or region
+            sqlSB.append("low_impact,");
+        }
+
+        sqlSB.append("sample s ");
+        sqlSB.append("WHERE block_id=").append(currentBlockId);
+        sqlSB.append(" AND highest_impact=input_impact");
+        sqlSB.append(" AND c.sample_id=s.sample_id ");
+        sqlSB.append(" AND sample_finished=1");
+        sqlSB.append(" AND sample_failure=0");
+        sqlSB.append(" AND sample_type!='custom_capture'");
+        sqlSB.append(filter.getPhenotypeSQL());
 
         try {
             HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
-            ResultSet rs = DBManager.executeQuery(sql);
+            ResultSet rs = DBManager.executeQuery(sqlSB.toString());
 
             while (rs.next()) {
                 Carrier carrier = new Carrier(rs);
@@ -81,18 +93,30 @@ public class CarrierBlockManager {
     public static void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, FilterManager filter) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
-        String sql = "SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 "
-                + "FROM called_variant_chr" + var.getChrStr() + " c,sample s"
-                + " WHERE block_id=" + blockId
-                + " AND c.sample_id=s.sample_id"
-                + " AND variant_id=" + var.getVariantId()
-                + " AND sample_finished=1"
-                + " AND sample_failure=0"
-                + " AND sample_type!='custom_capture'"
-                + filter.getPhenotypeSQL();
+        StringBuilder sqlSB = new StringBuilder();
+
+        sqlSB.append("SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 ");
+        sqlSB.append("FROM called_variant_chr").append(var.getChrStr()).append(" c,");
+
+        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) // variant 
+        {
+            sqlSB.append("full_impact,");
+        } else { // gene or region
+            sqlSB.append("low_impact,");
+        }
+
+        sqlSB.append("sample s ");
+        sqlSB.append("WHERE block_id=").append(blockId);
+        sqlSB.append(" AND highest_impact=input_impact");
+        sqlSB.append(" AND c.sample_id=s.sample_id ");
+        sqlSB.append(" AND variant_id=").append(var.getVariantId());
+        sqlSB.append(" AND sample_finished=1");
+        sqlSB.append(" AND sample_failure=0");
+        sqlSB.append(" AND sample_type!='custom_capture'");
+        sqlSB.append(filter.getPhenotypeSQL());
 
         try {
-            ResultSet rs = DBManager.executeQuery(sql);
+            ResultSet rs = DBManager.executeQuery(sqlSB.toString());
 
             while (rs.next()) {
                 Carrier carrier = new Carrier(rs);

@@ -3,7 +3,6 @@ package model;
 import global.Enum.Gender;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import util.DBManager;
 
 /**
@@ -13,7 +12,6 @@ import util.DBManager;
 public class SampleManager {
 
     private static ArrayList<Sample> sampleList = new ArrayList<>();
-    private static HashMap<Integer, Sample> sampleMap = new HashMap<>();
 
     public static void init(FilterManager filter) {
         if (checkSampleCount(filter)) {
@@ -79,7 +77,6 @@ public class SampleManager {
                         experimentId, broadPhenotype);
 
                 sampleList.add(sample);
-                sampleMap.put(sampleId, sample);
             }
 
             rs.close();
@@ -93,9 +90,5 @@ public class SampleManager {
 
     public static ArrayList<Sample> getList() {
         return sampleList;
-    }
-
-    public static Sample getSample(int sampleId) {
-        return sampleMap.get(sampleId);
     }
 }

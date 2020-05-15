@@ -250,9 +250,8 @@
 
                 <br/>
 
-                <c:set var = "af_to_display_carrier" value = "1"/>
                 <c:choose>
-                    <c:when test="${variant.getAF() <= af_to_display_carrier}" >
+                    <c:when test="${not empty variant.getCarriers()}" >
                         <table id="carrier_table" class="table text-center align-middle">
                             <thead>
                                 <tr>
@@ -320,7 +319,7 @@
                     <c:otherwise>
                         <div class="alert alert-warning" role="alert">
                             <i class="fas fa-exclamation-circle"></i>&nbsp;
-                            <strong>Not displaying carriers data when AF > ${af_to_display_carrier}</strong>
+                            <strong>Not displaying carriers data when AF > 0.01</strong>
                         </div>
                     </c:otherwise>
                 </c:choose>

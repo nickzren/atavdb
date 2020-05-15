@@ -29,7 +29,6 @@ public class Carrier extends NonCarrier {
 
     public Carrier(ResultSet rs) throws Exception {
         sampleId = rs.getInt("sample_id");
-        sample = SampleManager.getSample(sampleId);
         gt = rs.getByte("GT");
         dp = rs.getShort("DP");
         dpBin = Data.SHORT_NA;
@@ -45,6 +44,10 @@ public class Carrier extends NonCarrier {
         readPosRankSum = FormatManager.getFloat(rs, "ReadPosRankSum");
         mqRankSum = FormatManager.getFloat(rs, "MQRankSum");
         filterValue = FormatManager.getByte(rs, "FILTER+0");
+    }
+    
+    public void setSample(Sample sample) {
+        this.sample = sample;
     }
 
     public short getDP() {
@@ -127,6 +130,39 @@ public class Carrier extends NonCarrier {
                     || !filter.isMinRprsValid(readPosRankSum)
                     || !filter.isMinMqrsValid(mqRankSum)) {
                 gt = GT.NA.value();
+            }
+        }
+    }
+    
+    /*
+     * Outside of pseudoautosomal regions:
+     *
+     * ChrX: females are treated normally
+     *
+     * ChrX: males have het removed
+     *
+     * ChrY: females are set to missing
+     *
+     * ChrY: males have het removed
+     *
+     * Inside of pseudoautosomal region which are treated like autosomes.
+     */
+    protected void checkValidOnXY(Region r) {
+        if (gt != GT.NA.value()) {
+            boolean isValid = true;
+
+            if (sample.isMale()) {
+                if (gt == GT.HET.value() // male het chr x or y & outside PARs
+                        && !r.isInsideAutosomalOrPseudoautosomalRegions()) {
+                    isValid = false;
+                }
+            } else if (r.getChrNum() == 24 // female chy & outside PARs
+                    && !r.isInsideYPseudoautosomalRegions()) {
+                isValid = false;
+            }
+
+            if (!isValid) {
+                gt = Data.BYTE_NA;
             }
         }
     }
