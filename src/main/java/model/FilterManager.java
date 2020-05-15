@@ -39,6 +39,11 @@ public class FilterManager {
 
     public FilterManager(HttpServletRequest request) throws Exception {
         query = request.getParameter("query");
+        String linkquery = request.getParameter("linkquery");
+        if (linkquery != null && !linkquery.isEmpty()) {
+            query = linkquery;
+        }
+        
         queryType = getQueryType(query);
 
         if (request.getSession().getAttribute("is_authorized") == null

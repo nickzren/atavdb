@@ -172,7 +172,8 @@
                         <c:forEach items="${variantList}" var="variant">
                             <tr>
                                 <td> 
-                                    <a href="#" onclick="document.getElementById('query').value='${variant.getVariantIdStr()}'; 
+                                    <a href="#" onclick="document.getElementById('linkquery').value='${variant.getVariantIdStr()}';
+                                        document.getElementById('form-search').target='_blank';
                                         document.getElementById('form-search').submit();">${variant.getVariantIdStr()}</a>
                                 </td>
                                 <td>${variant.getEffect()}</td>
