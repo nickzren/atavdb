@@ -23,8 +23,6 @@ public class CalledVariant extends AnnotatedVariant {
     private int an;
     public float af;
 
-    private int coveredSample; // 10x covered sample count
-
     public CalledVariant(String chr, ResultSet rset, FilterManager filter) throws Exception {
         super(chr, rset);
 
@@ -83,10 +81,6 @@ public class CalledVariant extends AnnotatedVariant {
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());
 
             if (carrier != null) {
-                if (carrier.is10xCovered()) {
-                    coveredSample++;
-                }
-
                 if (!filter.isMinDpBinValid(carrier.getDPBin())) {
                     carrier.setGT(GT.NA.value());
                     carrier.setDPBin(Data.SHORT_NA);
@@ -101,10 +95,6 @@ public class CalledVariant extends AnnotatedVariant {
                     carrier.setSample(sample);
                 }
             } else if (noncarrier != null) {
-                if (noncarrier.is10xCovered()) {
-                    coveredSample++;
-                }
-
                 if (!filter.isMinDpBinValid(noncarrier.getDPBin())) {
                     noncarrier.setGT(GT.NA.value());
                     noncarrier.setDPBin(Data.SHORT_NA);
@@ -168,11 +158,6 @@ public class CalledVariant extends AnnotatedVariant {
     // NH = Number of homozygotes
     public int getNH() {
         return genoCount[GT.HOM.value()];
-    }
-
-    // Number of samples are over 10x coverage
-    public int get10xSample() {
-        return coveredSample;
     }
 
     public int[] getGenderCount() {

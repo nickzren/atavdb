@@ -165,19 +165,15 @@
                                     </div>
                                 </th>
                                 <th>Number of homozygotes</th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Number of samples are over 10x coverage">
-                                        10x Sample
-                                    </div>
-                                </th>
                             </tr>
                         </thead>
                         <tbody>
 
                         <c:forEach items="${variantList}" var="variant">
                             <tr>
-                                <td>
-                                    <a href="Search?query=${variant.getVariantIdStr()}">${variant.getVariantIdStr()}</a>                            
+                                <td> 
+                                    <a href="#" onclick="document.getElementById('query').value='${variant.getVariantIdStr()}'; 
+                                        document.getElementById('form-search').submit();">${variant.getVariantIdStr()}</a>
                                 </td>
                                 <td>${variant.getEffect()}</td>
                                 <td>${variant.getGeneName()}</td>
@@ -186,7 +182,6 @@
                                 <td>${variant.getAF()}</td>
                                 <td>${variant.getNS()}</td>
                                 <td>${variant.getNH()}</td>
-                                <td>${variant.get10xSample()}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
