@@ -78,7 +78,7 @@ public class CalledVariant extends AnnotatedVariant {
 
     // initialize genotype & dpBin array for better compute performance use
     private void initGenoCovArray(FilterManager filter) {
-        for (Sample sample : SampleManager.getList()) {
+        for (Sample sample : SampleManager.getList(filter)) {
             Carrier carrier = carrierMap.get(sample.getId());
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());
 

@@ -3,6 +3,7 @@ package model;
 import global.Enum.Gender;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import util.DBManager;
 
 /**
@@ -11,7 +12,7 @@ import util.DBManager;
  */
 public class SampleManager {
 
-    private static ArrayList<Sample> sampleList = new ArrayList<>();
+    private static HashMap<String, ArrayList<Sample>> map = new HashMap<>();
 
     public static void init(FilterManager filter) throws Exception {
         if (checkSampleCount(filter)) {
@@ -20,7 +21,7 @@ public class SampleManager {
     }
 
     private static boolean checkSampleCount(FilterManager filter) throws Exception {
-        if (sampleList.isEmpty()) {
+        if (map.isEmpty()) {
             return true;
         }
 
@@ -32,7 +33,7 @@ public class SampleManager {
         ResultSet rs = DBManager.executeQuery(sqlCode);
 
         if (rs.next()) {
-            if (sampleList.size() != rs.getInt("count")) {
+            if (map.get("all").size() != rs.getInt("count")) {
                 return true;
             }
         }
@@ -43,7 +44,8 @@ public class SampleManager {
     }
 
     private static void initAllSampleFromDB(FilterManager filter) throws Exception {
-        sampleList.clear();
+        map.clear();
+        map.put("all", new ArrayList<>());
 
         String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype FROM sample "
                 + "WHERE sample_finished=1 AND sample_failure=0"
@@ -64,17 +66,27 @@ public class SampleManager {
 
             Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype);
 
-            sampleList.add(sample);
+            if (broadPhenotype != null && !broadPhenotype.isEmpty()) {
+                ArrayList<Sample> list = map.get(broadPhenotype);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    map.put(broadPhenotype, list);
+                }
+
+                list.add(sample);
+            }
+
+            map.get("all").add(sample);
         }
 
         rs.close();
     }
 
     public static int getTotalSampleNum() {
-        return sampleList.size();
+        return map.isEmpty() ? 0 : map.get("all").size();
     }
 
-    public static ArrayList<Sample> getList() {
-        return sampleList;
+    public static ArrayList<Sample> getList(FilterManager filter) {
+        return map.get(filter.getPhenotype());
     }
 }
