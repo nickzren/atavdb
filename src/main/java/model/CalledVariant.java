@@ -17,11 +17,11 @@ public class CalledVariant extends AnnotatedVariant {
     private HashMap<Integer, Carrier> carrierMap = new HashMap<>();
     private HashMap<Integer, NonCarrier> noncarrierMap = new HashMap<>();
 
-    private int[] genoCount = new int[3];
-    private int[] genderCount = new int[4];
-    private int ac;
-    private int an;
-    public float af;
+    private int[] genoCount = new int[3]; // REF, HET, HOM
+    private int[] genderCount = new int[4]; // Male, Female, Ambiguous, NA
+    private int ac; // allele count
+    private int an; // allele number
+    public float af; // allele frequency
 
     public CalledVariant(String chr, ResultSet rset, FilterManager filter) throws Exception {
         super(chr, rset);
@@ -34,16 +34,19 @@ public class CalledVariant extends AnnotatedVariant {
                 && initCarrierData(filter)) {
             DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter);
 
-            initGenoCovArray(filter);
+            initGTCount(filter);
 
             calculateAF();
 
             isValid = FilterManager.isMinVarPresentValid(carrierMap.size())
                     && filter.isMaxAFValid(af);
 
+            // if not valid
             // if gene / region search then free carriers
-            // if variant search when af > 0.01 then free carriers
-            if (!filter.getQueryType().equals((Data.QUERT_TYPE[1])) || af > 0.01) {
+            // if variant search and when af > MAX AF then free carriers
+            if (!isValid
+                    || !filter.getQueryType().equals((Data.QUERT_TYPE[1]))
+                    || af > FilterManager.MAX_AF_TO_DISPLAY_CARRIER) {
                 carrierMap = null;
             }
         }
@@ -74,9 +77,8 @@ public class CalledVariant extends AnnotatedVariant {
         return isValid;
     }
 
-    // initialize genotype & dpBin array for better compute performance use
-    private void initGenoCovArray(FilterManager filter) {
-        for (Sample sample : SampleManager.getList(filter)) {
+    private void initGTCount(FilterManager filter) {
+        SampleManager.getList(filter).parallelStream().forEach((sample) -> {
             Carrier carrier = carrierMap.get(sample.getId());
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());
 
@@ -102,7 +104,7 @@ public class CalledVariant extends AnnotatedVariant {
 
                 countGeno(noncarrier.getGT());
             }
-        }
+        });
 
         noncarrierMap = null; // free memory
     }
@@ -125,10 +127,6 @@ public class CalledVariant extends AnnotatedVariant {
         an = ac + genoCount[GT.HET.value()] + 2 * genoCount[GT.REF.value()];
 
         af = MathManager.devide(ac, an);
-    }
-
-    public Carrier getCarrier(int sampleId) {
-        return carrierMap.get(sampleId);
     }
 
     public Collection<Carrier> getCarriers() {

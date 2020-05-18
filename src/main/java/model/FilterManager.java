@@ -34,6 +34,8 @@ public class FilterManager {
         Enum.FILTER.INTERMEDIATE.getValue()};
     private String error;
 
+    public final static float MAX_AF_TO_DISPLAY_CARRIER = 0.01f;
+    
     public FilterManager() {
     }
 

@@ -92,6 +92,27 @@ public class Annotation {
     }
     
     public String getPolyphen() {
-        return AnnotatedVariant.getPrediction(polyphenHumdiv, effect);
+        return getPrediction(polyphenHumdiv, effect);
+    }
+    
+    private String getPrediction(float score, String effect) {
+        if (score == Data.FLOAT_NA) {
+            if (effect.startsWith("missense_variant")
+                    || effect.equals("splice_region_variant")) {
+                return "unknown";
+            } else {
+                return Data.STRING_NA;
+            }
+        }
+
+        if (score < 0.4335) { //based on Liz's comment
+            return "benign";
+        }
+
+        if (score < 0.9035) { //based on Liz's comment
+            return "possibly";
+        }
+
+        return "probably";
     }
 }
