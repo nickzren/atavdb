@@ -25,7 +25,7 @@ public class Search extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             if (session.getAttribute("genders") == null) {
-                request.getSession().setAttribute("genders", global.Enum.Gender.values());
+                session.setAttribute("genders", global.Enum.Gender.values());
             }
 
             if (session.getAttribute("username") != null) {
@@ -37,7 +37,7 @@ public class Search extends HttpServlet {
 
                     SampleManager.init(filter);
 
-                    ArrayList<CalledVariant> variantList = VariantManager.getVariantList(filter);
+                    ArrayList<CalledVariant> variantList = VariantManager.getVariantList(filter, session);
 
                     if (variantList.isEmpty()) {
                         request.setAttribute("message", "No results found from search query.");

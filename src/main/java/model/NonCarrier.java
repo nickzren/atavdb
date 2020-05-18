@@ -2,6 +2,7 @@ package model;
 
 import global.Data;
 import global.Enum.GT;
+import java.util.ArrayList;
 
 /**
  *
@@ -23,10 +24,10 @@ public class NonCarrier {
         initGenotype();
     }
 
-    public NonCarrier(int sampleId, String minDPBin, int posIndex) throws Exception {
+    public NonCarrier(int sampleId, String minDPBin, int posIndex, ArrayList<SampleDPBin> currentBlockList) throws Exception {
         this.sampleId = sampleId;
         SampleDPBin sampleDPBin = new SampleDPBin(sampleId, minDPBin);
-        DPBinBlockManager.add(sampleDPBin);
+        currentBlockList.add(sampleDPBin);
         dpBin = sampleDPBin.getDPBin(posIndex);
 
         initGenotype();

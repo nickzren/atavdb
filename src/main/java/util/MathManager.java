@@ -1,47 +1,12 @@
 package util;
 
 import global.Data;
-import java.math.BigDecimal;
-import org.apache.commons.math3.stat.inference.AlternativeHypothesis;
-import org.apache.commons.math3.stat.inference.BinomialTest;
 
 /**
  *
- * @author nick, quanli
+ * @author nick
  */
 public class MathManager {
-
-    private static BinomialTest BT;
-
-    public static double getBinomialLessThan(int numberOfTrials, int numberOfSuccesses, float probability) {
-        if (BT == null) {
-            BT = new BinomialTest();
-        }
-
-        if (numberOfTrials == Data.INTEGER_NA || numberOfSuccesses == Data.INTEGER_NA) {
-            return Data.DOUBLE_NA;
-        }
-
-        return BT.binomialTest(numberOfTrials,
-                numberOfSuccesses,
-                probability,
-                AlternativeHypothesis.LESS_THAN);
-    }
-
-    public static double getBinomialTWOSIDED(int numberOfTrials, int numberOfSuccesses, float probability) {
-        if (BT == null) {
-            BT = new BinomialTest();
-        }
-
-        if (numberOfTrials == Data.INTEGER_NA || numberOfSuccesses == Data.INTEGER_NA) {
-            return Data.DOUBLE_NA;
-        }
-
-        return BT.binomialTest(numberOfTrials,
-                numberOfSuccesses,
-                probability,
-                AlternativeHypothesis.TWO_SIDED);
-    }
 
     public static double devide(double a, int b) {
         if (b == 0 || a == Data.DOUBLE_NA || b == Data.INTEGER_NA) {
@@ -137,24 +102,5 @@ public class MathManager {
         }
 
         return Math.min(a, b);
-    }
-
-    //    public static double roundToDecimals(double d, double c) {
-//        int t = (int) (d * c + 0.5);
-//
-//        return (double) t / c;
-//    }
-    public static double roundToDecimals(double value) {
-        int t = (int) (value * 100000000 + 0.5);
-        double pValue = (double) t / 100000000;
-
-        if (pValue > 0.00001) {
-            return pValue;
-        }
-
-        BigDecimal temp = new BigDecimal(value);
-        temp = temp.setScale(8, BigDecimal.ROUND_HALF_UP);
-
-        return temp.doubleValue();
     }
 }

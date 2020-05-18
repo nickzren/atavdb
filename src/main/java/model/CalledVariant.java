@@ -5,6 +5,7 @@ import global.Enum.GT;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import util.FormatManager;
 import util.MathManager;
 
@@ -23,16 +24,16 @@ public class CalledVariant extends AnnotatedVariant {
     private int an; // allele number
     public float af; // allele frequency
 
-    public CalledVariant(String chr, ResultSet rset, FilterManager filter) throws Exception {
+    public CalledVariant(String chr, ResultSet rset, FilterManager filter, HttpSession session) throws Exception {
         super(chr, rset);
 
-        init(filter);
+        init(filter, session);
     }
 
-    private void init(FilterManager filter) throws Exception {
+    private void init(FilterManager filter, HttpSession session) throws Exception {
         if (isValid
-                && initCarrierData(filter)) {
-            DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter);
+                && initCarrierData(filter, session)) {
+            DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, session);
 
             initGTCount(filter);
 
@@ -52,7 +53,7 @@ public class CalledVariant extends AnnotatedVariant {
         }
     }
 
-    private boolean initCarrierData(FilterManager filter) {
+    private boolean initCarrierData(FilterManager filter, HttpSession session) {
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
             // single variant carriers data process
             CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
@@ -62,9 +63,9 @@ public class CalledVariant extends AnnotatedVariant {
             }
         } else {
             // block variants carriers data process
-            CarrierBlockManager.init(this, filter);
+            CarrierBlockManager.init(this, filter, session);
 
-            carrierMap = CarrierBlockManager.getVarCarrierMap(variantId);
+            carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, session);
 
             if (carrierMap == null) {
                 carrierMap = new HashMap<>();

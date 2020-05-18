@@ -4,6 +4,7 @@ import global.Data;
 import util.DBManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -11,21 +12,7 @@ import java.util.ArrayList;
  */
 public class VariantManager {
 
-    public static void main(String[] args) {
-        try {
-            FilterManager filter = new FilterManager();
-
-            DBManager.init();
-
-            SampleManager.init(filter);
-
-            getVariantList(filter);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static ArrayList<CalledVariant> getVariantList(FilterManager filter) throws Exception {
+    public static ArrayList<CalledVariant> getVariantList(FilterManager filter, HttpSession session) throws Exception {
         ArrayList<CalledVariant> list = new ArrayList<>();
 
         String chr = "";
@@ -69,7 +56,7 @@ public class VariantManager {
             if (currentVariantId != rset.getInt("variant_id")) {
                 currentVariantId = rset.getInt("variant_id");
 
-                calledVar = new CalledVariant(chr, rset, filter);
+                calledVar = new CalledVariant(chr, rset, filter, session);
 
                 if (calledVar.isValid()) {
                     list.add(calledVar);

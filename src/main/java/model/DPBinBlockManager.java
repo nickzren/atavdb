@@ -4,20 +4,17 @@ import global.Data;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import util.DBManager;
 
 /**
- * @author nick, qwang
+ * @author nick
  */
 public class DPBinBlockManager {
 
     public static final int DP_BIN_BLOCK_SIZE = 1000;
 
-    private static ArrayList<SampleDPBin> currentBlockList = new ArrayList<>();
-    private static int currentBlockId = Data.INTEGER_NA;
-
     private static HashMap<Character, Short> dpBin = new HashMap<>();
-    private static HashMap<Short, Byte> dpBinIndex = new HashMap<>();
 
     static {
         dpBin.put('b', Data.SHORT_NA);
@@ -28,19 +25,21 @@ public class DPBinBlockManager {
         dpBin.put('g', (short) 200);
     }
 
-    public static void add(SampleDPBin sampleDPBin) {
-        currentBlockList.add(sampleDPBin);
-    }
-
-    public static void initCarrierAndNonCarrierByDPBin(Variant var,
+    public static void initCarrierAndNonCarrierByDPBin(
+            Variant var,
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
-            FilterManager filter) {
+            FilterManager filter,
+            HttpSession session) {
         int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
+
+        Integer currentBlockId = (Integer) session.getAttribute("currentNonCarrierBlockId");
+
+        ArrayList<SampleDPBin> currentBlockList = (ArrayList<SampleDPBin>) session.getAttribute("currentBlockList");
 
         int blockId = Math.floorDiv(var.getStartPosition(), DP_BIN_BLOCK_SIZE);
 
-        if (blockId == currentBlockId) {
+        if (currentBlockId != null && blockId == currentBlockId) {
             for (SampleDPBin sampleDPBin : currentBlockList) {
                 Carrier carrier = carrierMap.get(sampleDPBin.getSampleId());
 
@@ -65,9 +64,13 @@ public class DPBinBlockManager {
             }
         } else {
             currentBlockId = blockId;
-            currentBlockList.clear();
-
-            initBlockDPBin(carrierMap, noncarrierMap, var, posIndex, blockId, filter);
+            
+            currentBlockList = new ArrayList<>();
+            
+            initBlockDPBin(carrierMap, noncarrierMap, var, posIndex, blockId, filter, currentBlockList);
+            
+            session.setAttribute("currentNonCarrierBlockId", currentBlockId);
+            session.setAttribute("currentBlockList", currentBlockList);
         }
     }
 
@@ -77,7 +80,8 @@ public class DPBinBlockManager {
             Variant var,
             int posIndex,
             int blockId,
-            FilterManager filter) {
+            FilterManager filter,
+            ArrayList<SampleDPBin> currentBlockList) {
         try {
             String sql = "SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s"
                     + " WHERE block_id = " + blockId + " AND d.sample_id = s.sample_id"
@@ -88,7 +92,7 @@ public class DPBinBlockManager {
 
             ResultSet rs = DBManager.executeQuery(sql);
             while (rs.next()) {
-                NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), rs.getString("DP_string"), posIndex);
+                NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), rs.getString("DP_string"), posIndex, currentBlockList);
 
                 Carrier carrier = carrierMap.get(noncarrier.getSampleId());
 

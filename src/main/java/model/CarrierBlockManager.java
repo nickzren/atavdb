@@ -3,7 +3,7 @@ package model;
 import global.Data;
 import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.Map.Entry;
+import javax.servlet.http.HttpSession;
 import util.DBManager;
 
 /**
@@ -14,23 +14,28 @@ public class CarrierBlockManager {
 
     public static final int CARRIER_BLOCK_SIZE = 1000;
 
-    private static int currentBlockId = Data.INTEGER_NA;
-
-    private static HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap = new HashMap<>(); // variantId <SampleId, CarrierMap> 
-
-    public static void init(Variant var, FilterManager filter) {
+    public static void init(Variant var, FilterManager filter, HttpSession session) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
-        if (currentBlockId != blockId) {
+        Integer currentBlockId = (Integer) session.getAttribute("currentCarrierBlockId");
+
+        if (currentBlockId == null || currentBlockId != blockId) {
             currentBlockId = blockId;
 
-            blockCarrierMap.clear();
+            HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap = new HashMap<>();
 
-            initBlockCarrierMap(var, filter);
+            initBlockCarrierMap(var, filter, blockId, blockCarrierMap);
+
+            session.setAttribute("currentCarrierBlockId", currentBlockId);
+            session.setAttribute("blockCarrierMap", blockCarrierMap);
         }
     }
 
-    private static void initBlockCarrierMap(Variant var, FilterManager filter) {
+    private static void initBlockCarrierMap(
+            Variant var,
+            FilterManager filter,
+            int currentBlockId,
+            HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap) {
         StringBuilder sqlSB = new StringBuilder();
 
         sqlSB.append("SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 ");
@@ -81,11 +86,9 @@ public class CarrierBlockManager {
             rs.close();
 
             // removed no qualified carriers variant
-            for (Entry<Integer, Integer> entry : validVariantCarrierCount.entrySet()) {
-                if (entry.getValue() == 0) {
-                    blockCarrierMap.remove(entry.getKey());
-                }
-            }
+            validVariantCarrierCount.entrySet().parallelStream().filter((entry) -> (entry.getValue() == 0)).forEachOrdered((entry) -> {
+                blockCarrierMap.remove(entry.getKey());
+            });
         } catch (Exception e) {
         }
     }
@@ -131,7 +134,10 @@ public class CarrierBlockManager {
         }
     }
 
-    public static HashMap<Integer, Carrier> getVarCarrierMap(int variantId) {
-        return blockCarrierMap.get(variantId);
+    public static HashMap<Integer, Carrier> getVarCarrierMap(int variantId, HttpSession session) {
+        HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap
+                = (HashMap<Integer, HashMap<Integer, Carrier>>) session.getAttribute("blockCarrierMap");
+
+        return blockCarrierMap == null ? null : blockCarrierMap.get(variantId);
     }
 }
