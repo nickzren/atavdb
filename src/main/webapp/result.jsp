@@ -174,7 +174,7 @@
                                 <td> 
                                     <a href="#" onclick="document.getElementById('linkquery').value='${variant.getVariantIdStr()}';
                                         document.getElementById('form-search').target='_blank';
-                                        document.getElementById('form-search').submit();">${variant.getVariantIdStr()}</a>
+                                        document.getElementById('btn-submit').click();">${variant.getVariantIdStr()}</a>
                                 </td>
                                 <td>${variant.getEffect()}</td>
                                 <td>${variant.getGeneName()}</td>

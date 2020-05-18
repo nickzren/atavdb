@@ -73,7 +73,7 @@
                                            >
                                     <input type="hidden" id="linkquery" name="linkquery">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="submit">
+                                        <button id="btn-submit" class="btn btn-primary" type="submit">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -82,11 +82,11 @@
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
                                     Variant: <a href="#" onclick="document.getElementById('query').value = '12-64875725-C-A';
-                document.getElementById('form-search').submit();">12-64875725-C-A</a>, 
+                                            document.getElementById('btn-submit').click();">12-64875725-C-A</a>, 
                                     Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
-                                            document.getElementById('form-search').submit();">TBK1</a>, 
+                                            document.getElementById('btn-submit').click();">TBK1</a>,
                                     Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
-                                            document.getElementById('form-search').submit();">2:166889788-166895788</a>
+                                            document.getElementById('btn-submit').click();">2:166889788-166895788</a>
                                 </p>
 
                                 <c:set var="phenotype_list" value="${['Not apply','amyotrophic lateral sclerosis',
@@ -104,11 +104,11 @@
                                 <div class="row align-items-center">
                                     <div class="form-group col-auto" style="margin-left: 5px"
                                          data-toggle="tooltip" title="Search variants by selected phenotype">
-                                        <label for="inputPhenotype">Phenotype:</label>
+                                        <label for="input-select-phenotype">Phenotype:</label>
                                         <c:if test="${empty phenotype}" >
                                             <c:set var="phenotype" value="Not apply"/>
                                         </c:if>
-                                        <select id="inputPhenotype" name="phenotype" class="form-control">
+                                        <select id="input-select-phenotype" name="phenotype" class="form-control">
                                             <c:forEach items="${phenotype_list}" var="p">
                                                 <option value="${p}" 
                                                         <c:if test="${phenotype == p}" >
@@ -122,12 +122,12 @@
 
                                     <div class="form-group col-auto" style="margin-left: 5px" 
                                          data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
-                                        <label for="inputMaxAF">Max AF:</label>
+                                        <label for="input-select-max-af">Max AF:</label>
                                         <c:set var="af_list" value="${['Not apply','0.01','0.005','0.001']}"/>
                                         <c:if test="${empty maxAF}" >
                                             <c:set var="maxAF" value="Not apply"/>
                                         </c:if>
-                                        <select id="inputMaxAF" name="maxAF" class="form-control">
+                                        <select id="input-select-max-af" name="maxAF" class="form-control">
                                             <c:forEach items="${af_list}" var="af">
                                                 <option value="${af}" 
                                                         <c:if test="${maxAF == af}" >
@@ -143,12 +143,12 @@
                                          data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
                                          SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
                                          MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
-                                        <input type="checkbox" class="custom-control-input" id="input_high_quality_variants" name="isHighQualityVariants" 
+                                        <input type="checkbox" class="custom-control-input" id="input-check-high-quality-variants" name="isHighQualityVariants" 
                                                <c:if test="${not empty isHighQualityVariants}" >
                                                    checked
                                                </c:if>
                                                >
-                                        <label class="custom-control-label" for="input_high_quality_variants">High quality variants</label>
+                                        <label class="custom-control-label" for="input-check-high-quality-variants">High quality variants</label>
                                     </div>
                                 </div>
                             </div>
@@ -167,11 +167,16 @@
                 </form>
 
                 <script type='text/javascript'>
-                    jQuery_3_4_1('#form-search').submit(function () {                        
-                        jQuery_3_4_1(this).find(":input").filter(function () {
-                            return !this.value;
-                        }).attr('disabled', 'disabled');
-                        return true;
+                    jQuery_3_4_1(document).ready(function () {
+                        jQuery_3_4_1('#form-search').submit(function () {
+                            jQuery_3_4_1("#btn-submit").prop("disabled", true);
+                            jQuery_3_4_1("#btn-submit").html(
+                                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
+                                    );
+                            jQuery_3_4_1("#input-select-phenotype").prop("disabled", true);
+                            jQuery_3_4_1("#input-select-max-af").prop("disabled", true);
+                            jQuery_3_4_1("#input-check-high-quality-variants").prop("disabled", true);
+                        });
                     });
                 </script>
 
