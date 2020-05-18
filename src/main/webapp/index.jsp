@@ -46,7 +46,7 @@
 
     <body>
         <div class="container">
-            
+
             <%@include file="base/header.jsp" %>
 
             <div class="container-main">
@@ -81,18 +81,18 @@
 
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
-                                    Variant: <a href="#" onclick="document.getElementById('query').value='12-64875725-C-A'; 
-                                        document.getElementById('form-search').submit();">12-64875725-C-A</a>, 
-                                    Gene: <a href="#" onclick="document.getElementById('query').value='TBK1'; 
-                                        document.getElementById('form-search').submit();">TBK1</a>, 
-                                    Region: <a href="#" onclick="document.getElementById('query').value='2:166889788-166895788'; 
-                                        document.getElementById('form-search').submit();">2:166889788-166895788</a>
+                                    Variant: <a href="#" onclick="document.getElementById('query').value = '12-64875725-C-A';
+                document.getElementById('form-search').submit();">12-64875725-C-A</a>, 
+                                    Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
+                                            document.getElementById('form-search').submit();">TBK1</a>, 
+                                    Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
+                                            document.getElementById('form-search').submit();">2:166889788-166895788</a>
                                 </p>
 
                                 <c:set var="phenotype_list" value="${['Not apply','amyotrophic lateral sclerosis',
                                                                      'autoimmune disease','bone disease',
                                                                      'brain malformation','cancer','cardiovascular disease',
-                                                                     'congenital disorder','control','control mild neuropsychiatric disease',
+                                                                     'congenital disorder','control','control mild neuropsychiatric disease','covid-19',
                                                                      'dementia','dermatological disease','diseases that affect the ear',
                                                                      'endocrine disorder','epilepsy','febrile seizures','fetal ultrasound anomaly',
                                                                      'gastrointestinal disease','healthy family member','hematological disease',
@@ -119,7 +119,7 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-                                    
+
                                     <div class="form-group col-auto" style="margin-left: 5px" 
                                          data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
                                         <label for="inputMaxAF">Max AF:</label>
@@ -165,6 +165,16 @@
                         </div>
                     </div>
                 </form>
+
+                <script type='text/javascript'>
+                    jQuery_3_4_1('#form-search').submit(function () {                        
+                        jQuery_3_4_1(this).find(":input").filter(function () {
+                            return !this.value;
+                        }).attr('disabled', 'disabled');
+                        return true;
+                    });
+                </script>
+
                 <%@include file="result.jsp" %>  
             </div>
         </div>
