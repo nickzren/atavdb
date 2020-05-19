@@ -171,10 +171,10 @@
 
                         <c:forEach items="${variantList}" var="variant">
                             <tr>
-                                <td> 
-                                    <a href="#" onclick="document.getElementById('linkquery').value='${variant.getVariantIdStr()}';
-                                        document.getElementById('form-search').target='_blank';
-                                        document.getElementById('btn-submit').click();">${variant.getVariantIdStr()}</a>
+                                <td>
+                                    <a href="Search?query=${variant.getVariantIdStr()}" target='_blank'>
+                                        ${variant.getVariantIdStr()}
+                                    </a>
                                 </td>
                                 <td>${variant.getEffect()}</td>
                                 <td>${variant.getGeneName()}</td>

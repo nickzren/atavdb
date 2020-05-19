@@ -71,7 +71,6 @@
                                                value="${query}"
                                            </c:if>
                                            >
-                                    <input type="hidden" id="linkquery" name="linkquery">
                                     <div class="input-group-append">
                                         <button id="btn-submit" class="btn btn-primary" type="submit">
                                             <i class="fas fa-search"></i>
