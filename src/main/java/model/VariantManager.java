@@ -1,10 +1,12 @@
 package model;
 
 import global.Data;
+import java.sql.Connection;
 import util.DBManager;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -12,7 +14,7 @@ import javax.servlet.http.HttpSession;
  */
 public class VariantManager {
 
-    public static ArrayList<CalledVariant> getVariantList(FilterManager filter, HttpSession session) throws Exception {
+    public static ArrayList<CalledVariant> getVariantList(FilterManager filter, HttpServletRequest request) throws Exception {
         ArrayList<CalledVariant> list = new ArrayList<>();
 
         String chr = "";
@@ -46,17 +48,19 @@ public class VariantManager {
                 + whereSQL
                 + "ORDER BY POS,variant_id,effect_id,transcript_stable_id;";
 
-        ResultSet rset = DBManager.executeConcurReadOnlyQuery(sql);
+        Connection connection = DBManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sql);
 
         CalledVariant calledVar = null;
         int currentVariantId = Data.INTEGER_NA;
-        while (rset.next()) {
-            Annotation annotation = new Annotation(chr, rset);
+        while (rs.next()) {
+            Annotation annotation = new Annotation(chr, rs);
 
-            if (currentVariantId != rset.getInt("variant_id")) {
-                currentVariantId = rset.getInt("variant_id");
+            if (currentVariantId != rs.getInt("variant_id")) {
+                currentVariantId = rs.getInt("variant_id");
 
-                calledVar = new CalledVariant(chr, rset, filter, session);
+                calledVar = new CalledVariant(chr, rs, filter, request);
 
                 if (calledVar.isValid()) {
                     list.add(calledVar);
@@ -66,7 +70,8 @@ public class VariantManager {
             calledVar.update(annotation);
         }
 
-        rset.close();
+        rs.close();
+        statement.close();
 
         return list;
     }

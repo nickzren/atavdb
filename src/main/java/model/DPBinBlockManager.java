@@ -1,10 +1,12 @@
 package model;
 
 import global.Data;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import util.DBManager;
 
 /**
@@ -30,12 +32,12 @@ public class DPBinBlockManager {
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
             FilterManager filter,
-            HttpSession session) {
+            HttpServletRequest request) {
         int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
 
-        Integer currentBlockId = (Integer) session.getAttribute("currentNonCarrierBlockId");
+        Integer currentBlockId = (Integer) request.getAttribute("currentNonCarrierBlockId");
 
-        ArrayList<SampleDPBin> currentBlockList = (ArrayList<SampleDPBin>) session.getAttribute("currentBlockList");
+        ArrayList<SampleDPBin> currentBlockList = (ArrayList<SampleDPBin>) request.getAttribute("currentBlockList");
 
         int blockId = Math.floorDiv(var.getStartPosition(), DP_BIN_BLOCK_SIZE);
 
@@ -69,8 +71,8 @@ public class DPBinBlockManager {
             
             initBlockDPBin(carrierMap, noncarrierMap, var, posIndex, blockId, filter, currentBlockList);
             
-            session.setAttribute("currentNonCarrierBlockId", currentBlockId);
-            session.setAttribute("currentBlockList", currentBlockList);
+            request.setAttribute("currentNonCarrierBlockId", currentBlockId);
+            request.setAttribute("currentBlockList", currentBlockList);
         }
     }
 
@@ -90,7 +92,9 @@ public class DPBinBlockManager {
                     + " AND sample_type!='custom_capture'"
                     + filter.getPhenotypeSQL();
 
-            ResultSet rs = DBManager.executeQuery(sql);
+            Connection connection = DBManager.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), rs.getString("DP_string"), posIndex, currentBlockList);
 
@@ -110,8 +114,8 @@ public class DPBinBlockManager {
                     }
                 }
             }
-
             rs.close();
+            statement.close();
         } catch (Exception e) {
         }
     }

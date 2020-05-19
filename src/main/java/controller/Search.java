@@ -3,6 +3,8 @@ package controller;
 import util.DBManager;
 import model.VariantManager;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,7 +39,7 @@ public class Search extends HttpServlet {
 
                     SampleManager.init(filter);
 
-                    ArrayList<CalledVariant> variantList = VariantManager.getVariantList(filter, session);
+                    ArrayList<CalledVariant> variantList = VariantManager.getVariantList(filter, request);
 
                     if (variantList.isEmpty()) {
                         request.setAttribute("message", "No results found from search query.");
@@ -46,16 +48,31 @@ public class Search extends HttpServlet {
                     request.setAttribute("variantList", variantList);
                 }
 
-                DBManager.close();
-
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             } else {
                 request.getRequestDispatcher("signin.jsp").forward(request, response);
             }
         } catch (Exception ex) {
             // debug purpose
-//            request.setAttribute("error", ex.toString());
+//            request.setAttribute("error", convertStackTraceToString(ex));
             request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+    }
+
+    /**
+     * Convert a stack trace to a string for printing or logging including
+     * nested exception ("caused by")
+     *
+     * @param pThrowable
+     * @return
+     */
+    private static String convertStackTraceToString(Throwable pThrowable) {
+        if (pThrowable == null) {
+            return null;
+        } else {
+            StringWriter sw = new StringWriter();
+            pThrowable.printStackTrace(new PrintWriter(sw));
+            return sw.toString();
         }
     }
 

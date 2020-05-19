@@ -24,7 +24,6 @@ public class SampleCount extends HttpServlet {
                 DBManager.init();
                 FilterManager filter = new FilterManager(request);
                 SampleManager.init(filter);
-                DBManager.close();
                 request.setAttribute("sampleCount", SampleManager.getTotalSampleNum());
             }
         } catch (Exception ex) {

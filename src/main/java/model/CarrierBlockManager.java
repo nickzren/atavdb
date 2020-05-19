@@ -1,9 +1,11 @@
 package model;
 
 import global.Data;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashMap;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import util.DBManager;
 
 /**
@@ -14,10 +16,10 @@ public class CarrierBlockManager {
 
     public static final int CARRIER_BLOCK_SIZE = 1000;
 
-    public static void init(Variant var, FilterManager filter, HttpSession session) {
+    public static void init(Variant var, FilterManager filter, HttpServletRequest request) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
-        Integer currentBlockId = (Integer) session.getAttribute("currentCarrierBlockId");
+        Integer currentBlockId = (Integer) request.getAttribute("currentCarrierBlockId");
 
         if (currentBlockId == null || currentBlockId != blockId) {
             currentBlockId = blockId;
@@ -26,8 +28,8 @@ public class CarrierBlockManager {
 
             initBlockCarrierMap(var, filter, blockId, blockCarrierMap);
 
-            session.setAttribute("currentCarrierBlockId", currentBlockId);
-            session.setAttribute("blockCarrierMap", blockCarrierMap);
+            request.setAttribute("currentCarrierBlockId", currentBlockId);
+            request.setAttribute("blockCarrierMap", blockCarrierMap);
         }
     }
 
@@ -60,7 +62,9 @@ public class CarrierBlockManager {
         try {
             HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
-            ResultSet rs = DBManager.executeQuery(sqlSB.toString());
+            Connection connection = DBManager.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sqlSB.toString());
 
             while (rs.next()) {
                 Carrier carrier = new Carrier(rs);
@@ -82,8 +86,9 @@ public class CarrierBlockManager {
 
                 varCarrierMap.put(carrier.getSampleId(), carrier);
             }
-
+            
             rs.close();
+            statement.close();
 
             // removed no qualified carriers variant
             validVariantCarrierCount.entrySet().parallelStream().filter((entry) -> (entry.getValue() == 0)).forEachOrdered((entry) -> {
@@ -119,7 +124,9 @@ public class CarrierBlockManager {
         sqlSB.append(filter.getPhenotypeSQL());
 
         try {
-            ResultSet rs = DBManager.executeQuery(sqlSB.toString());
+            Connection connection = DBManager.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sqlSB.toString());
 
             while (rs.next()) {
                 Carrier carrier = new Carrier(rs);
@@ -128,15 +135,16 @@ public class CarrierBlockManager {
 
                 carrierMap.put(carrier.getSampleId(), carrier);
             }
-
+            
             rs.close();
+            statement.close();
         } catch (Exception e) {
         }
     }
 
-    public static HashMap<Integer, Carrier> getVarCarrierMap(int variantId, HttpSession session) {
+    public static HashMap<Integer, Carrier> getVarCarrierMap(int variantId, HttpServletRequest request) {
         HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap
-                = (HashMap<Integer, HashMap<Integer, Carrier>>) session.getAttribute("blockCarrierMap");
+                = (HashMap<Integer, HashMap<Integer, Carrier>>) request.getAttribute("blockCarrierMap");
 
         return blockCarrierMap == null ? null : blockCarrierMap.get(variantId);
     }

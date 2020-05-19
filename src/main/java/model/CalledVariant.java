@@ -5,7 +5,7 @@ import global.Enum.GT;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.HashMap;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 import util.FormatManager;
 import util.MathManager;
 
@@ -24,16 +24,16 @@ public class CalledVariant extends AnnotatedVariant {
     private int an; // allele number
     public float af; // allele frequency
 
-    public CalledVariant(String chr, ResultSet rset, FilterManager filter, HttpSession session) throws Exception {
+    public CalledVariant(String chr, ResultSet rset, FilterManager filter, HttpServletRequest request) throws Exception {
         super(chr, rset);
 
-        init(filter, session);
+        init(filter, request);
     }
 
-    private void init(FilterManager filter, HttpSession session) throws Exception {
+    private void init(FilterManager filter, HttpServletRequest request) throws Exception {
         if (isValid
-                && initCarrierData(filter, session)) {
-            DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, session);
+                && initCarrierData(filter, request)) {
+            DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, request);
 
             initGTCount(filter);
 
@@ -53,7 +53,7 @@ public class CalledVariant extends AnnotatedVariant {
         }
     }
 
-    private boolean initCarrierData(FilterManager filter, HttpSession session) {
+    private boolean initCarrierData(FilterManager filter, HttpServletRequest request) {
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
             // single variant carriers data process
             CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
@@ -63,9 +63,9 @@ public class CalledVariant extends AnnotatedVariant {
             }
         } else {
             // block variants carriers data process
-            CarrierBlockManager.init(this, filter, session);
+            CarrierBlockManager.init(this, filter, request);
 
-            carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, session);
+            carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, request);
 
             if (carrierMap == null) {
                 carrierMap = new HashMap<>();

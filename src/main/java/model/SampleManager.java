@@ -1,7 +1,9 @@
 package model;
 
 import global.Enum.Gender;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import util.DBManager;
@@ -30,7 +32,9 @@ public class SampleManager {
                 + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
 
-        ResultSet rs = DBManager.executeQuery(sqlCode);
+        Connection connection = DBManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sqlCode);
 
         if (rs.next()) {
             if (map.get("all").size() != rs.getInt("count")) {
@@ -39,6 +43,7 @@ public class SampleManager {
         }
 
         rs.close();
+        statement.close();
 
         return false;
     }
@@ -52,7 +57,9 @@ public class SampleManager {
                 + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
 
-        ResultSet rs = DBManager.executeQuery(sqlCode);
+        Connection connection = DBManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sqlCode);
 
         while (rs.next()) {
             int sampleId = rs.getInt("sample_id");
@@ -78,8 +85,9 @@ public class SampleManager {
 
             map.get("all").add(sample);
         }
-
+        
         rs.close();
+        statement.close();
     }
 
     public static int getTotalSampleNum() {

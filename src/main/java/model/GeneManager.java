@@ -1,7 +1,9 @@
 package model;
 
 import global.Data;
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import util.DBManager;
 
 /**
@@ -13,13 +15,16 @@ public class GeneManager {
     public static String getChr(String gene) throws Exception {
         String sql = "SELECT chrom FROM hgnc WHERE gene = '" + gene + "'";
 
-        ResultSet rset = DBManager.executeQuery(sql);
+        Connection connection = DBManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sql);
 
-        if (rset.next()) {
-            return rset.getString("chrom");
+        if (rs.next()) {
+            return rs.getString("chrom");
         }
-
-        rset.close();
+        
+        rs.close();
+        statement.close();
 
         return Data.STRING_NA;
     }
