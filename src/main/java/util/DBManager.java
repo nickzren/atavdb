@@ -1,9 +1,6 @@
 package util;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.dbcp2.ConnectionFactory;
 import org.apache.commons.dbcp2.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp2.PoolableConnection;
@@ -34,7 +31,7 @@ public class DBManager {
     }
 
     private static void initDataFromSystemConfig() {
-        // server config from enviroment JAVA_HOME
+        // server config - $CATALINA_HOME/bin/setenv.sh
         dbUrl = System.getenv("DB_URL");
         dbUser = System.getenv("DB_USER");
         dbPassword = System.getenv("DB_PASSWORD");
@@ -74,7 +71,7 @@ public class DBManager {
         }
     }
 
-    private static void initConnection() throws Exception {
+    private static void initConnection() throws Exception {        
         if (connection == null || connection.isClosed()) {
             connection = dataSource.getConnection();
         }
