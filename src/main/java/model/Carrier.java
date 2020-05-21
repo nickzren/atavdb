@@ -117,6 +117,10 @@ public class Carrier extends NonCarrier {
     public String getPhenotype() {
         return sample.getBroadPhenotype();
     }
+    
+    public String getEthnicity() {
+        return sample.getEthnicity().name();
+    }
 
     public void applyQualityFilter(FilterManager filter, boolean isSnv) {
         if (gt != GT.NA.value()) {

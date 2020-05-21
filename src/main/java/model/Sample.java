@@ -1,5 +1,6 @@
 package model;
 
+import global.Enum.Ethnicity;
 import global.Enum.Gender;
 import util.FormatManager;
 
@@ -9,21 +10,23 @@ import util.FormatManager;
  */
 public class Sample {
 
-    // database info
     private int id;
-    // sample info
     private Gender gender;
     private int experimentId;
     private String broadPhenotype;
+    private Ethnicity ethnicity;
 
-    // sample file order
-    private int index;
-
-    public Sample(int sampled_id, Gender gender, int experimentId, String broadPhenotype) {
+    public Sample(
+            int sampled_id,
+            Gender gender,
+            int experimentId,
+            String broadPhenotype,
+            Ethnicity ethnicity) {
         id = sampled_id;
         this.gender = gender;
         this.experimentId = experimentId;
         this.broadPhenotype = broadPhenotype;
+        this.ethnicity = ethnicity;
     }
 
     public int getId() {
@@ -45,8 +48,12 @@ public class Sample {
     public Gender getGender() {
         return gender;
     }
-    
+
     public String getBroadPhenotype() {
         return FormatManager.getString(broadPhenotype);
+    }
+    
+    public Ethnicity getEthnicity() {
+        return ethnicity;
     }
 }

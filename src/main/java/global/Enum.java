@@ -91,7 +91,29 @@ public class Enum {
         }
     }
 
-    public static void main(String[] args) {
+    public enum Ethnicity {
+        African("African", (byte) 0),
+        Caucasian("Caucasian", (byte) 1),
+        EastAsian("EastAsian", (byte) 2),
+        Hispanic("Hispanic", (byte) 3),
+        MiddleEastern("MiddleEastern", (byte) 4),
+        SouthAsian("SouthAsian", (byte) 5),
+        NA("NA", (byte) 6);
 
+        private String name;
+        private byte index;
+
+        private Ethnicity(String name, byte index) {
+            this.name = name;
+            this.index = index;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public byte getIndex() {
+            return index;
+        }
     }
 }

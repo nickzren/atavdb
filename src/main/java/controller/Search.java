@@ -26,10 +26,7 @@ public class Search extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
-            if (session.getAttribute("genders") == null) {
-                session.setAttribute("genders", global.Enum.Gender.values());
-            }
-
+            initSession(session);
             if (session.getAttribute("username") != null) {
                 DBManager.init();
 
@@ -54,8 +51,18 @@ public class Search extends HttpServlet {
             }
         } catch (Exception ex) {
             // debug purpose
-//            request.setAttribute("error", convertStackTraceToString(ex));
+            request.setAttribute("error", convertStackTraceToString(ex));
             request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
+    }
+
+    private void initSession(HttpSession session) {
+        if (session.getAttribute("genders") == null) {
+            session.setAttribute("genders", global.Enum.Gender.values());
+        }
+        
+        if (session.getAttribute("ethnicities") == null) {
+            session.setAttribute("ethnicities", global.Enum.Ethnicity.values());
         }
     }
 

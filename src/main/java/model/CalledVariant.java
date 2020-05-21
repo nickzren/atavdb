@@ -20,6 +20,7 @@ public class CalledVariant extends AnnotatedVariant {
 
     private int[] genoCount = new int[3]; // REF, HET, HOM
     private int[] genderCount = new int[4]; // Male, Female, Ambiguous, NA
+    private int[] ethnicityCount = new int[7]; // African, Caucasian, EastAsian, Hispanic, MiddleEastern, SouthAsian, NA
     private int ac; // allele count
     private int an; // allele number
     public float af; // allele frequency
@@ -94,7 +95,7 @@ public class CalledVariant extends AnnotatedVariant {
                     carrierMap.remove(sample.getId());
                 } else {
                     countGeno(carrier.getGT());
-                    countGender(carrier.getGT(), sample);
+                    countGenderEthnicity(carrier.getGT(), sample);
                     carrier.setSample(sample);
                 }
             } else if (noncarrier != null) {
@@ -116,9 +117,10 @@ public class CalledVariant extends AnnotatedVariant {
         }
     }
 
-    public void countGender(byte geno, Sample sample) {
+    public void countGenderEthnicity(byte geno, Sample sample) {
         if (geno == GT.HOM.value() || geno == GT.HET.value()) {
             genderCount[sample.getGender().getIndex()]++;
+            ethnicityCount[sample.getEthnicity().getIndex()]++;
         }
     }
 
@@ -161,5 +163,9 @@ public class CalledVariant extends AnnotatedVariant {
 
     public int[] getGenderCount() {
         return genderCount;
+    }
+    
+    public int[] getEthnicityCount() {
+        return ethnicityCount;
     }
 }

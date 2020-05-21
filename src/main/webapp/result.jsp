@@ -239,11 +239,20 @@
             <div class="card-body">
                 <h5 class="card-title">Carriers</h5>
 
-                <div class="row">      
+                <div class="row mt-2">      
                     <c:forEach items="${genders}" var="gender">
                         <div class="col-auto">
                             <span class="badge badge-light">${variant.getGenderCount()[gender.getIndex()]}
                                 ${gender.getName()}</span> 
+                        </div>
+                    </c:forEach>
+                </div>
+                
+                <div class="row mt-2">      
+                    <c:forEach items="${ethnicities}" var="ethnicity">
+                        <div class="col-auto">
+                            <span class="badge badge-light">${variant.getEthnicityCount()[ethnicity.getIndex()]}
+                                ${ethnicity.getName()}</span> 
                         </div>
                     </c:forEach>
                 </div>
@@ -271,6 +280,11 @@
                                 <th>
                                     <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
                                         Phenotype
+                                    </div>
+                                </th>
+                                <th>
+                                    <div data-toggle="tooltip" title="Ethnicity probability >= 0.5 in sequenceDB">
+                                        Ethnicity
                                     </div>
                                 </th>
                                 <th>
@@ -307,6 +321,7 @@
                                     </c:if>
                                     <td>${carrier.getGender()}</td>
                                     <td>${carrier.getPhenotype()}</td>
+                                    <td>${carrier.getEthnicity()}</td>
                                     <td>${carrier.getGTStr()}</td>
                                     <td>${carrier.getDP()}</td>
                                     <td>${carrier.getGQ()}</td>

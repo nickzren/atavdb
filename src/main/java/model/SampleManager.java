@@ -1,5 +1,6 @@
 package model;
 
+import global.Enum.Ethnicity;
 import global.Enum.Gender;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -52,7 +53,7 @@ public class SampleManager {
         map.clear();
         map.put("all", new ArrayList<>());
 
-        String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype FROM sample "
+        String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype,ethnicity FROM sample "
                 + "WHERE sample_finished=1 AND sample_failure=0"
                 + " AND sample_type!='custom_capture'"
                 + filter.getPhenotypeSQL();
@@ -63,15 +64,14 @@ public class SampleManager {
 
         while (rs.next()) {
             int sampleId = rs.getInt("sample_id");
-            String seqGender = rs.getString("seq_gender");
-            Gender gender = Gender.NA;
-            if (seqGender != null) {
-                gender = Gender.valueOf(seqGender);
-            }
+            String genderStr = rs.getString("seq_gender");
+            Gender gender = genderStr == null ? Gender.NA : Gender.valueOf(genderStr);
             int experimentId = rs.getInt("experiment_id");
             String broadPhenotype = rs.getString("broad_phenotype");
+            String ethnicityStr = rs.getString("ethnicity");
+            Ethnicity ethnicity = ethnicityStr == null ? Ethnicity.NA : Ethnicity.valueOf(ethnicityStr);
 
-            Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype);
+            Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ethnicity);
 
             if (broadPhenotype != null && !broadPhenotype.isEmpty()) {
                 ArrayList<Sample> list = map.get(broadPhenotype);
@@ -85,7 +85,7 @@ public class SampleManager {
 
             map.get("all").add(sample);
         }
-        
+
         rs.close();
         statement.close();
     }
