@@ -172,9 +172,17 @@
                             jQuery_3_4_1("#btn-submit").html(
                                     `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
                                     );
-                            jQuery_3_4_1("#input-select-phenotype").prop("disabled", true);
-                            jQuery_3_4_1("#input-select-max-af").prop("disabled", true);
-                            jQuery_3_4_1("#input-check-high-quality-variants").prop("disabled", true);
+                            jQuery_3_4_1("#input-select-phenotype").filter(
+                                    function(){ return !this.value;}
+                                    ).prop("disabled", true);
+                            jQuery_3_4_1("#input-select-max-af").filter(
+                                    function(){ return !this.value;}
+                                    ).prop("disabled", true);
+                            jQuery_3_4_1("#input-check-high-quality-variants").filter(
+                                    function(){ return !this.value;}
+                                    ).prop("disabled", true);
+                            
+                            return true;
                         });
                     });
                 </script>
