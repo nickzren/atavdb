@@ -71,7 +71,7 @@ public class FilterManager {
     }
 
     public String getPhenotype() {
-        if (phenotype == null || phenotype.equals("Not apply")) {
+        if (phenotype == null || phenotype.equals("")) {
             return "all";
         }
 
@@ -79,7 +79,7 @@ public class FilterManager {
     }
 
     public String getPhenotypeSQL() {
-        if (phenotype != null && !phenotype.equals("Not apply")) {
+        if (phenotype != null && !phenotype.equals("")) {
             return " AND broad_phenotype='" + phenotype + "'";
         }
 

@@ -88,7 +88,7 @@
                                             document.getElementById('btn-submit').click();">2:166889788-166895788</a>
                                 </p>
 
-                                <c:set var="phenotype_list" value="${['Not apply','amyotrophic lateral sclerosis',
+                                <c:set var="phenotype_list" value="${['','amyotrophic lateral sclerosis',
                                                                      'autoimmune disease','bone disease',
                                                                      'brain malformation','cancer','cardiovascular disease',
                                                                      'congenital disorder','control','control mild neuropsychiatric disease','covid-19',
@@ -105,7 +105,7 @@
                                          data-toggle="tooltip" title="Search variants by selected phenotype">
                                         <label for="input-select-phenotype">Phenotype:</label>
                                         <c:if test="${empty phenotype}" >
-                                            <c:set var="phenotype" value="Not apply"/>
+                                            <c:set var="phenotype" value=""/>
                                         </c:if>
                                         <select id="input-select-phenotype" name="phenotype" class="form-control">
                                             <c:forEach items="${phenotype_list}" var="p">
@@ -122,9 +122,9 @@
                                     <div class="form-group col-auto" style="margin-left: 5px" 
                                          data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
                                         <label for="input-select-max-af">Max AF:</label>
-                                        <c:set var="af_list" value="${['Not apply','0.01','0.005','0.001']}"/>
+                                        <c:set var="af_list" value="${['','0.01','0.005','0.001']}"/>
                                         <c:if test="${empty maxAF}" >
-                                            <c:set var="maxAF" value="Not apply"/>
+                                            <c:set var="maxAF" value=""/>
                                         </c:if>
                                         <select id="input-select-max-af" name="maxAF" class="form-control">
                                             <c:forEach items="${af_list}" var="af">

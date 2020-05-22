@@ -1,37 +1,37 @@
 <script type="text/javascript">
     jQuery_3_3_1(document).ready(function () {
-    var variant_table = jQuery_3_3_1('#variant_table').DataTable({
-    //            searching: false,
-    //            paging: false,
-    //            info: false,
-    //            lengthChange: false,
-    buttons: [
-    {
-    extend: 'csv',
-    text: '<i class="fas fa-file-csv"></i> Download',
-    className: 'btn btn-light'
-    },
-    ],
-    });
+        var variant_table = jQuery_3_3_1('#variant_table').DataTable({
+            //            searching: false,
+            //            paging: false,
+            //            info: false,
+            //            lengthChange: false,
+//            buttons: [
+//                {
+//                    extend: 'csv',
+//                    text: '<i class="fas fa-file-csv"></i> Download',
+//                    className: 'btn btn-light'
+//                },
+//            ],
+        });
 
-    variant_table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
+        variant_table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
 
-    var carrier_table = jQuery_3_3_1('#carrier_table').DataTable({
-    //            lengthChange: false,
-    buttons: [
-    {
-    extend: 'csv',
-    text: '<i class="fas fa-file-csv"></i> Download',
-    className: 'btn btn-light'
-    },
-    ],
-    });
+        var carrier_table = jQuery_3_3_1('#carrier_table').DataTable({
+            //            lengthChange: false,
+//            buttons: [
+//                {
+//                    extend: 'csv',
+//                    text: '<i class="fas fa-file-csv"></i> Download',
+//                    className: 'btn btn-light'
+//                },
+//            ],
+        });
 
-    carrier_table.buttons().container().appendTo('#carrier_table_wrapper .col-md-6:eq(0)');
+        carrier_table.buttons().container().appendTo('#carrier_table_wrapper .col-md-6:eq(0)');
     });
 
     jQuery_3_4_1(function () {
-    jQuery_3_4_1('[data-toggle="tooltip"]').tooltip();
+        jQuery_3_4_1('[data-toggle="tooltip"]').tooltip();
     });
 </script>
 
@@ -164,7 +164,11 @@
                                         NS
                                     </div>
                                 </th>
-                                <th>Number of homozygotes</th>
+                                <th>
+                                    <div data-toggle="tooltip" title="Number of homozygotes">
+                                        NHOM
+                                    </div>
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -247,7 +251,7 @@
                         </div>
                     </c:forEach>
                 </div>
-                
+
                 <div class="row mt-2">      
                     <c:forEach items="${ethnicities}" var="ethnicity">
                         <div class="col-auto">
@@ -278,7 +282,7 @@
                                     </div>
                                 </th>
                                 <th>
-                                    <div data-toggle="tooltip" title="Borad Phenotype in sequenceDB">
+                                    <div data-toggle="tooltip" title="Broad Phenotype in sequenceDB">
                                         Phenotype
                                     </div>
                                 </th>
@@ -349,13 +353,13 @@
         <gnx-summary></gnx-summary>
         <script src="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.js"></script>
         <script type="text/javascript">
-            let elem = document.querySelector('gnx-summary');
-            elem.variantId = {
-            ref: '${variant.getRefAllele()}',
-            alt: '${variant.getAllele()}',
-            chr: '${variant.getChrStr()}',
-            pos: ${variant.getStartPosition()},
-            };
+    let elem = document.querySelector('gnx-summary');
+    elem.variantId = {
+        ref: '${variant.getRefAllele()}',
+        alt: '${variant.getAllele()}',
+        chr: '${variant.getChrStr()}',
+        pos: ${variant.getStartPosition()},
+    };
         </script>
     </c:forEach>
 </c:if>
