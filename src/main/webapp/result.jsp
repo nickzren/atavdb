@@ -42,15 +42,13 @@
         </div>
 
         <c:if test="${queryType == 'Variant'}" >
-            <c:forEach items="${variantList}" var="variant">                
-                <c:if test="${variant.getRsNumberStr() != 'NA'}" >
-                    <div class="col-auto">
-                        <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/clinvar?term=${variant.getRsNumberStr()}" target="_blank">ClinVar</a>
-                    </div>
-                    <div class="col-auto">
-                        <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/snp/${variant.getRsNumberStr()}" target="_blank">dbSNP</a>
-                    </div>
-                </c:if>
+            <c:forEach items="${variantList}" var="variant">
+                <div class="col-auto">
+                    <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/clinvar?term=${variant.getRsNumberStr()}" target="_blank">ClinVar</a>
+                </div>
+                <div class="col-auto">
+                    <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/snp/${variant.getRsNumberStr()}" target="_blank">dbSNP</a>
+                </div>
                 <div class="col-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://franklin.genoox.com/variant/snp/chr${variant.getVariantIdStr()}" target="_blank">Franklin</a>
                 </div>
@@ -81,7 +79,10 @@
             </div>
             <div class="col-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="https://www.genenames.org/tools/search/#!/genes?query=${query}" target="_blank">HGNC</a>
-            </div>       
+            </div>  
+            <div class="col-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="http://igmdx.org/Search?query=${query}" target="_blank">IGMDx</a>
+            </div>  
             <div class="col-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="https://omim.org/search?search=${query}" target="_blank">OMIM</a>
             </div>
