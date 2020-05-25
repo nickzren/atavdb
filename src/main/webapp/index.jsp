@@ -79,8 +79,8 @@
 
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
-                                    Variant: <a href="#" onclick="document.getElementById('query').value = '12-64875725-C-A';
-                                            document.getElementById('btn-submit').click();">12-64875725-C-A</a>, 
+                                    Variant: <a href="#" onclick="document.getElementById('query').value = '12-64878160-G-A';
+                                            document.getElementById('btn-submit').click();">12-64878160-G-A</a>, 
                                     Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
                                             document.getElementById('btn-submit').click();">TBK1</a>,
                                     Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
