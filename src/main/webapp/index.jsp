@@ -55,7 +55,6 @@
                         <h2>Data Browser 
                             <small>
                                 <span class="badge badge-pill badge-secondary">hg19</span>
-                                <span class="badge badge-pill badge-secondary">beta</span>
                             </small>
                         </h2>
 

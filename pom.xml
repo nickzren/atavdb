@@ -4,7 +4,7 @@
 
     <groupId>edu.columbia.cumc</groupId>
     <artifactId>atavdb</artifactId>
-    <version>beta</version>
+    <version>1.0</version>
     <packaging>war</packaging>
 
     <name>atavdb</name>
