@@ -242,6 +242,43 @@
 
         <div class="card">
             <div class="card-body">
+                <h4 class="card-title">External AF</h4>
+
+                <div class='table-responsive'>
+                    <table class="table table-hover text-center align-middle">
+                        <thead>
+                            <tr>
+                                <th data-toggle="tooltip" title="Version 0.3">ExAC</th>
+                                <th data-toggle="tooltip" title="Version 2020-02-19">Genome Asia</th>
+                                <th data-toggle="tooltip" title="Version 2.1">gnomAD Exome</th>
+                                <th data-toggle="tooltip" title="Version 2.1">gnomAD Genome</th>
+                                <th data-toggle="tooltip" title="Version 2016-09-18">GME Variome</th>
+                                <th data-toggle="tooltip" title="Version 2020-02-24">Iranome</th>
+                                <th data-toggle="tooltip" title="Version Freeze3a hg19">TOPMED</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>    
+                            <tr>
+                                <td>${variant.getExAC()}</td>
+                                <td>${variant.getGenomeAsia()}</td>
+                                <td>${variant.getGnomADExome()}</td>
+                                <td>${variant.getGnomADGenome()}</td>
+                                <td>${variant.getGME()}</td>
+                                <td>${variant.getIranme()}</td>
+                                <td>${variant.getTopMed()}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <br/>
+        <br/>
+
+        <div class="card">
+            <div class="card-body">
                 <h4 class="card-title">Carrier</h4>
 
                 <div class="row mt-2">      
@@ -356,8 +393,8 @@
         <script type="text/javascript">
     let elem = document.querySelector('gnx-summary');
     elem.variantId = {
-        ref: '${variant.getRefAllele()}',
-        alt: '${variant.getAllele()}',
+        ref: '${variant.getRef()}',
+        alt: '${variant.getAlt()}',
         chr: '${variant.getChrStr()}',
         pos: ${variant.getStartPosition()},
     };

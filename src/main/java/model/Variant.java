@@ -33,6 +33,15 @@ public class Variant extends Region {
     private String geneName = "";
     private List<String> geneList = new ArrayList<>();
     private List<Annotation> annotationList = new ArrayList<>();
+
+    // external af
+    private float exac;
+    private float genomeAsia;
+    private float gnomadExome;
+    private float gnomadGenome;
+    private float gme;
+    private float iranome;
+    private float topmed;
     
     // carrier & non-carrier
     private HashMap<Integer, Carrier> carrierMap = new HashMap<>();
@@ -60,11 +69,27 @@ public class Variant extends Region {
         initRegion(chr, pos, pos);
 
         variantIdStr = chrStr + "-" + pos + "-" + ref + "-" + alt;
-        
-        init(filter, request);
+
+        initExternalAF(filter);
+
+        initCarrier(filter, request);
     }
 
-    private void init(FilterManager filter, HttpServletRequest request) throws Exception {
+    private void initExternalAF(FilterManager filter) {
+        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
+            exac = ExternalDataManager.getExAC(chrStr, startPosition, ref, alt);
+            genomeAsia = ExternalDataManager.getGenomeAsia(chrStr, startPosition, ref, alt);
+            gnomadExome = ExternalDataManager.getGenoADExome(chrStr, startPosition, ref, alt);
+            gnomadGenome = ExternalDataManager.getGenoADGenome(chrStr, startPosition, ref, alt);
+            gme = ExternalDataManager.getGME(chrStr, startPosition, ref, alt);
+            iranome = ExternalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
+            topmed = ExternalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
+        }
+
+    }
+
+    // init carrier and non-carrier data, calculate af and count genotype
+    private void initCarrier(FilterManager filter, HttpServletRequest request) throws Exception {
         if (isValid
                 && initCarrierData(filter, request)) {
             DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, request);
@@ -86,7 +111,7 @@ public class Variant extends Region {
             }
         }
     }
-    
+
     public int getVariantId() {
         return variantId;
     }
@@ -164,7 +189,35 @@ public class Variant extends Region {
     public boolean isValid() {
         return isValid;
     }
+
+    public String getExAC() {
+        return FormatManager.getFloat(exac);
+    }
+
+    public String getGenomeAsia() {
+        return FormatManager.getFloat(genomeAsia);
+    }
+
+    public String getGnomADExome() {
+        return FormatManager.getFloat(gnomadExome);
+    }
+
+    public String getGnomADGenome() {
+        return FormatManager.getFloat(gnomadGenome);
+    }
+
+    public String getGME() {
+        return FormatManager.getFloat(gme);
+    }
+
+    public String getIranme() {
+        return FormatManager.getFloat(iranome);
+    }
     
+    public String getTopMed() {
+        return FormatManager.getFloat(topmed);
+    }
+
     private boolean initCarrierData(FilterManager filter, HttpServletRequest request) {
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
             // single variant carriers data process
@@ -275,7 +328,7 @@ public class Variant extends Region {
     public int[] getGenderCount() {
         return genderCount;
     }
-    
+
     public int[] getEthnicityCount() {
         return ethnicityCount;
     }
