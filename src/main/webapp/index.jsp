@@ -80,77 +80,14 @@
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
                                     Variant: <a href="#" onclick="document.getElementById('query').value = '12-64878160-G-A';
-                                            document.getElementById('btn-submit').click();">12-64878160-G-A</a>, 
+                document.getElementById('btn-submit').click();">12-64878160-G-A</a>, 
                                     Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
                                             document.getElementById('btn-submit').click();">TBK1</a>,
                                     Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
                                             document.getElementById('btn-submit').click();">2:166889788-166895788</a>
                                 </p>
 
-                                <c:set var="phenotype_list" value="${['','amyotrophic lateral sclerosis',
-                                                                     'autoimmune disease','bone disease',
-                                                                     'brain malformation','cancer','cardiovascular disease',
-                                                                     'congenital disorder','control','control mild neuropsychiatric disease','covid-19',
-                                                                     'dementia','dermatological disease','diseases that affect the ear',
-                                                                     'endocrine disorder','epilepsy','febrile seizures','fetal ultrasound anomaly',
-                                                                     'gastrointestinal disease','healthy family member','hematological disease',
-                                                                     'infectious disease','intellectual disability','kidney and urological disease',
-                                                                     'liver disease','metabolic disease','neurodegenerative','nonhuman','obsessive compulsive disorder',
-                                                                     'ophthalmic disease','other','other neurodevelopmental disease','other neurological disease',
-                                                                     'other neuropsychiatric disease','primary immune deficiency','pulmonary disease',
-                                                                     'schizophrenia','sudden death','alzheimers disease','cerebral palsy']}"/>
-                                <div class="row align-items-center">
-                                    <div class="form-group col-auto" style="margin-left: 5px"
-                                         data-toggle="tooltip" title="Search variants by selected phenotype">
-                                        <label for="input-select-phenotype">Phenotype:</label>
-                                        <c:if test="${empty phenotype}" >
-                                            <c:set var="phenotype" value=""/>
-                                        </c:if>
-                                        <select id="input-select-phenotype" name="phenotype" class="form-control">
-                                            <c:forEach items="${phenotype_list}" var="p">
-                                                <option value="${p}" 
-                                                        <c:if test="${phenotype == p}" >
-                                                            selected
-                                                        </c:if>
-                                                        >${p}
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group col-auto" style="margin-left: 5px" 
-                                         data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
-                                        <label for="input-select-max-af">Max AF:</label>
-                                        <c:set var="af_list" value="${['','0.01','0.005','0.001']}"/>
-                                        <c:if test="${empty maxAF}" >
-                                            <c:set var="maxAF" value=""/>
-                                        </c:if>
-                                        <select id="input-select-max-af" name="maxAF" class="form-control">
-                                            <c:forEach items="${af_list}" var="af">
-                                                <option value="${af}" 
-                                                        <c:if test="${maxAF == af}" >
-                                                            selected
-                                                        </c:if>
-                                                        >${af}
-                                                </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <div class="custom-control custom-switch col-auto" style="margin-left: 18px"
-                                         data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
-                                         SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
-                                         MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
-                                        <input type="checkbox" class="custom-control-input" id="input-check-high-quality-variants" name="isHighQualityVariants" 
-                                               <c:if test="${not empty isHighQualityVariants}" >
-                                                   checked
-                                               </c:if>
-                                               >
-                                        <label class="custom-control-label" for="input-check-high-quality-variants">High quality variants</label>
-                                    </div>
-                                </div>
                             </div>
-
                             <div class="col-3 text-center">
                                 <c:import url="/SampleCount" />
                                 <c:if test="${not empty sampleCount && not empty username}" >
@@ -160,7 +97,85 @@
                                     </div>
                                 </c:if>
                             </div>
+
                         </div>
+
+                        <div class="row align-items-center">
+                            <c:set var="phenotype_list" value="${['','amyotrophic lateral sclerosis',
+                                                                 'autoimmune disease','bone disease',
+                                                                 'brain malformation','cancer','cardiovascular disease',
+                                                                 'congenital disorder','control','control mild neuropsychiatric disease','covid-19',
+                                                                 'dementia','dermatological disease','diseases that affect the ear',
+                                                                 'endocrine disorder','epilepsy','febrile seizures','fetal ultrasound anomaly',
+                                                                 'gastrointestinal disease','healthy family member','hematological disease',
+                                                                 'infectious disease','intellectual disability','kidney and urological disease',
+                                                                 'liver disease','metabolic disease','neurodegenerative','nonhuman','obsessive compulsive disorder',
+                                                                 'ophthalmic disease','other','other neurodevelopmental disease','other neurological disease',
+                                                                 'other neuropsychiatric disease','primary immune deficiency','pulmonary disease',
+                                                                 'schizophrenia','sudden death','alzheimers disease','cerebral palsy']}"/>
+
+                            <div class="form-group col-auto" style="margin-left: 5px"
+                                 data-toggle="tooltip" title="Search variants by selected phenotype">
+                                <label for="input-select-phenotype">Phenotype:</label>
+                                <c:if test="${empty phenotype}" >
+                                    <c:set var="phenotype" value=""/>
+                                </c:if>
+                                <select id="input-select-phenotype" name="phenotype" class="form-control">
+                                    <c:forEach items="${phenotype_list}" var="p">
+                                        <option value="${p}" 
+                                                <c:if test="${phenotype == p}" >
+                                                    selected
+                                                </c:if>
+                                                >${p}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <div class="form-group col-auto"
+                                 data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
+                                <label for="input-select-max-af">Max AF:</label>
+                                <c:set var="af_list" value="${['','0.01','0.005','0.001']}"/>
+                                <c:if test="${empty maxAF}" >
+                                    <c:set var="maxAF" value=""/>
+                                </c:if>
+                                <select id="input-select-max-af" name="maxAF" class="form-control">
+                                    <c:forEach items="${af_list}" var="af">
+                                        <option value="${af}" 
+                                                <c:if test="${maxAF == af}" >
+                                                    selected
+                                                </c:if>
+                                                >${af}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <div class="custom-control custom-switch col-auto" style="margin-left: 13px"
+                                 data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
+                                 SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
+                                 MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
+                                <input type="checkbox" class="custom-control-input" id="input-check-high-quality-variant" name="isHighQualityVariant" 
+                                       <c:if test="${not empty isHighQualityVariant}" >
+                                           checked
+                                       </c:if>
+                                       >
+                                <label class="custom-control-label" for="input-check-high-quality-variant">High Quality Variant Only</label>
+                            </div>
+
+                            <div class="custom-control custom-switch col-auto" style="margin-left: 10px"
+                                 data-toggle="tooltip" title="All External AF are either 0 or NA">
+                                <input type="checkbox" class="custom-control-input" id="input-check-ultra-rare-variant" name="isUltraRareVariant" 
+                                       <c:if test="${not empty isUltraRareVariant}" >
+                                           checked
+                                       </c:if>
+                                       >
+                                <label class="custom-control-label" for="input-check-ultra-rare-variant">Ultra Rare Variant Only</label>
+                            </div>
+
+                        </div>
+
+
                     </div>
                 </form>
 
@@ -172,15 +187,21 @@
                                     `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>`
                                     );
                             jQuery_3_4_1("#input-select-phenotype").filter(
-                                    function(){ return !this.value;}
-                                    ).prop("disabled", true);
+                                    function () {
+                                        return !this.value;
+                                    }
+                            ).prop("disabled", true);
                             jQuery_3_4_1("#input-select-max-af").filter(
-                                    function(){ return !this.value;}
-                                    ).prop("disabled", true);
-                            jQuery_3_4_1("#input-check-high-quality-variants").filter(
-                                    function(){ return !this.value;}
-                                    ).prop("disabled", true);
-                            
+                                    function () {
+                                        return !this.value;
+                                    }
+                            ).prop("disabled", true);
+                            jQuery_3_4_1("#input-check-high-quality-variant").filter(
+                                    function () {
+                                        return !this.value;
+                                    }
+                            ).prop("disabled", true);
+
                             return true;
                         });
                     });

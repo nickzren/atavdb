@@ -42,7 +42,7 @@ public class Variant extends Region {
     private float gme;
     private float iranome;
     private float topmed;
-    
+
     // carrier & non-carrier
     private HashMap<Integer, Carrier> carrierMap = new HashMap<>();
     private HashMap<Integer, NonCarrier> noncarrierMap = new HashMap<>();
@@ -76,7 +76,8 @@ public class Variant extends Region {
     }
 
     private void initExternalAF(FilterManager filter) {
-        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
+        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])
+                || filter.isUltraRareVariant()) { // variant search or checked ultra variant only
             exac = ExternalDataManager.getExAC(chrStr, startPosition, ref, alt);
             genomeAsia = ExternalDataManager.getGenomeAsia(chrStr, startPosition, ref, alt);
             gnomadExome = ExternalDataManager.getGenoADExome(chrStr, startPosition, ref, alt);
@@ -84,6 +85,14 @@ public class Variant extends Region {
             gme = ExternalDataManager.getGME(chrStr, startPosition, ref, alt);
             iranome = ExternalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
             topmed = ExternalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
+
+            isValid = filter.isExternalAFValid(exac)
+                    && filter.isExternalAFValid(genomeAsia)
+                    && filter.isExternalAFValid(gnomadExome)
+                    && filter.isExternalAFValid(gnomadGenome)
+                    && filter.isExternalAFValid(gme)
+                    && filter.isExternalAFValid(iranome)
+                    && filter.isExternalAFValid(topmed);
         }
 
     }
@@ -213,7 +222,7 @@ public class Variant extends Region {
     public String getIranme() {
         return FormatManager.getFloat(iranome);
     }
-    
+
     public String getTopMed() {
         return FormatManager.getFloat(topmed);
     }

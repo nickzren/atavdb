@@ -14,7 +14,8 @@ public class FilterManager {
     private String queryType;
     private float maxAF;
     private String phenotype;
-    private boolean isHighQualityVariants;
+    private boolean isHighQualityVariant;
+    private boolean isUltraRareVariant;
     private final static int minVarPresent = 1;
     private final static boolean isQcMissingIncluded = true;
     private final static int minDpBin = 10;
@@ -52,22 +53,21 @@ public class FilterManager {
 
         String maxAFStr = request.getParameter("maxAF");
         String phenotypeStr = request.getParameter("phenotype");
-        String isHighQualityVariantsStr = request.getParameter("isHighQualityVariants");
+        String isHighQualityVariantStr = request.getParameter("isHighQualityVariant");
+        String isUltraRareVariantStr = request.getParameter("isUltraRareVariant");
 
         request.setAttribute("query", query);
         request.setAttribute("queryType", queryType);
         request.setAttribute("maxAF", maxAFStr);
         request.setAttribute("phenotype", phenotypeStr);
-        request.setAttribute("isHighQualityVariants", isHighQualityVariantsStr);
+        request.setAttribute("isHighQualityVariant", isHighQualityVariantStr);
+        request.setAttribute("isUltraRareVariant", isUltraRareVariantStr);
 
         maxAF = getFloat(maxAFStr);
         phenotype = phenotypeStr;
 
-        isHighQualityVariants = false;
-        if (isHighQualityVariantsStr != null
-                && isHighQualityVariantsStr.equalsIgnoreCase("on")) {
-            isHighQualityVariants = true;
-        }
+        isHighQualityVariant = isHighQualityVariantStr != null && isHighQualityVariantStr.equalsIgnoreCase("on");
+        isUltraRareVariant = isUltraRareVariantStr != null && isUltraRareVariantStr.equalsIgnoreCase("on");
     }
 
     public String getPhenotype() {
@@ -156,7 +156,7 @@ public class FilterManager {
     }
 
     public boolean isFilterValid(byte value) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -170,7 +170,7 @@ public class FilterManager {
     }
 
     public boolean isMinGqValid(byte value) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -194,7 +194,7 @@ public class FilterManager {
     }
 
     private boolean isMaxSORValid(float value, float sor) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -218,7 +218,7 @@ public class FilterManager {
     }
 
     private boolean isMaxFsValid(float value, float fs) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -234,7 +234,7 @@ public class FilterManager {
     }
 
     public boolean isMinMqValid(byte value) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -250,7 +250,7 @@ public class FilterManager {
     }
 
     public boolean isMinQdValid(byte value) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -266,7 +266,7 @@ public class FilterManager {
     }
 
     public boolean isMinQualValid(int value) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -282,7 +282,7 @@ public class FilterManager {
     }
 
     public boolean isMinRprsValid(float value) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -298,7 +298,7 @@ public class FilterManager {
     }
 
     public boolean isMinMqrsValid(float value) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
@@ -314,11 +314,23 @@ public class FilterManager {
     }
 
     public boolean isMinDpBinValid(short value) {
-        if (!isHighQualityVariants) {
+        if (!isHighQualityVariant) {
             return true;
         }
 
         return value >= minDpBin;
     }
 
+    public boolean isUltraRareVariant() {
+        return isUltraRareVariant;
+    }
+    
+    public boolean isExternalAFValid(float af) {
+        if(isUltraRareVariant) {
+            return af == Data.FLOAT_NA || af == 0;
+        }
+        
+        // if not looking for ultra variant always return true
+        return true;
+    }
 }
