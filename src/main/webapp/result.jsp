@@ -31,7 +31,7 @@
     });
 
     jQuery_3_4_1(function () {
-        jQuery_3_4_1('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
+        jQuery_3_4_1('[data-toggle="tooltip"]').tooltip({boundary: 'window'});
     });
 </script>
 
@@ -134,42 +134,14 @@
                     <table id="${variant_table}" class="table table-hover text-center align-middle">
                         <thead>
                             <tr>
-                                <th>Variant ID</th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Function Effect (Ensemble 87)">
-                                        Effect
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="HGNC Gene (Ensemble 87)">
-                                        Gene
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Allele Acount">
-                                        AC
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Allele Number (total number of alleles)">
-                                        AN
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Allele Frequency">
-                                        AF
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Number of samples having data">
-                                        NS
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Number of homozygotes">
-                                        NHOM
-                                    </div>
-                                </th>
+                                <th data-toggle="tooltip" title="chr-pos-ref-alt">Variant ID</th>
+                                <th data-toggle="tooltip" title="Function Effect (Ensemble 87)">Effect</th>
+                                <th data-toggle="tooltip" title="HGNC Gene (Ensemble 87)">Gene</th>
+                                <th data-toggle="tooltip" title="Allele Acount">AC</th>
+                                <th data-toggle="tooltip" title="Allele Number (total number of alleles)">AN</th>
+                                <th data-toggle="tooltip" title="Allele Frequency">AF</th>
+                                <th data-toggle="tooltip" title="Number of samples having data">NS</th>
+                                <th data-toggle="tooltip" title="Number of homozygotes">NHOM</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -308,47 +280,15 @@
                                 <thead>
                                     <tr>
                                 <c:if test="${not empty is_authorized}" >
-                                    <th>
-                                        <div data-toggle="tooltip" title="Sample experiment_id in sequenceDB">
-                                            Experiment ID
-                                        </div>
-                                    </th>
+                                    <th data-toggle="tooltip" title="Sample experiment_id in sequenceDB">Experiment ID</th>
                                 </c:if>
-                                <th>
-                                    <div data-toggle="tooltip" title="seqGender in sequenceDB">
-                                        Gender
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Broad Phenotype in sequenceDB">
-                                        Phenotype
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Ethnicity probability >= 0.5 in sequenceDB">
-                                        Ethnicity
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Genotype">
-                                        GT
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Read Depth">
-                                        DP
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="Genotype Quality">
-                                        GQ
-                                    </div>
-                                </th>
-                                <th>
-                                    <div data-toggle="tooltip" title="">
-                                        FILTER
-                                    </div>
-                                </th>
+                                <th data-toggle="tooltip" title="seqGender in sequenceDB">Gender</th>
+                                <th data-toggle="tooltip" title="Broad Phenotype in sequenceDB">Phenotype</th>
+                                <th data-toggle="tooltip" title="Ethnicity probability >= 0.5 in sequenceDB">Ethnicity</th>
+                                <th data-toggle="tooltip" title="Genotype">GT</th>
+                                <th data-toggle="tooltip" title="Read Depth">DP</th>
+                                <th data-toggle="tooltip" title="Genotype Quality">GQ</th>
+                                <th data-toggle="tooltip" title="PASS->PASS, VQSRTrancheSNP90.00to99.00->LIKELY, VQSRTrancheSNP99.00to99.90->INTERMEDIATE, VQSRTrancheSNP99.90to100.00->FAIL">FILTER</th>
                                 </tr>
                                 </thead>
                                 <tbody>
