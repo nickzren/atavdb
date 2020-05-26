@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class VariantManager {
 
-    public static ArrayList<CalledVariant> getVariantList(FilterManager filter, HttpServletRequest request) throws Exception {
-        ArrayList<CalledVariant> list = new ArrayList<>();
+    public static ArrayList<Variant> getVariantList(FilterManager filter, HttpServletRequest request) throws Exception {
+        ArrayList<Variant> list = new ArrayList<>();
 
         String chr = "";
         String joinSQL = "";// codingandsplice_effect
@@ -52,7 +52,7 @@ public class VariantManager {
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
 
-        CalledVariant calledVar = null;
+        Variant variant = null;
         int currentVariantId = Data.INTEGER_NA;
         while (rs.next()) {
             Annotation annotation = new Annotation(chr, rs);
@@ -60,14 +60,14 @@ public class VariantManager {
             if (currentVariantId != rs.getInt("variant_id")) {
                 currentVariantId = rs.getInt("variant_id");
 
-                calledVar = new CalledVariant(chr, rs, filter, request);
+                variant = new Variant(chr, rs, filter, request);
 
-                if (calledVar.isValid()) {
-                    list.add(calledVar);
+                if (variant.isValid()) {
+                    list.add(variant);
                 }
             }
 
-            calledVar.update(annotation);
+            variant.update(annotation);
         }
 
         rs.close();

@@ -123,7 +123,7 @@
     <c:if test="${not empty variantList}" >
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Variants</h5>
+                <h4 class="card-title">Variant</h4>
 
                 <c:set var = "variant_table" value = "variant_table"/>
                 <c:if test="${queryType == 'Variant'}" >
@@ -205,7 +205,7 @@
     <c:forEach items="${variantList}" var="variant">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Annotations</h5>
+                <h4 class="card-title">Annotation</h4>
 
                 <div class='table-responsive'>
                     <table class="table table-hover text-center align-middle">
@@ -242,11 +242,11 @@
 
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Carriers</h5>
+                <h4 class="card-title">Carrier</h4>
 
                 <div class="row mt-2">      
                     <c:forEach items="${genders}" var="gender">
-                        <div class="col-auto">
+                        <div class="col-auto lead">
                             <span class="badge badge-light">${variant.getGenderCount()[gender.getIndex()]}
                                 ${gender.getName()}</span> 
                         </div>
@@ -255,7 +255,7 @@
 
                 <div class="row mt-2">      
                     <c:forEach items="${ethnicities}" var="ethnicity">
-                        <div class="col-auto">
+                        <div class="col-auto lead">
                             <span class="badge badge-light">${variant.getEthnicityCount()[ethnicity.getIndex()]}
                                 ${ethnicity.getName()}</span> 
                         </div>

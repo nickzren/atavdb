@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.CalledVariant;
+import model.Variant;
 import model.EffectManager;
 import model.SampleManager;
 import model.FilterManager;
@@ -36,7 +36,7 @@ public class Search extends HttpServlet {
 
                     SampleManager.init(filter);
 
-                    ArrayList<CalledVariant> variantList = VariantManager.getVariantList(filter, request);
+                    ArrayList<Variant> variantList = VariantManager.getVariantList(filter, request);
 
                     if (variantList.isEmpty()) {
                         request.setAttribute("message", "No results found from search query.");
