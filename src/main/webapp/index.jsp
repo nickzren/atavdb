@@ -79,8 +79,8 @@
 
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
-                                    Variant: <a href="#" onclick="document.getElementById('query').value = '12-64878160-G-A';
-                document.getElementById('btn-submit').click();">12-64878160-G-A</a>, 
+                                    Variant: <a href="#" onclick="document.getElementById('query').value = '21-33040861-G-C';
+                document.getElementById('btn-submit').click();">21-33040861-G-C</a>, 
                                     Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
                                             document.getElementById('btn-submit').click();">TBK1</a>,
                                     Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
@@ -163,7 +163,7 @@
                                 <label class="custom-control-label" for="input-check-high-quality-variant">High Quality Variant Only</label>
                             </div>
 
-                            <div class="custom-control custom-switch col-auto" style="margin-left: 10px"
+                            <div class="custom-control custom-switch col-auto" style="margin-left: 8px"
                                  data-toggle="tooltip" title="All External AF are either 0 or NA">
                                 <input type="checkbox" class="custom-control-input" id="input-check-ultra-rare-variant" name="isUltraRareVariant" 
                                        <c:if test="${not empty isUltraRareVariant}" >
