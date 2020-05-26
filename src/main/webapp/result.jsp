@@ -31,7 +31,7 @@
     });
 
     jQuery_3_4_1(function () {
-        jQuery_3_4_1('[data-toggle="tooltip"]').tooltip();
+        jQuery_3_4_1('[data-toggle="tooltip"]').tooltip({ boundary: 'window' });
     });
 </script>
 
