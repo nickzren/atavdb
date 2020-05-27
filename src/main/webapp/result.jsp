@@ -5,13 +5,13 @@
             //            paging: false,
             //            info: false,
             //            lengthChange: false,
-//            buttons: [
-//                {
-//                    extend: 'csv',
-//                    text: '<i class="fas fa-file-csv"></i> Download',
-//                    className: 'btn btn-light'
-//                },
-//            ],
+            buttons: [
+                {
+                    extend: 'csv',
+                    text: '<i class="fas fa-file-csv"></i> Download',
+                    className: 'btn btn-light'
+                },
+            ],
         });
 
         variant_table.buttons().container().appendTo('#variant_table_wrapper .col-md-6:eq(0)');
@@ -135,8 +135,8 @@
                         <thead>
                             <tr>
                                 <th data-toggle="tooltip" title="chr-pos-ref-alt">Variant ID</th>
-                                <th data-toggle="tooltip" title="Function Effect (Ensemble 87)">Effect</th>
-                                <th data-toggle="tooltip" title="HGNC Gene (Ensemble 87)">Gene</th>
+                                <th data-toggle="tooltip" title="Consequence type of this variation (Ensemble 87)">Effect</th>
+                                <th data-toggle="tooltip" title="HGNC gene identifier (Ensemble 87)">Gene</th>
                                 <th data-toggle="tooltip" title="Allele Acount">AC</th>
                                 <th data-toggle="tooltip" title="Allele Number (total number of alleles)">AN</th>
                                 <th data-toggle="tooltip" title="Allele Frequency">AF</th>
@@ -183,12 +183,12 @@
                     <table class="table table-hover text-center align-middle">
                         <thead>
                             <tr>
-                                <th>Effect</th>
-                                <th>Gene</th>
-                                <th>Transcript</th>
-                                <th>HGVS_c</th>
-                                <th>HGVS_p</th>
-                                <th>Polyphen</th>
+                                <th data-toggle="tooltip" title="Consequence type of this variation (Ensemble 87)">Effect</th>
+                                <th data-toggle="tooltip" title="HGNC gene identifier (Ensemble 87)">Gene</th>
+                                <th data-toggle="tooltip" title="Transcript stable id (Ensemble 87)">Transcript</th>
+                                <th data-toggle="tooltip" title="HGVS coding sequence name (Ensemble 87)">HGVS_c</th>
+                                <th data-toggle="tooltip" title="HGVS protein sequence name (Ensemble 87)">HGVS_p</th>
+                                <th data-toggle="tooltip" title="PolyPhen-2 HumDiv Classification for missense variants from Ensembl 87">PolyPhen</th>
                             </tr>
                         </thead>
 

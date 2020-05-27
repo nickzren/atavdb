@@ -160,7 +160,7 @@
                                            checked
                                        </c:if>
                                        >
-                                <label class="custom-control-label" for="input-check-high-quality-variant">High Quality Variant Only</label>
+                                <label class="custom-control-label" for="input-check-high-quality-variant">High Quality Variant</label>
                             </div>
 
                             <div class="custom-control custom-switch col-auto" style="margin-left: 8px"
@@ -170,7 +170,7 @@
                                            checked
                                        </c:if>
                                        >
-                                <label class="custom-control-label" for="input-check-ultra-rare-variant">Ultra Rare Variant Only</label>
+                                <label class="custom-control-label" for="input-check-ultra-rare-variant">Ultra Rare Variant</label>
                             </div>
 
                         </div>
