@@ -211,5 +211,6 @@
             </div>
         </div>
         <%@include file="base/footer.jsp" %>
+        <%@include file="base/counter.jsp" %>
     </body>
 </html>
