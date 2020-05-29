@@ -12,9 +12,6 @@
                 <a class="nav-item nav-link home-link" href="contact.jsp">Contact</a>
                 <c:choose>
                     <c:when test="${not empty username}" >
-<!--                        <li class="nav-item">
-                            <span class="btn" href="#" disabled><i class="fas fa-user"></i>&nbsp;${username}</span>
-                        </li>-->
                         <a class="nav-item nav-link home-link" href="SignOut"><i class="fas fa-sign-out-alt"></i>&nbsp;Sign Out</a>
                     </c:when>
                     <c:otherwise>

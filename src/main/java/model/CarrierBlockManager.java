@@ -58,7 +58,8 @@ public class CarrierBlockManager {
         sqlSB.append(" AND sample_failure=0");
         sqlSB.append(" AND sample_type!='custom_capture'");
         sqlSB.append(filter.getPhenotypeSQL());
-
+        sqlSB.append(filter.getAvailableControlUseSQL());
+        
         try {
             HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
@@ -122,6 +123,7 @@ public class CarrierBlockManager {
         sqlSB.append(" AND sample_failure=0");
         sqlSB.append(" AND sample_type!='custom_capture'");
         sqlSB.append(filter.getPhenotypeSQL());
+        sqlSB.append(filter.getAvailableControlUseSQL());
 
         try {
             Connection connection = DBManager.getConnection();

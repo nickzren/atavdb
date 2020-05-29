@@ -90,7 +90,7 @@
                             </div>
                             <div class="col-3 text-center">
                                 <c:import url="/SampleCount" />
-                                <c:if test="${not empty sampleCount && not empty username}" >
+                                <c:if test="${not empty sampleCount}" >
                                     <div class="bg-light">
                                         <h2><fmt:formatNumber type = "number" value = "${sampleCount}"/></h2>
                                         <p><i class="fas fa-dna"></i> NGS Samples</p>

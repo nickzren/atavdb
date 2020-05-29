@@ -15,7 +15,9 @@ import util.DBManager;
  */
 public class SampleManager {
 
-    private static HashMap<String, ArrayList<Sample>> map = new HashMap<>();
+    // authorized user init all sample map , key is phenotype and value is list of samples associated
+    private static HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
+    private static HashMap<String, ArrayList<Sample>> availableControlUseSampleMap = new HashMap<>();
 
     public static void init(FilterManager filter) throws Exception {
         if (checkSampleCount(filter)) {
@@ -24,21 +26,22 @@ public class SampleManager {
     }
 
     private static boolean checkSampleCount(FilterManager filter) throws Exception {
-        if (map.isEmpty()) {
+        if (getMap(filter).isEmpty()) {
             return true;
         }
 
         String sqlCode = "SELECT count(*) as count FROM sample "
                 + "WHERE sample_finished=1 AND sample_failure=0"
                 + " AND sample_type!='custom_capture'"
-                + filter.getPhenotypeSQL();
+                + filter.getPhenotypeSQL()
+                + filter.getAvailableControlUseSQL();
 
         Connection connection = DBManager.getConnection();
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sqlCode);
 
         if (rs.next()) {
-            if (map.get("all").size() != rs.getInt("count")) {
+            if (getMap(filter).get("all").size() != rs.getInt("count")) {
                 return true;
             }
         }
@@ -50,13 +53,14 @@ public class SampleManager {
     }
 
     private static void initAllSampleFromDB(FilterManager filter) throws Exception {
-        map.clear();
-        map.put("all", new ArrayList<>());
+        getMap(filter).clear();
+        getMap(filter).put("all", new ArrayList<>());
 
         String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype,ethnicity FROM sample "
                 + "WHERE sample_finished=1 AND sample_failure=0"
                 + " AND sample_type!='custom_capture'"
-                + filter.getPhenotypeSQL();
+                + filter.getPhenotypeSQL()
+                + filter.getAvailableControlUseSQL();
 
         Connection connection = DBManager.getConnection();
         Statement statement = connection.createStatement();
@@ -74,27 +78,31 @@ public class SampleManager {
             Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ethnicity);
 
             if (broadPhenotype != null && !broadPhenotype.isEmpty()) {
-                ArrayList<Sample> list = map.get(broadPhenotype);
+                ArrayList<Sample> list = getMap(filter).get(broadPhenotype);
                 if (list == null) {
                     list = new ArrayList<>();
-                    map.put(broadPhenotype, list);
+                    getMap(filter).put(broadPhenotype, list);
                 }
 
                 list.add(sample);
             }
 
-            map.get("all").add(sample);
+            getMap(filter).get("all").add(sample);
         }
 
         rs.close();
         statement.close();
     }
 
-    public static int getTotalSampleNum() {
-        return map.isEmpty() ? 0 : map.get("all").size();
+    public static int getTotalSampleNum(FilterManager filter) {
+        return getMap(filter).isEmpty() ? 0 : getMap(filter).get("all").size();
     }
 
     public static ArrayList<Sample> getList(FilterManager filter) {
-        return map.get(filter.getPhenotype());
+        return getMap(filter).get(filter.getPhenotype());
+    }
+    
+    public static HashMap<String, ArrayList<Sample>> getMap(FilterManager filter) {
+        return filter.isAvailableControlUseOnly() ? availableControlUseSampleMap : allSampleMap;
     }
 }

@@ -5,7 +5,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import model.FilterManager;
 import model.SampleManager;
 import util.DBManager;
@@ -19,13 +18,10 @@ public class SampleCount extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            HttpSession session = request.getSession();
-            if (session.getAttribute("username") != null) {
-                DBManager.init();
-                FilterManager filter = new FilterManager(request);
-                SampleManager.init(filter);
-                request.setAttribute("sampleCount", SampleManager.getTotalSampleNum());
-            }
+            DBManager.init();
+            FilterManager filter = new FilterManager(request);
+            SampleManager.init(filter);
+            request.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));
         } catch (Exception ex) {
             // debug purpose
 //            request.setAttribute("error", ex.toString());

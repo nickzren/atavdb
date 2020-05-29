@@ -16,6 +16,7 @@ public class FilterManager {
     private String phenotype;
     private boolean isHighQualityVariant;
     private boolean isUltraRareVariant;
+    private boolean isAvailableControlUseOnly;
     private final static int minVarPresent = 1;
     private final static boolean isQcMissingIncluded = true;
     private final static int minDpBin = 10;
@@ -36,7 +37,7 @@ public class FilterManager {
     private String error;
 
     public final static float MAX_AF_TO_DISPLAY_CARRIER = 0.01f;
-    
+
     public FilterManager() {
     }
 
@@ -44,11 +45,15 @@ public class FilterManager {
         query = request.getParameter("query");
         queryType = getQueryType(query);
 
-        if (request.getSession().getAttribute("is_authorized") == null
-                && (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) // gene / region
-        {
-            error = "Permission denied.";
-            request.setAttribute("error", error);
+        isAvailableControlUseOnly = false;
+        if (request.getSession().getAttribute("is_authorized") == null) {
+            isAvailableControlUseOnly = true;
+
+            // gene / region
+            if ((queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) {
+                error = "Permission denied.";
+                request.setAttribute("error", error);
+            }
         }
 
         String maxAFStr = request.getParameter("maxAF");
@@ -324,13 +329,25 @@ public class FilterManager {
     public boolean isUltraRareVariant() {
         return isUltraRareVariant;
     }
-    
+
     public boolean isExternalAFValid(float af) {
-        if(isUltraRareVariant) {
+        if (isUltraRareVariant) {
             return af == Data.FLOAT_NA || af == 0;
         }
-        
+
         // if not looking for ultra variant always return true
         return true;
+    }
+    
+    public boolean isAvailableControlUseOnly() {
+        return isAvailableControlUseOnly;
+    }
+    
+    public String getAvailableControlUseSQL() {
+        if (isAvailableControlUseOnly) {
+            return " AND available_control_use=1";
+        }
+
+        return "";
     }
 }

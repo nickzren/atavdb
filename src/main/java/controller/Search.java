@@ -27,28 +27,24 @@ public class Search extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             initSession(session);
-            if (session.getAttribute("username") != null) {
-                DBManager.init();
+            DBManager.init();
 
-                FilterManager filter = new FilterManager(request);
-                if (filter.isQueryValid()) {
-                    EffectManager.init();
+            FilterManager filter = new FilterManager(request);
+            if (filter.isQueryValid()) {
+                EffectManager.init();
 
-                    SampleManager.init(filter);
+                SampleManager.init(filter);
 
-                    ArrayList<Variant> variantList = VariantManager.getVariantList(filter, request);
+                ArrayList<Variant> variantList = VariantManager.getVariantList(filter, request);
 
-                    if (variantList.isEmpty()) {
-                        request.setAttribute("message", "No results found from search query.");
-                    }
-
-                    request.setAttribute("variantList", variantList);
+                if (variantList.isEmpty()) {
+                    request.setAttribute("message", "No results found from search query.");
                 }
 
-                request.getRequestDispatcher("index.jsp").forward(request, response);
-            } else {
-                request.getRequestDispatcher("signin.jsp").forward(request, response);
+                request.setAttribute("variantList", variantList);
             }
+
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         } catch (Exception ex) {
             // debug purpose
             request.setAttribute("error", convertStackTraceToString(ex));
@@ -60,7 +56,7 @@ public class Search extends HttpServlet {
         if (session.getAttribute("genders") == null) {
             session.setAttribute("genders", global.Enum.Gender.values());
         }
-        
+
         if (session.getAttribute("ethnicities") == null) {
             session.setAttribute("ethnicities", global.Enum.Ethnicity.values());
         }

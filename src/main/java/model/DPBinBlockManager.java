@@ -90,7 +90,8 @@ public class DPBinBlockManager {
                     + " AND sample_finished=1"
                     + " AND sample_failure=0"
                     + " AND sample_type!='custom_capture'"
-                    + filter.getPhenotypeSQL();
+                    + filter.getPhenotypeSQL() 
+                    + filter.getAvailableControlUseSQL();
 
             Connection connection = DBManager.getConnection();
             Statement statement = connection.createStatement();
