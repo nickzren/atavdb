@@ -39,9 +39,9 @@
                     <br/>
                 </c:if>
 
-<!--                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i>&nbsp;New account registration from <a href="https://core.igm.cumc.columbia.edu/" target="_blank">IGM Core</a>.
-                </div>-->
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>&nbsp;Login required connection to CUMC network.
+                </div>
 
                 <small class="form-text text-muted">
                     By using these resources, you agree to abide by Columbia University's 

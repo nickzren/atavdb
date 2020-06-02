@@ -63,9 +63,6 @@
                                 <div class="input-group">
                                     <input id="query" name="query" class="form-control"
                                            type="text" placeholder="Search for a variant"
-                                           <c:if test="${empty username}" >
-                                               data-toggle="tooltip" title="Sign In to search"
-                                           </c:if>
                                            <c:if test="${not empty query}" >
                                                value="${query}"
                                            </c:if>
@@ -80,11 +77,13 @@
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
                                     Variant: <a href="#" onclick="document.getElementById('query').value = '21-33040861-G-C';
-                document.getElementById('btn-submit').click();">21-33040861-G-C</a>, 
-                                    Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
+                document.getElementById('btn-submit').click();">21-33040861-G-C</a>
+                                    <c:if test="${not empty is_authorized}" >, 
+                                        Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
                                             document.getElementById('btn-submit').click();">TBK1</a>,
-                                    Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
+                                        Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
                                             document.getElementById('btn-submit').click();">2:166889788-166895788</a>
+                                    </c:if>
                                 </p>
 
                             </div>
