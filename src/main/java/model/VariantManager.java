@@ -29,7 +29,8 @@ public class VariantManager {
             whereSQL = "WHERE POS = " + tmp[1] + " AND REF = '" + tmp[2] + "' AND ALT = '" + tmp[3] + "' ";
         } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
             chr = GeneManager.getChr(query);
-            joinSQL = ",codingandsplice_effect e ";
+            // it's important to force using gene key here for better performance
+            joinSQL = "FORCE INDEX (gene_idx),codingandsplice_effect e ";
             whereSQL = "WHERE gene = '" + query + "' AND v.effect_id = e.id ";
         } else if (queryType.equals(Data.QUERT_TYPE[3])) { // region chr:start-end
             String[] tmp = query.split(":");
@@ -39,6 +40,10 @@ public class VariantManager {
             whereSQL = "WHERE POS BETWEEN " + tmp[0] + " AND " + tmp[1] + " AND v.effect_id = e.id ";
         } else {
             return list;
+        }
+        
+        if(filter.isHighQualityVariant()) {
+            whereSQL += "AND has_high_quality_call=1 ";
         }
 
         String sql = "SELECT variant_id, POS, REF, ALT, rs_number, transcript_stable_id, "

@@ -43,17 +43,14 @@ public class FilterManager {
 
     public FilterManager(HttpServletRequest request) throws Exception {
         query = request.getParameter("query");
-        queryType = getQueryType(query);
+        queryType = getQueryType(query, request);
 
-        isAvailableControlUseOnly = false;
-        if (request.getSession().getAttribute("is_authorized") == null) {
-            isAvailableControlUseOnly = true;
+        isAvailableControlUseOnly = request.getSession().getAttribute("is_authorized") == null;
 
-            // gene / region
-            if ((queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) {
-                error = "Permission denied.";
-                request.setAttribute("error", error);
-            }
+        if (request.getSession().getAttribute("username") == null
+                && (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) {
+            error = "Permission denied for anonymous user.";
+            request.setAttribute("error", error);
         }
 
         String maxAFStr = request.getParameter("maxAF");
@@ -103,7 +100,7 @@ public class FilterManager {
         return value >= minVarPresent;
     }
 
-    private String getQueryType(String query) throws Exception {
+    private String getQueryType(String query, HttpServletRequest request) throws Exception {
         if (query != null && !query.isEmpty()) {
             if (query.split("-").length == 4) {
                 String[] tmp = query.split("-");
@@ -129,6 +126,9 @@ public class FilterManager {
                         if (end >= start
                                 && (end - start) <= RegionManager.MAX_SEARCH_LIMIT) {
                             return Data.QUERT_TYPE[3]; // Region
+                        } else {
+                            error = "Invalid region or exceeds maximum limit 10kb.";
+                            request.setAttribute("error", error);
                         }
                     }
                 }
@@ -326,6 +326,10 @@ public class FilterManager {
         return value >= minDpBin;
     }
 
+    public boolean isHighQualityVariant() {
+        return isHighQualityVariant;
+    }
+
     public boolean isUltraRareVariant() {
         return isUltraRareVariant;
     }
@@ -338,11 +342,11 @@ public class FilterManager {
         // if not looking for ultra variant always return true
         return true;
     }
-    
+
     public boolean isAvailableControlUseOnly() {
         return isAvailableControlUseOnly;
     }
-    
+
     public String getAvailableControlUseSQL() {
         if (isAvailableControlUseOnly) {
             return " AND available_control_use=1";

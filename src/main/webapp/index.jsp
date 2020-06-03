@@ -77,13 +77,11 @@
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
                                     Variant: <a href="#" onclick="document.getElementById('query').value = '21-33040861-G-C';
-                document.getElementById('btn-submit').click();">21-33040861-G-C</a>
-                                    <c:if test="${not empty is_authorized}" >, 
-                                        Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
-                                            document.getElementById('btn-submit').click();">TBK1</a>,
-                                        Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
-                                            document.getElementById('btn-submit').click();">2:166889788-166895788</a>
-                                    </c:if>
+                document.getElementById('btn-submit').click();">21-33040861-G-C</a>, 
+                                    Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
+                                                document.getElementById('btn-submit').click();">TBK1</a>,
+                                    Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
+                                                document.getElementById('btn-submit').click();">2:166889788-166895788</a>
                                 </p>
 
                             </div>
