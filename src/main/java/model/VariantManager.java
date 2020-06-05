@@ -2,9 +2,9 @@ package model;
 
 import global.Data;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import util.DBManager;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,23 +26,23 @@ public class VariantManager {
         if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
             String[] tmp = query.split("-");
             chr = tmp[0];
-            whereSQL = "WHERE POS = " + tmp[1] + " AND REF = '" + tmp[2] + "' AND ALT = '" + tmp[3] + "' ";
+            whereSQL = "WHERE POS=? AND REF=? AND ALT =? ";
         } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
             chr = GeneManager.getChr(query);
             // it's important to force using gene key here for better performance
             joinSQL = "FORCE INDEX (gene_idx),codingandsplice_effect e ";
-            whereSQL = "WHERE gene = '" + query + "' AND v.effect_id = e.id ";
+            whereSQL = "WHERE gene=? AND v.effect_id=e.id ";
         } else if (queryType.equals(Data.QUERT_TYPE[3])) { // region chr:start-end
             String[] tmp = query.split(":");
             chr = tmp[0];
             tmp = tmp[1].split("-");
             joinSQL = ",codingandsplice_effect e ";
-            whereSQL = "WHERE POS BETWEEN " + tmp[0] + " AND " + tmp[1] + " AND v.effect_id = e.id ";
+            whereSQL = "WHERE POS BETWEEN ? AND ? AND v.effect_id = e.id ";
         } else {
             return list;
         }
-        
-        if(filter.isHighQualityVariant()) {
+
+        if (filter.isHighQualityVariant()) {
             whereSQL += "AND has_high_quality_call=1 ";
         }
 
@@ -54,8 +54,23 @@ public class VariantManager {
                 + "ORDER BY POS,variant_id,effect_id,transcript_stable_id;";
 
         Connection connection = DBManager.getConnection();
-        Statement statement = connection.createStatement();
-        ResultSet rs = statement.executeQuery(sql);
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+        if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
+            String[] tmp = query.split("-");
+            preparedStatement.setInt(1, Integer.valueOf(tmp[1]));
+            preparedStatement.setString(2, tmp[2]);
+            preparedStatement.setString(3, tmp[3]);
+        } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
+            preparedStatement.setString(1, query);
+        } else if (queryType.equals(Data.QUERT_TYPE[3])) { // region chr:start-end
+            String[] tmp = query.split(":");
+            tmp = tmp[1].split("-");
+            preparedStatement.setInt(1, Integer.valueOf(tmp[0]));
+            preparedStatement.setInt(2, Integer.valueOf(tmp[1]));
+        }
+
+        ResultSet rs = preparedStatement.executeQuery();
 
         Variant variant = null;
         int currentVariantId = Data.INTEGER_NA;
@@ -76,7 +91,7 @@ public class VariantManager {
         }
 
         rs.close();
-        statement.close();
+        preparedStatement.close();
 
         return list;
     }

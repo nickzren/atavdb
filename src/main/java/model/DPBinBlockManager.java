@@ -2,8 +2,8 @@ package model;
 
 import global.Data;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
@@ -85,17 +85,19 @@ public class DPBinBlockManager {
             FilterManager filter,
             ArrayList<SampleDPBin> currentBlockList) {
         try {
-            String sql = "SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s"
-                    + " WHERE block_id = " + blockId + " AND d.sample_id = s.sample_id"
-                    + " AND sample_finished=1"
-                    + " AND sample_failure=0"
-                    + " AND sample_type!='custom_capture'"
-                    + filter.getPhenotypeSQL() 
-                    + filter.getAvailableControlUseSQL();
+            StringBuilder sqlSB = new StringBuilder();
+            
+            sqlSB.append("SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s ");
+            sqlSB.append("WHERE block_id=? AND d.sample_id=s.sample_id AND");
+            sqlSB.append(filter.getSampleSQL());
+            sqlSB.append(filter.getPhenotypeSQL());
+            sqlSB.append(filter.getAvailableControlUseSQL());
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
+            preparedStatement.setInt(1, blockId);
+            ResultSet rs = preparedStatement.executeQuery();
+            
             while (rs.next()) {
                 NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), rs.getString("DP_string"), posIndex, currentBlockList);
 
@@ -116,7 +118,7 @@ public class DPBinBlockManager {
                 }
             }
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (Exception e) {
         }
     }

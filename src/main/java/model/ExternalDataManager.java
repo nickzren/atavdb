@@ -2,9 +2,9 @@ package model;
 
 import global.Data;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import util.DBManager;
 
 /**
@@ -25,22 +25,23 @@ public class ExternalDataManager {
         float af = Data.FLOAT_NA;
 
         try {
-            String sql = "SELECT global_af FROM " + EXAC_TABLE + " "
-                    + "WHERE chr = '" + chr + "' "
-                    + "AND pos = " + pos + " "
-                    + "AND ref_allele = '" + ref + "' "
-                    + "AND alt_allele = '" + alt + "'";
+            String sql = "SELECT global_af FROM " + EXAC_TABLE
+                    + " WHERE chr=? AND pos=? AND ref_allele=? AND alt_allele=?";
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, chr);
+            preparedStatement.setInt(2, pos);
+            preparedStatement.setString(3, ref);
+            preparedStatement.setString(4, alt);
+            ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
                 af = rs.getFloat("global_af");
             }
 
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
         }
 
@@ -55,19 +56,23 @@ public class ExternalDataManager {
         }
 
         try {
-            String sql = "SELECT af FROM " + GENOMEASIA_TABLE + chr
-                    + " WHERE pos = " + pos + " AND ref = '" + ref + "' AND alt = '" + alt + "'";
+            String sql = "SELECT af FROM " + GENOMEASIA_TABLE
+                    + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, chr);
+            preparedStatement.setInt(2, pos);
+            preparedStatement.setString(3, ref);
+            preparedStatement.setString(4, alt);
+            ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
                 af = rs.getFloat("af");
             }
 
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
         }
 
@@ -78,22 +83,23 @@ public class ExternalDataManager {
         float af = Data.FLOAT_NA;
 
         try {
-            String sql = "SELECT global_AF FROM " + GNOMAD_EXOME_TABLE + " "
-                    + "WHERE chr = '" + chr + "' "
-                    + "AND pos = " + pos + " "
-                    + "AND ref = '" + ref + "' "
-                    + "AND alt = '" + alt + "'";
+            String sql = "SELECT global_AF FROM " + GNOMAD_EXOME_TABLE
+                    + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, chr);
+            preparedStatement.setInt(2, pos);
+            preparedStatement.setString(3, ref);
+            preparedStatement.setString(4, alt);
+            ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
                 af = rs.getFloat("global_AF");
             }
 
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
         }
 
@@ -104,22 +110,23 @@ public class ExternalDataManager {
         float af = Data.FLOAT_NA;
 
         try {
-            String sql = "SELECT global_AF FROM " + GNOMAD_GENOME_TABLE + chr + " "
-                    + "WHERE chr = '" + chr + "' "
-                    + "AND pos = " + pos + " "
-                    + "AND ref = '" + ref + "' "
-                    + "AND alt = '" + alt + "'";
+            String sql = "SELECT global_AF FROM " + GNOMAD_GENOME_TABLE
+                    + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, chr);
+            preparedStatement.setInt(2, pos);
+            preparedStatement.setString(3, ref);
+            preparedStatement.setString(4, alt);
+            ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
                 af = rs.getFloat("global_AF");
             }
 
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
         }
 
@@ -135,18 +142,22 @@ public class ExternalDataManager {
 
         try {
             String sql = "SELECT af FROM " + GME_TABLE
-                    + " WHERE chr = '" + chr + "' AND pos = " + pos + " AND ref = '" + ref + "' AND alt = '" + alt + "'";
+                    + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, chr);
+            preparedStatement.setInt(2, pos);
+            preparedStatement.setString(3, ref);
+            preparedStatement.setString(4, alt);
+            ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
                 af = rs.getFloat("af");
             }
 
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
         }
 
@@ -162,18 +173,22 @@ public class ExternalDataManager {
 
         try {
             String sql = "SELECT af FROM " + IRANOME_TABLE
-                    + " WHERE chr = '" + chr + "' AND pos = " + pos + " AND ref = '" + ref + "' AND alt = '" + alt + "'";
+                    + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, chr);
+            preparedStatement.setInt(2, pos);
+            preparedStatement.setString(3, ref);
+            preparedStatement.setString(4, alt);
+            ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
                 af = rs.getFloat("af");
             }
 
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
         }
 
@@ -187,20 +202,24 @@ public class ExternalDataManager {
             return af;
         }
 
-        try {
-            String sql = "SELECT af FROM " + TOPMED_TABLE + chr
-                    + " WHERE pos = " + pos + " AND ref = '" + ref + "' AND alt = '" + alt + "'";
+        try {           
+            String sql = "SELECT af FROM " + TOPMED_TABLE
+                    + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, chr);
+            preparedStatement.setInt(2, pos);
+            preparedStatement.setString(3, ref);
+            preparedStatement.setString(4, alt);
+            ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
                 af = rs.getFloat("af");
             }
 
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (SQLException ex) {
         }
 

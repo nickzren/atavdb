@@ -253,7 +253,7 @@ public class Variant extends Region {
     }
 
     private void initGTCount(FilterManager filter) {
-        SampleManager.getList(filter).parallelStream().forEach((sample) -> {
+        SampleManager.getList(filter).forEach((sample) -> {
             Carrier carrier = carrierMap.get(sample.getId());
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());
 

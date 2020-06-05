@@ -2,6 +2,7 @@ package model;
 
 import global.Enum;
 import global.Data;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -101,7 +102,9 @@ public class FilterManager {
     }
 
     private String getQueryType(String query, HttpServletRequest request) throws Exception {
-        if (query != null && !query.isEmpty()) {
+        if (query != null && !query.isEmpty()
+                // only allow Alphanumeric, ":" and "-" 
+                && Pattern.matches("^[a-zA-Z0-9\\:\\-]+$", query)) {
             if (query.split("-").length == 4) {
                 String[] tmp = query.split("-");
                 if (RegionManager.isChrValid(tmp[0]) // check valid chr 
@@ -353,5 +356,9 @@ public class FilterManager {
         }
 
         return "";
+    }
+    
+    public String getSampleSQL() {
+        return " sample_finished=1 AND sample_failure=0 AND sample_type!='custom_capture'";
     }
 }

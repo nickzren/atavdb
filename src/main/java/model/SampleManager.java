@@ -31,8 +31,8 @@ public class SampleManager {
         }
 
         String sqlCode = "SELECT count(*) as count FROM sample "
-                + "WHERE sample_finished=1 AND sample_failure=0"
-                + " AND sample_type!='custom_capture'"
+                + "WHERE"
+                + filter.getSampleSQL()
                 + filter.getPhenotypeSQL()
                 + filter.getAvailableControlUseSQL();
 
@@ -57,8 +57,8 @@ public class SampleManager {
         getMap(filter).put("all", new ArrayList<>());
 
         String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype,ethnicity FROM sample "
-                + "WHERE sample_finished=1 AND sample_failure=0"
-                + " AND sample_type!='custom_capture'"
+                + "WHERE"
+                + filter.getSampleSQL()
                 + filter.getPhenotypeSQL()
                 + filter.getAvailableControlUseSQL();
 

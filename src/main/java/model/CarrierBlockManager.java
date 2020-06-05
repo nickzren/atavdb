@@ -2,8 +2,8 @@ package model;
 
 import global.Data;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import util.DBManager;
@@ -51,12 +51,10 @@ public class CarrierBlockManager {
         }
 
         sqlSB.append("sample s ");
-        sqlSB.append("WHERE block_id=").append(currentBlockId);
-        sqlSB.append(" AND highest_impact=input_impact");
-        sqlSB.append(" AND c.sample_id=s.sample_id ");
-        sqlSB.append(" AND sample_finished=1");
-        sqlSB.append(" AND sample_failure=0");
-        sqlSB.append(" AND sample_type!='custom_capture'");
+        sqlSB.append("WHERE block_id=?");
+        sqlSB.append(" AND highest_impact=input_impact ");
+        sqlSB.append("AND c.sample_id=s.sample_id ");
+        sqlSB.append("AND").append(filter.getSampleSQL());
         sqlSB.append(filter.getPhenotypeSQL());
         sqlSB.append(filter.getAvailableControlUseSQL());
         
@@ -64,8 +62,9 @@ public class CarrierBlockManager {
             HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sqlSB.toString());
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
+            preparedStatement.setInt(1, currentBlockId);
+            ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
                 Carrier carrier = new Carrier(rs);
@@ -89,10 +88,10 @@ public class CarrierBlockManager {
             }
             
             rs.close();
-            statement.close();
+            preparedStatement.close();
 
             // removed no qualified carriers variant
-            validVariantCarrierCount.entrySet().parallelStream().filter((entry) -> (entry.getValue() == 0)).forEachOrdered((entry) -> {
+            validVariantCarrierCount.entrySet().stream().filter((entry) -> (entry.getValue() == 0)).forEachOrdered((entry) -> {
                 blockCarrierMap.remove(entry.getKey());
             });
         } catch (Exception e) {
@@ -115,20 +114,19 @@ public class CarrierBlockManager {
         }
 
         sqlSB.append("sample s ");
-        sqlSB.append("WHERE block_id=").append(blockId);
-        sqlSB.append(" AND highest_impact=input_impact");
-        sqlSB.append(" AND c.sample_id=s.sample_id ");
-        sqlSB.append(" AND variant_id=").append(var.getVariantId());
-        sqlSB.append(" AND sample_finished=1");
-        sqlSB.append(" AND sample_failure=0");
-        sqlSB.append(" AND sample_type!='custom_capture'");
+        sqlSB.append("WHERE block_id=?");
+        sqlSB.append(" AND highest_impact=input_impact ");
+        sqlSB.append("AND c.sample_id=s.sample_id ");
+        sqlSB.append("AND variant_id=").append(var.getVariantId());
+        sqlSB.append(" AND").append(filter.getSampleSQL());
         sqlSB.append(filter.getPhenotypeSQL());
         sqlSB.append(filter.getAvailableControlUseSQL());
 
         try {
             Connection connection = DBManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sqlSB.toString());
+            PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
+            preparedStatement.setInt(1, blockId);
+            ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
                 Carrier carrier = new Carrier(rs);
@@ -139,7 +137,7 @@ public class CarrierBlockManager {
             }
             
             rs.close();
-            statement.close();
+            preparedStatement.close();
         } catch (Exception e) {
         }
     }
