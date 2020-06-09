@@ -57,6 +57,10 @@ public class FilterManager {
         String maxAFStr = request.getParameter("maxAF");
         String phenotypeStr = request.getParameter("phenotype");
         String isHighQualityVariantStr = request.getParameter("isHighQualityVariant");
+        // default to search high quality variants only for gene or region
+        if(queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3])) {
+            isHighQualityVariantStr = "on";
+        }
         String isUltraRareVariantStr = request.getParameter("isUltraRareVariant");
 
         request.setAttribute("query", query);
