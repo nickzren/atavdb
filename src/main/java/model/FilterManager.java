@@ -46,8 +46,6 @@ public class FilterManager {
         query = request.getParameter("query");
         queryType = getQueryType(query, request);
 
-        isAvailableControlUseOnly = request.getSession().getAttribute("is_authorized") == null;
-
         if (request.getSession().getAttribute("username") == null
                 && (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) {
             error = "Permission denied for anonymous user.";
@@ -62,13 +60,24 @@ public class FilterManager {
             isHighQualityVariantStr = "on";
         }
         String isUltraRareVariantStr = request.getParameter("isUltraRareVariant");
-
+        
+        String isPublicAvailableStr = request.getParameter("isPublicAvailable");
+        // for unauthorized user, public avaiable data only
+        if(request.getSession().getAttribute("is_authorized") == null) {
+            isAvailableControlUseOnly = true;
+            isPublicAvailableStr = "on";
+        } else {
+            // for ahthorized user, use Public Only checkbox as filter
+            isAvailableControlUseOnly = isPublicAvailableStr != null;
+        }
+        
         request.setAttribute("query", query);
         request.setAttribute("queryType", queryType);
         request.setAttribute("maxAF", maxAFStr);
         request.setAttribute("phenotype", phenotypeStr);
         request.setAttribute("isHighQualityVariant", isHighQualityVariantStr);
         request.setAttribute("isUltraRareVariant", isUltraRareVariantStr);
+        request.setAttribute("isPublicAvailable", isPublicAvailableStr);
 
         maxAF = getFloat(maxAFStr);
         phenotype = phenotypeStr;

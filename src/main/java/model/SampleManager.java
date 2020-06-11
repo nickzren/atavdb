@@ -56,7 +56,7 @@ public class SampleManager {
         getMap(filter).clear();
         getMap(filter).put("all", new ArrayList<>());
 
-        String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype,ethnicity FROM sample "
+        String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype,ethnicity,available_control_use FROM sample "
                 + "WHERE"
                 + filter.getSampleSQL()
                 + filter.getPhenotypeSQL()
@@ -74,8 +74,9 @@ public class SampleManager {
             String broadPhenotype = rs.getString("broad_phenotype");
             String ethnicityStr = rs.getString("ethnicity");
             Ethnicity ethnicity = ethnicityStr == null ? Ethnicity.NA : Ethnicity.valueOf(ethnicityStr);
+            byte availableControlUse = rs.getByte("available_control_use");
 
-            Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ethnicity);
+            Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ethnicity, availableControlUse);
 
             if (broadPhenotype != null && !broadPhenotype.isEmpty()) {
                 ArrayList<Sample> list = getMap(filter).get(broadPhenotype);

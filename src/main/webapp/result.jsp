@@ -282,6 +282,7 @@
                                 <c:if test="${not empty is_authorized}" >
                                     <th data-toggle="tooltip" title="Sample experiment_id in sequenceDB">Experiment ID</th>
                                 </c:if>
+                                <th data-toggle="tooltip" title="AvaiContUsed in sequenceDB">Public Available</th>
                                 <th data-toggle="tooltip" title="seqGender in sequenceDB">Gender</th>
                                 <th data-toggle="tooltip" title="Broad Phenotype in sequenceDB">Phenotype</th>
                                 <th data-toggle="tooltip" title="Ethnicity probability >= 0.5 in sequenceDB">Ethnicity</th>
@@ -301,6 +302,7 @@
                                             </a>
                                         </td>
                                     </c:if>
+                                    <td>${carrier.getAvailableControlUse()}</td>
                                     <td>${carrier.getGender()}</td>
                                     <td>${carrier.getPhenotype()}</td>
                                     <td>${carrier.getEthnicity()}</td>

@@ -15,18 +15,21 @@ public class Sample {
     private int experimentId;
     private String broadPhenotype;
     private Ethnicity ethnicity;
+    private byte availableControlUse;
 
     public Sample(
             int sampled_id,
             Gender gender,
             int experimentId,
             String broadPhenotype,
-            Ethnicity ethnicity) {
+            Ethnicity ethnicity,
+            byte availableControlUse) {
         id = sampled_id;
         this.gender = gender;
         this.experimentId = experimentId;
         this.broadPhenotype = broadPhenotype;
         this.ethnicity = ethnicity;
+        this.availableControlUse = availableControlUse;
     }
 
     public int getId() {
@@ -55,5 +58,9 @@ public class Sample {
     
     public Ethnicity getEthnicity() {
         return ethnicity;
+    }
+    
+    public String getAvailableControlUse() {
+        return availableControlUse == 1 ? "Yes" : "No";
     }
 }

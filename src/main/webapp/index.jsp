@@ -169,10 +169,17 @@
                                        >
                                 <label class="custom-control-label" for="input-check-ultra-rare-variant">Ultra Rare Variant</label>
                             </div>
-
+                            
+                            <div class="custom-control custom-switch col-auto" style="margin-left: 8px"
+                                 data-toggle="tooltip" title="Available as control used samples in sequenceDB">
+                                <input type="checkbox" class="custom-control-input" id="input-check-public-available" name="isPublicAvailable" 
+                                       <c:if test="${not empty isPublicAvailable}" >
+                                           checked
+                                       </c:if>
+                                       >
+                                <label class="custom-control-label" for="input-check-public-available">Public Available</label>
+                            </div>
                         </div>
-
-
                     </div>
                 </form>
 
