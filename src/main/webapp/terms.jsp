@@ -27,6 +27,15 @@
                     The data derived from this website may not be used for any commercial purpose. 
                     The data from this website may not be replicated on any other website without written consent.
                 </p>
+                
+                <br/>
+
+                <h4><i class="fa fa-star"></i> Citation</h4>                
+                <p>                    
+                    Zhong Ren, Gundula Povysil, David B. Goldstein. (2020) ATAV - a comprehensive platform for population-scale genomic analyses. 
+                    <em>bioRxiv <a href="https://doi.org/10.1101/2020.06.08.136507" 
+                                   target="_blank">DOI: 10.1101/2020.06.08.136507</a></em>.
+                </p>
             </div>
 
         </div>
