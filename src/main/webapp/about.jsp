@@ -45,8 +45,8 @@
                 <p>
                     The Illumina lane-level fastq files were aligned to the Human Reference Genome (NCBI Build 37)
                     using the Illumina DRAGEN Alignment tool. Picard software was used to remove duplicate 
-                    reads and process these lane-level SAM files, resulting in a sample-level BAM file that was 
-                    used for variant calling. GATK was used to recalibrate base quality scores, realign around 
+                    reads and process these lane-level BAM files, merging into a single sample-level BAM file that was 
+                    used for variant calling and coverage binning. GATK was used to recalibrate base quality scores, realign around 
                     indels, and call variants. All variants were annotated to Ensembl 87 using CLINEFF.
                 </p>                
             </div>
