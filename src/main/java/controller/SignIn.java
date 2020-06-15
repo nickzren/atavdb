@@ -37,10 +37,10 @@ public class SignIn extends HttpServlet {
                 session.setAttribute("is_authorized", true);
             }
 
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/home");
         } else {
             request.setAttribute("error", "Invalid CUMC MC account username/password.");
-            request.getRequestDispatcher("signin.jsp").include(request, response);
+            request.getRequestDispatcher("signin").include(request, response);
         }
     }
 

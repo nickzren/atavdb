@@ -16,6 +16,26 @@
         <servlet-name>SampleCount</servlet-name>
         <servlet-class>controller.SampleCount</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>IndexJSP</servlet-name>
+        <jsp-file>/index.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>AboutJSP</servlet-name>
+        <jsp-file>/about.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>TermsJSP</servlet-name>
+        <jsp-file>/terms.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>ContactJsp</servlet-name>
+        <jsp-file>/contact.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>SignInJsp</servlet-name>
+        <jsp-file>/signin.jsp</jsp-file>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Search</servlet-name>
         <url-pattern>/Search</url-pattern>
@@ -31,6 +51,26 @@
     <servlet-mapping>
         <servlet-name>SampleCount</servlet-name>
         <url-pattern>/SampleCount</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>IndexJSP</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AboutJSP</servlet-name>
+        <url-pattern>/about</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TermsJSP</servlet-name>
+        <url-pattern>/terms</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ContactJsp</servlet-name>
+        <url-pattern>/contact</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SignInJsp</servlet-name>
+        <url-pattern>/signin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
