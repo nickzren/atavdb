@@ -54,7 +54,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>IndexJSP</servlet-name>
-        <url-pattern>/home</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AboutJSP</servlet-name>

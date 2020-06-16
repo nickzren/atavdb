@@ -7,7 +7,7 @@
 
         <div class="collapse navbar-collapse justify-content-end">
             <div class="navbar-nav">
-                <a class="nav-item nav-link home-link" href="home">Home</a>
+                <a class="nav-item nav-link home-link" href="./">Home</a>
                 <a class="nav-item nav-link home-link" href="about">About</a>
                 <a class="nav-item nav-link home-link" href="terms">Terms</a>
                 <a class="nav-item nav-link home-link" href="contact">Contact</a>

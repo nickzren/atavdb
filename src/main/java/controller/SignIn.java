@@ -37,7 +37,7 @@ public class SignIn extends HttpServlet {
                 session.setAttribute("is_authorized", true);
             }
 
-            response.sendRedirect(request.getContextPath() + "/home");
+            response.sendRedirect(request.getContextPath() + "/");
         } else {
             request.setAttribute("error", "Invalid CUMC MC account username/password.");
             request.getRequestDispatcher("signin").include(request, response);
