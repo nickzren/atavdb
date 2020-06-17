@@ -76,25 +76,25 @@ public class Variant extends Region {
     }
 
     private void initExternalAF(FilterManager filter) {
-        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])
-                || filter.isUltraRareVariant()) { // variant search or checked ultra variant only
-            exac = ExternalDataManager.getExAC(chrStr, startPosition, ref, alt);
-            genomeAsia = ExternalDataManager.getGenomeAsia(chrStr, startPosition, ref, alt);
-            gnomadExome = ExternalDataManager.getGenoADExome(chrStr, startPosition, ref, alt);
-            gnomadGenome = ExternalDataManager.getGenoADGenome(chrStr, startPosition, ref, alt);
-            gme = ExternalDataManager.getGME(chrStr, startPosition, ref, alt);
-            iranome = ExternalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
-            topmed = ExternalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
+        exac = ExternalDataManager.getExAC(chrStr, startPosition, ref, alt);
+        genomeAsia = ExternalDataManager.getGenomeAsia(chrStr, startPosition, ref, alt);
+        gnomadExome = ExternalDataManager.getGenoADExome(chrStr, startPosition, ref, alt);
+        gnomadGenome = ExternalDataManager.getGenoADGenome(chrStr, startPosition, ref, alt);
+        gme = ExternalDataManager.getGME(chrStr, startPosition, ref, alt);
+        iranome = ExternalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
+        topmed = ExternalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
 
-            isValid = filter.isExternalAFValid(exac)
-                    && filter.isExternalAFValid(genomeAsia)
-                    && filter.isExternalAFValid(gnomadExome)
-                    && filter.isExternalAFValid(gnomadGenome)
-                    && filter.isExternalAFValid(gme)
-                    && filter.isExternalAFValid(iranome)
-                    && filter.isExternalAFValid(topmed);
-        }
+        isValid = filter.isUltraRareVariant() ? isExternalAFValid(filter) : isValid;
+    }
 
+    public boolean isExternalAFValid(FilterManager filter) {
+        return filter.isExternalAFValid(exac)
+                && filter.isExternalAFValid(genomeAsia)
+                && filter.isExternalAFValid(gnomadExome)
+                && filter.isExternalAFValid(gnomadGenome)
+                && filter.isExternalAFValid(gme)
+                && filter.isExternalAFValid(iranome)
+                && filter.isExternalAFValid(topmed);
     }
 
     // init carrier and non-carrier data, calculate af and count genotype
@@ -108,7 +108,7 @@ public class Variant extends Region {
             calculateAF();
 
             isValid = FilterManager.isMinVarPresentValid(carrierMap.size())
-                    && filter.isMaxAFValid(af);
+                    && isMaxAFValid(filter);
 
             // if not valid
             // if gene / region search then free carriers
@@ -119,6 +119,10 @@ public class Variant extends Region {
                 carrierMap = null;
             }
         }
+    }
+
+    public boolean isMaxAFValid(FilterManager filter) {
+        return filter.isMaxAFValid(af);
     }
 
     public int getVariantId() {

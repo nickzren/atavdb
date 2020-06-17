@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import util.DBManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -14,8 +15,25 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class VariantManager {
 
+    // cached data when no new samples data loaded
+    private static HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
+    private static HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
+
+    private static HashMap<String, ArrayList<Variant>> getMap(FilterManager filter) {
+        return filter.isAvailableControlUseOnly() ? cachedVariant4PublicAvailableSampleMap : cachedVariant4AllSampleMap;
+    }
+
     public static ArrayList<Variant> getVariantList(FilterManager filter, HttpServletRequest request) throws Exception {
         ArrayList<Variant> list = new ArrayList<>();
+
+        String queryIdentifier = filter.getQueryIdentifier();
+        list = getMap(filter).getOrDefault(queryIdentifier, list);
+        if (list.isEmpty()) {
+            getMap(filter).put(queryIdentifier, list);
+        } else {
+            // return cached data , apply max af or ultra variant filter
+            return applyFilter(filter, list);
+        }
 
         String chr = "";
         String joinSQL = "";// codingandsplice_effect
@@ -38,8 +56,6 @@ public class VariantManager {
             tmp = tmp[1].split("-");
             joinSQL = ",codingandsplice_effect e ";
             whereSQL = "WHERE POS BETWEEN ? AND ? AND v.effect_id = e.id ";
-        } else {
-            return list;
         }
 
         if (filter.isHighQualityVariant()) {
@@ -94,5 +110,34 @@ public class VariantManager {
         preparedStatement.close();
 
         return list;
+    }
+
+    private static ArrayList<Variant> applyFilter(FilterManager filter, ArrayList<Variant> list) {
+        if (!filter.isUltraRareVariant() && filter.getMaxAF() == Data.NO_FILTER) {
+            return list;
+        }
+
+        ArrayList<Variant> newList = new ArrayList<>();
+        for (Variant variant : list) {
+            if (filter.isUltraRareVariant()) {
+                if (!variant.isExternalAFValid(filter)) {
+                    continue;
+                }
+            }
+
+            if (filter.getMaxAF() != Data.NO_FILTER) {
+                if (!variant.isMaxAFValid(filter)) {
+                    continue;
+                }
+            }
+
+            newList.add(variant);
+        }
+
+        return newList;
+    }
+
+    public static void clearCachedData(FilterManager filter) {
+        getMap(filter).clear();
     }
 }

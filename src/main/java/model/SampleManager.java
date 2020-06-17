@@ -17,11 +17,14 @@ public class SampleManager {
 
     // authorized user init all sample map , key is phenotype and value is list of samples associated
     private static HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
-    private static HashMap<String, ArrayList<Sample>> availableControlUseSampleMap = new HashMap<>();
+    private static HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
     public static void init(FilterManager filter) throws Exception {
         if (checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
+
+            // trigger to clear cached data when sample count mismatch
+            VariantManager.clearCachedData(filter);
         }
     }
 
@@ -41,7 +44,7 @@ public class SampleManager {
         ResultSet rs = statement.executeQuery(sqlCode);
 
         if (rs.next()) {
-            if (getMap(filter).get("all").size() != rs.getInt("count")) {
+            if (getMap(filter).get("").size() != rs.getInt("count")) {
                 return true;
             }
         }
@@ -54,7 +57,7 @@ public class SampleManager {
 
     private static void initAllSampleFromDB(FilterManager filter) throws Exception {
         getMap(filter).clear();
-        getMap(filter).put("all", new ArrayList<>());
+        getMap(filter).put("", new ArrayList<>());
 
         String sqlCode = "SELECT sample_id,sample_name,seq_gender,experiment_id,broad_phenotype,ethnicity,available_control_use FROM sample "
                 + "WHERE"
@@ -88,7 +91,7 @@ public class SampleManager {
                 list.add(sample);
             }
 
-            getMap(filter).get("all").add(sample);
+            getMap(filter).get("").add(sample);
         }
 
         rs.close();
@@ -96,14 +99,14 @@ public class SampleManager {
     }
 
     public static int getTotalSampleNum(FilterManager filter) {
-        return getMap(filter).isEmpty() ? 0 : getMap(filter).get("all").size();
+        return getMap(filter).isEmpty() ? 0 : getMap(filter).get("").size();
     }
 
     public static ArrayList<Sample> getList(FilterManager filter) {
         return getMap(filter).get(filter.getPhenotype());
     }
-    
+
     public static HashMap<String, ArrayList<Sample>> getMap(FilterManager filter) {
-        return filter.isAvailableControlUseOnly() ? availableControlUseSampleMap : allSampleMap;
+        return filter.isAvailableControlUseOnly() ? publicAvailableSampleMap : allSampleMap;
     }
 }

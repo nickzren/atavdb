@@ -2,6 +2,7 @@ package model;
 
 import global.Enum;
 import global.Data;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
@@ -56,21 +57,21 @@ public class FilterManager {
         String phenotypeStr = request.getParameter("phenotype");
         String isHighQualityVariantStr = request.getParameter("isHighQualityVariant");
         // default to search high quality variants only for gene or region
-        if(queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3])) {
+        if (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3])) {
             isHighQualityVariantStr = "on";
         }
         String isUltraRareVariantStr = request.getParameter("isUltraRareVariant");
-        
+
         String isPublicAvailableStr = request.getParameter("isPublicAvailable");
         // for unauthorized user, public avaiable data only
-        if(request.getSession().getAttribute("is_authorized") == null) {
+        if (request.getSession().getAttribute("is_authorized") == null) {
             isAvailableControlUseOnly = true;
             isPublicAvailableStr = "on";
         } else {
             // for ahthorized user, use Public Only checkbox as filter
             isAvailableControlUseOnly = isPublicAvailableStr != null;
         }
-        
+
         request.setAttribute("query", query);
         request.setAttribute("queryType", queryType);
         request.setAttribute("maxAF", maxAFStr);
@@ -80,26 +81,43 @@ public class FilterManager {
         request.setAttribute("isPublicAvailable", isPublicAvailableStr);
 
         maxAF = getFloat(maxAFStr);
-        phenotype = phenotypeStr;
+        phenotype = phenotypeStr == null ? "" : phenotypeStr;
 
         isHighQualityVariant = isHighQualityVariantStr != null && isHighQualityVariantStr.equalsIgnoreCase("on");
         isUltraRareVariant = isUltraRareVariantStr != null && isUltraRareVariantStr.equalsIgnoreCase("on");
     }
 
     public String getPhenotype() {
-        if (phenotype == null || phenotype.equals("")) {
-            return "all";
-        }
-
         return phenotype;
     }
 
     public String getPhenotypeSQL() {
-        if (phenotype != null && !phenotype.equals("")) {
-            return " AND broad_phenotype='" + phenotype + "'";
-        }
+        return phenotype.isEmpty() ? "" : " AND broad_phenotype='" + phenotype + "'";
+    }
 
-        return "";
+    private void appendPhenotype4Identifer(StringJoiner sj) {
+        if (!phenotype.isEmpty()) {
+            sj.add(phenotype);
+        }
+    }
+
+    public float getMaxAF() {
+        return maxAF;
+    }
+
+    private void appendHighQualityVariant4Identifer(StringJoiner sj) {
+        if (isHighQualityVariant) {
+            sj.add("high");
+        }
+    }
+
+    public String getQueryIdentifier() {
+        StringJoiner sj = new StringJoiner("-");
+        sj.add(query);
+        appendPhenotype4Identifer(sj);
+        appendHighQualityVariant4Identifer(sj);
+
+        return sj.toString();
     }
 
     private static float getFloat(String value) {
@@ -364,13 +382,9 @@ public class FilterManager {
     }
 
     public String getAvailableControlUseSQL() {
-        if (isAvailableControlUseOnly) {
-            return " AND available_control_use=1";
-        }
-
-        return "";
+        return isAvailableControlUseOnly ? " AND available_control_use=1" : "";
     }
-    
+
     public String getSampleSQL() {
         return " sample_finished=1 AND sample_failure=0 AND sample_type!='custom_capture'";
     }
