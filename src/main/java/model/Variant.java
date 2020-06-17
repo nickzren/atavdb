@@ -83,8 +83,6 @@ public class Variant extends Region {
         gme = ExternalDataManager.getGME(chrStr, startPosition, ref, alt);
         iranome = ExternalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
         topmed = ExternalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
-
-        isValid = filter.isUltraRareVariant() ? isExternalAFValid(filter) : isValid;
     }
 
     public boolean isExternalAFValid(FilterManager filter) {
@@ -107,8 +105,7 @@ public class Variant extends Region {
 
             calculateAF();
 
-            isValid = FilterManager.isMinVarPresentValid(carrierMap.size())
-                    && isMaxAFValid(filter);
+            isValid = FilterManager.isMinVarPresentValid(carrierMap.size());
 
             // if not valid
             // if gene / region search then free carriers

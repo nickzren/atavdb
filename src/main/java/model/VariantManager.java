@@ -109,7 +109,8 @@ public class VariantManager {
         rs.close();
         preparedStatement.close();
 
-        return list;
+        // cached data does not apply max af and ultra filters
+        return applyFilter(filter, list);
     }
 
     private static ArrayList<Variant> applyFilter(FilterManager filter, ArrayList<Variant> list) {
