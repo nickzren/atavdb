@@ -5,7 +5,7 @@ import global.Enum.Gender;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.time.LocalTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import util.DBManager;
@@ -16,12 +16,14 @@ import util.DBManager;
  */
 public class SampleManager {
 
+    private static LocalDate currentDate = LocalDate.now();
+
     // authorized user init all sample map , key is phenotype and value is list of samples associated
     private static HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
     private static HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
     public static void init(FilterManager filter) throws Exception {
-        // only re-init samples data & clear cached data every midnight or initially
+        // only re-init samples data & clear cached data once a day or initially
         if (checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
 
@@ -35,8 +37,10 @@ public class SampleManager {
             return true;
         }
 
-        if (LocalTime.now() != LocalTime.MIDNIGHT) {
+        if (currentDate.isEqual(LocalDate.now())) {
             return true;
+        } else {
+            currentDate = LocalDate.now();
         }
 
         String sqlCode = "SELECT count(*) as count FROM sample "
