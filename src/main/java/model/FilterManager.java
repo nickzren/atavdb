@@ -63,8 +63,9 @@ public class FilterManager {
         String isUltraRareVariantStr = request.getParameter("isUltraRareVariant");
 
         String isPublicAvailableStr = request.getParameter("isPublicAvailable");
-        // for unauthorized user, public avaiable data only
-        if (request.getSession().getAttribute("is_authorized") == null) {
+        // for unauthorized user & valid query, public avaiable data only
+        if (query != null && !query.isEmpty() &&
+                request.getSession().getAttribute("is_authorized") == null) {
             isAvailableControlUseOnly = true;
             isPublicAvailableStr = "on";
         } else {
