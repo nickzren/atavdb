@@ -62,7 +62,7 @@
                             <div class="col-9">
                                 <div class="input-group">
                                     <input id="query" name="query" class="form-control"
-                                           type="text" placeholder="Search for a variant"
+                                           type="text" placeholder="Search by variant, gene or region"
                                            <c:if test="${not empty query}" >
                                                value="${query}"
                                            </c:if>

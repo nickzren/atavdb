@@ -65,7 +65,7 @@ public class FilterManager {
         String isPublicAvailableStr = request.getParameter("isPublicAvailable");
         // for unauthorized user & valid query, public avaiable data only
         if (query != null && !query.isEmpty() &&
-                request.getSession().getAttribute("is_authorized") == null) {
+                request.getSession().getAttribute("core_authorized") == null) {
             isAvailableControlUseOnly = true;
             isPublicAvailableStr = "on";
         } else {
