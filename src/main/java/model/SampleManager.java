@@ -37,7 +37,7 @@ public class SampleManager {
             return true;
         }
 
-        if (currentDate.isEqual(LocalDate.now())) {
+        if (!currentDate.isEqual(LocalDate.now())) {
             return true;
         } else {
             currentDate = LocalDate.now();
