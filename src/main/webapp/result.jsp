@@ -279,7 +279,7 @@
                             <table id="carrier_table" class="table table-hover text-center align-middle">
                                 <thead>
                                     <tr>
-                                <c:if test="${not empty core_authorized or not empty sequence_authorized}" >
+                                <c:if test="${not empty sequence_authorized}" >
                                     <th data-toggle="tooltip" title="Sample experiment_id in sequenceDB">Experiment ID</th>
                                 </c:if>
                                 <th data-toggle="tooltip" title="AvaiContUsed in sequenceDB">Public Available</th>
@@ -295,7 +295,7 @@
                                 <tbody>
                                 <c:forEach items="${variant.getCarriers()}" var="carrier">                                
                                     <tr>
-                                    <c:if test="${not empty core_authorized or not empty sequence_authorized}" >
+                                    <c:if test="${not empty sequence_authorized}" >
                                         <td>
                                             <a href="https://sequence.igm.cumc.columbia.edu/search.php?action=viewSample&experiment_id=${carrier.getExperimentId()}" target="_blank">
                                                 ${carrier.getExperimentId()}

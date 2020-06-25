@@ -33,10 +33,6 @@ public class SignIn extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
 
-            if (VerifyUser.isAuthorizedFromCore(username)) {
-                session.setAttribute("core_authorized", true);
-            }
-
             if (VerifyUser.isAuthorizedFromSequence(username)) {
                 session.setAttribute("sequence_authorized", true);
             }
