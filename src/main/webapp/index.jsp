@@ -79,9 +79,9 @@
                                     Variant: <a href="#" onclick="document.getElementById('query').value = '21-33040861-G-C';
                 document.getElementById('btn-submit').click();">21-33040861-G-C</a>, 
                                     Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
-                                                document.getElementById('btn-submit').click();">TBK1</a>,
+                                            document.getElementById('btn-submit').click();">TBK1</a>,
                                     Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
-                                                document.getElementById('btn-submit').click();">2:166889788-166895788</a>
+                                            document.getElementById('btn-submit').click();">2:166889788-166895788</a>
                                 </p>
 
                             </div>
@@ -111,13 +111,13 @@
                                                                  'other neuropsychiatric disease','primary immune deficiency','pulmonary disease',
                                                                  'schizophrenia','sudden death','alzheimers disease','cerebral palsy']}"/>
 
-                            <div class="form-group col-auto" style="margin-left: 5px"
+                            <div class="form-group col-auto"
                                  data-toggle="tooltip" title="Search variants by selected phenotype">
                                 <label for="input-select-phenotype">Phenotype:</label>
                                 <c:if test="${empty phenotype}" >
                                     <c:set var="phenotype" value=""/>
                                 </c:if>
-                                <select id="input-select-phenotype" name="phenotype" class="form-control">
+                                <select id="input-select-phenotype" name="phenotype" class="form-control" style="width:270;">> 
                                     <c:forEach items="${phenotype_list}" var="p">
                                         <option value="${p}" 
                                                 <c:if test="${phenotype == p}" >
@@ -148,7 +148,7 @@
                                 </select>
                             </div>
 
-                            <div class="custom-control custom-switch col-auto" style="margin-left: 13px"
+                            <div class="custom-control custom-switch col-auto" style="margin-left: 12px"
                                  data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
                                  SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
                                  MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
@@ -160,7 +160,7 @@
                                 <label class="custom-control-label" for="input-check-high-quality-variant">High Quality Variant</label>
                             </div>
 
-                            <div class="custom-control custom-switch col-auto" style="margin-left: 8px"
+                            <div class="custom-control custom-switch col-auto"
                                  data-toggle="tooltip" title="All External AF are either 0 or NA">
                                 <input type="checkbox" class="custom-control-input" id="input-check-ultra-rare-variant" name="isUltraRareVariant" 
                                        <c:if test="${not empty isUltraRareVariant}" >
@@ -169,15 +169,15 @@
                                        >
                                 <label class="custom-control-label" for="input-check-ultra-rare-variant">Ultra Rare Variant</label>
                             </div>
-                            
-                            <div class="custom-control custom-switch col-auto" style="margin-left: 8px"
+
+                            <div class="custom-control custom-switch col-auto"
                                  data-toggle="tooltip" title="Available as control used samples in sequenceDB">
                                 <input type="checkbox" class="custom-control-input" id="input-check-public-available" name="isPublicAvailable" 
                                        <c:if test="${not empty isPublicAvailable}" >
                                            checked
                                        </c:if>
                                        >
-                                <label class="custom-control-label" for="input-check-public-available">Public Available</label>
+                                <label class="custom-control-label" for="input-check-public-available">Public Available Sample</label>
                             </div>
                         </div>
                     </div>
