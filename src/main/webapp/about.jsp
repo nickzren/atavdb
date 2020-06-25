@@ -39,7 +39,7 @@
 
                 <p>Sequencing of DNA was performed by <a href="http://igm.columbia.edu" target="_blank">Institute for Genomic Medicine</a>.
                     Samples were either exome sequenced or whole-genome sequenced 
-                    using Illumina NovaSeq 6000 sequencers according to standard protocols.
+                    using Illumina's HiSeq 2000, HiSeq 2500 or NovaSeq 6000 sequencers according to standard protocols.
                 </p>
 
                 <p>
