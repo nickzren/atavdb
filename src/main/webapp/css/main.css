@@ -7,11 +7,6 @@ body {
     padding-right: 10px
 }
 
-.brand-img {
-    width: 43px;
-    height: 43px;
-}
-
 a.brand-link {
     font-weight: bold; 
     font-size: 25px; 
@@ -21,24 +16,12 @@ a.brand-link {
 }
 
 a.home-link {
-    font-weight: bold; 
     font-size: 15px; 
     color: #337ab7;
     cursor: pointer
 }
 
 a.home-link:hover {
-    text-decoration: none;
-    background-color: #eee;
-}
-
-a.menu-link {
-    font-weight: bold; 
-    font-size: 18px; 
-    cursor: pointer
-}
-
-a.menu-link:hover {
     text-decoration: none;
     background-color: #eee;
 }

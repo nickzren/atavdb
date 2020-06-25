@@ -1,11 +1,14 @@
 <header>    
     <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand brand-link" href="index.jsp">
-            <img src="img/cumc-logo.png" class="d-inline-block align-top brand-img" alt="">
-            ATAVDB
+        <a class="navbar-brand brand-link" href="./">
+            <img src="img/cumc-logo.png" width="43" height="43" class="d-inline-block align-top" alt="" loading="lazy">
+            <div class="navbar-brand">ATAVDB</div>
         </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
 
-        <div class="collapse navbar-collapse justify-content-end">
+        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <div class="navbar-nav">
                 <a class="nav-item nav-link home-link" href="./">Home</a>
                 <a class="nav-item nav-link home-link" href="about">About</a>
@@ -21,5 +24,5 @@
                 </c:choose>
             </div>
         </div>
-    </nav>
+    </nav>                         
 </header>

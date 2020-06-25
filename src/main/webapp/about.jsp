@@ -8,9 +8,16 @@
         
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+          <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/all-fontawesome.css">
         <link rel="stylesheet" href="css/main.css">
+
+        <!-- load jQuery 3.4.1 -->
+        <script type="text/javascript" src="js/jquery-3.4.1.slim.min.js"></script>
+        <script type="text/javascript">
+            var jQuery_3_4_1 = $.noConflict();
+        </script>
+        <script src="js/bootstrap.min.js"></script>
     </head>
 
     <body>
