@@ -23,7 +23,6 @@ public class SampleManager {
     private static HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
     public static void init(FilterManager filter) throws Exception {
-        // only re-init samples data & clear cached data once a day or initially
         if (checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
 
@@ -33,16 +32,19 @@ public class SampleManager {
     }
 
     private static boolean checkSampleCount(FilterManager filter) throws Exception {
+        // init sample data
         if (getMap(filter).isEmpty()) {
             return true;
         }
 
-        if (!currentDate.isEqual(LocalDate.now())) {
-            return true;
+        // reset sample data & clear cached data once a day
+        if (currentDate.isEqual(LocalDate.now())) {
+            return false;
         } else {
             currentDate = LocalDate.now();
         }
 
+        // only if sample count mismatch then reset sample data & clear cached data
         String sqlCode = "SELECT count(*) as count FROM sample "
                 + "WHERE"
                 + filter.getSampleSQL()
