@@ -23,7 +23,8 @@ public class SampleManager {
     private static HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
     public static void init(FilterManager filter) throws Exception {
-        if (checkSampleCount(filter)) {
+        if (getMap(filter).isEmpty() ||
+                checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
 
             // trigger to clear cached data when sample count mismatch
@@ -32,11 +33,6 @@ public class SampleManager {
     }
 
     private static boolean checkSampleCount(FilterManager filter) throws Exception {
-        // init sample data
-        if (getMap(filter).isEmpty()) {
-            return true;
-        }
-
         // reset sample data & clear cached data once a day
         if (currentDate.isEqual(LocalDate.now())) {
             return false;
@@ -111,7 +107,7 @@ public class SampleManager {
     }
 
     public static int getTotalSampleNum(FilterManager filter) {
-        return getMap(filter).isEmpty() ? 0 : getMap(filter).get("").size();
+        return getMap(filter).isEmpty() ? 0 : getMap(filter).get(filter.getPhenotype()).size();
     }
 
     public static ArrayList<Sample> getList(FilterManager filter) {
