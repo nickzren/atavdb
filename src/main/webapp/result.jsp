@@ -43,55 +43,55 @@
 
         <c:if test="${queryType == 'Variant'}" >
             <c:forEach items="${variantList}" var="variant">
-                <div class="col-auto">
+                <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/clinvar/?term=(${variant.getChrStr()}[Chromosome] AND ${variant.getStartPosition()}[Base Position for Assembly GRCh37])" target="_blank">ClinVar</a>
                 </div>
-                <div class="col-auto">
+                <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/snp/?term=(${variant.getChrStr()}[Chromosome] AND ${variant.getStartPosition()}[Base Position Previous])" target="_blank">dbSNP</a>
                 </div>
-                <div class="col-auto">
+                <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://franklin.genoox.com/variant/snp/chr${variant.getVariantIdStr()}" target="_blank">Franklin</a>
                 </div>
-                <div class="col-auto">
+                <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://gnomad.broadinstitute.org/variant/${variant.getVariantIdStr()}" target="_blank">gnomAD</a>
                 </div>
-                <div class="col-auto">
+                <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
                 </div>
-                <div class="col-auto">
+                <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="http://trap-score.org/Search?query=${variant.getVariantIdStr()}" target="_blank">TraP</a>
                 </div>
-                <div class="col-auto">
+                <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${variant.getChrStr()}${variant.getStartPosition()}-${variant.getStartPosition()}" target="_blank">UCSC</a>
                 </div>
             </c:forEach>
         </c:if>
 
         <c:if test="${queryType=='Gene'}" >
-            <div class="col-auto">
+            <div class="col-md-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="https://decipher.sanger.ac.uk/gene/${query}" target="_blank">DECIPHER</a>
             </div>
-            <div class="col-auto">
+            <div class="col-md-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g=${query}" target="_blank">Ensembl</a>
             </div>
-            <div class="col-auto">
+            <div class="col-md-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="https://www.genecards.org/cgi-bin/carddisp.pl?gene=${query}" target="_blank">GeneCards</a>
             </div>
-            <div class="col-auto">
+            <div class="col-md-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="https://www.genenames.org/tools/search/#!/genes?query=${query}" target="_blank">HGNC</a>
             </div>  
-            <div class="col-auto">
+            <div class="col-md-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="http://igmdx.org/Search?query=${query}" target="_blank">IGMDx</a>
             </div>  
-            <div class="col-auto">
+            <div class="col-md-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="https://omim.org/search?search=${query}" target="_blank">OMIM</a>
             </div>
-            <div class="col-auto">
+            <div class="col-md-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="http://genic-intolerance.org/Search?query=${query}" target="_blank">RVIS</a>
             </div>
         </c:if>
         <c:if test="${queryType=='Region'}" >
-            <div class="col-auto">
+            <div class="col-md-auto">
                 <a class="btn btn-outline-secondary btn-sm" href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${query}" target="_blank">UCSC</a>
             </div>
         </c:if>
@@ -253,18 +253,20 @@
             <div class="card-body">
                 <h4 class="card-title">Carrier</h4>
 
-                <div class="row mt-2">      
+                <div class="row mt-2">
+                    <div class="col-md-auto lead"><span class="badge badge-light">Gender count:</span></div>
                     <c:forEach items="${genders}" var="gender">
-                        <div class="col-auto lead">
+                        <div class="col-md-auto lead">
                             <span class="badge badge-light">${variant.getGenderCount()[gender.getIndex()]}
                                 ${gender.getName()}</span> 
                         </div>
                     </c:forEach>
                 </div>
 
-                <div class="row mt-2">      
+                <div class="row mt-2">
+                    <div class="col-md-auto lead"><span class="badge badge-light">Ethnicity count:</span></div>
                     <c:forEach items="${ethnicities}" var="ethnicity">
-                        <div class="col-auto lead">
+                        <div class="col-md-auto lead">
                             <span class="badge badge-light">${variant.getEthnicityCount()[ethnicity.getIndex()]}
                                 ${ethnicity.getName()}</span> 
                         </div>

@@ -59,7 +59,7 @@
                         </h2>
 
                         <div class="row">
-                            <div class="col-9">
+                            <div class="col-md-9 form-group">
                                 <div class="input-group">
                                     <input id="query" name="query" class="form-control"
                                            type="text" placeholder="Search by variant, gene or region"
@@ -83,9 +83,9 @@
                                     Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
                                             document.getElementById('btn-submit').click();">2:166889788-166895788</a>
                                 </p>
-
                             </div>
-                            <div class="col-3 text-center">
+
+                            <div class="col-md-3 form-group text-center">
                                 <c:import url="/SampleCount" />
                                 <c:if test="${not empty sampleCount}" >
                                     <div class="bg-light">
@@ -94,10 +94,9 @@
                                     </div>
                                 </c:if>
                             </div>
-
                         </div>
 
-                        <div class="row align-items-center">
+                        <div class="form-row align-items-center">
                             <c:set var="phenotype_list" value="${['','amyotrophic lateral sclerosis',
                                                                  'autoimmune disease','bone disease',
                                                                  'brain malformation','cancer','cardiovascular disease',
@@ -111,13 +110,13 @@
                                                                  'other neuropsychiatric disease','primary immune deficiency','pulmonary disease',
                                                                  'schizophrenia','sudden death','alzheimers disease','cerebral palsy']}"/>
 
-                            <div class="form-group col-auto"
+                            <div class="col-md-auto form-group"
                                  data-toggle="tooltip" title="Search variants by selected phenotype">
                                 <label for="input-select-phenotype">Phenotype:</label>
                                 <c:if test="${empty phenotype}" >
                                     <c:set var="phenotype" value=""/>
                                 </c:if>
-                                <select id="input-select-phenotype" name="phenotype" class="form-control" style="width:270;">> 
+                                <select id="input-select-phenotype" name="phenotype" class="form-control"> 
                                     <c:forEach items="${phenotype_list}" var="p">
                                         <option value="${p}" 
                                                 <c:if test="${phenotype == p}" >
@@ -129,7 +128,7 @@
                                 </select>
                             </div>
 
-                            <div class="form-group col-auto"
+                            <div class="col-md-auto form-group"
                                  data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
                                 <label for="input-select-max-af">Max AF:</label>
                                 <c:set var="af_list" value="${['','0.01','0.005','0.001']}"/>
@@ -148,36 +147,42 @@
                                 </select>
                             </div>
 
-                            <div class="custom-control custom-switch col-auto" style="margin-left: 12px"
-                                 data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
-                                 SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
-                                 MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
-                                <input type="checkbox" class="custom-control-input" id="input-check-high-quality-variant" name="isHighQualityVariant" 
-                                       <c:if test="${not empty isHighQualityVariant}" >
-                                           checked
-                                       </c:if>
-                                       >
-                                <label class="custom-control-label" for="input-check-high-quality-variant">High Quality Variant</label>
+                            <div class="col-md-auto form-group">
+                                <div class="custom-control custom-switch"
+                                     data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
+                                     SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
+                                     MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
+                                    <input type="checkbox" class="custom-control-input" id="input-check-high-quality-variant" name="isHighQualityVariant" 
+                                           <c:if test="${not empty isHighQualityVariant}" >
+                                               checked
+                                           </c:if>
+                                           >
+                                    <label class="custom-control-label" for="input-check-high-quality-variant">High Quality Variant</label>
+                                </div>
                             </div>
 
-                            <div class="custom-control custom-switch col-auto"
-                                 data-toggle="tooltip" title="All External AF are either 0 or NA">
-                                <input type="checkbox" class="custom-control-input" id="input-check-ultra-rare-variant" name="isUltraRareVariant" 
-                                       <c:if test="${not empty isUltraRareVariant}" >
-                                           checked
-                                       </c:if>
-                                       >
-                                <label class="custom-control-label" for="input-check-ultra-rare-variant">Ultra Rare Variant</label>
+                            <div class="col-md-auto form-group">
+                                <div class="custom-control custom-switch"
+                                     data-toggle="tooltip" title="All External AF are either 0 or NA">
+                                    <input type="checkbox" class="custom-control-input" id="input-check-ultra-rare-variant" name="isUltraRareVariant" 
+                                           <c:if test="${not empty isUltraRareVariant}" >
+                                               checked
+                                           </c:if>
+                                           >
+                                    <label class="custom-control-label" for="input-check-ultra-rare-variant">Ultra Rare Variant</label>
+                                </div>
                             </div>
 
-                            <div class="custom-control custom-switch col-auto"
-                                 data-toggle="tooltip" title="Available as control used samples in sequenceDB">
-                                <input type="checkbox" class="custom-control-input" id="input-check-public-available" name="isPublicAvailable" 
-                                       <c:if test="${not empty isPublicAvailable}" >
-                                           checked
-                                       </c:if>
-                                       >
-                                <label class="custom-control-label" for="input-check-public-available">Public Available Sample</label>
+                            <div class="col-md-auto form-group">
+                                <div class="custom-control custom-switch"
+                                     data-toggle="tooltip" title="Available as control used samples in sequenceDB">
+                                    <input type="checkbox" class="custom-control-input" id="input-check-public-available" name="isPublicAvailable" 
+                                           <c:if test="${not empty isPublicAvailable}" >
+                                               checked
+                                           </c:if>
+                                           >
+                                    <label class="custom-control-label" for="input-check-public-available">Public Available Sample</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,7 +215,7 @@
                         });
                     });
                 </script>
-
+     
                 <%@include file="result.jsp" %>  
             </div>
         </div>
