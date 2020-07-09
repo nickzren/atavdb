@@ -16,8 +16,10 @@ import util.DBManager;
  */
 public class SampleManager {
 
-    private static LocalDate currentDate = LocalDate.now();
-
+    // date point for clearing cached data
+    private static LocalDate currentDate4AllSample = LocalDate.now();
+    private static LocalDate currentDate4PublicAvailableSample = LocalDate.now();
+    
     // authorized user init all sample map , key is phenotype and value is list of samples associated
     private static HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
     private static HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
@@ -34,17 +36,16 @@ public class SampleManager {
 
     private static boolean checkSampleCount(FilterManager filter) throws Exception {
         // reset sample data & clear cached data once a day
-        if (currentDate.isEqual(LocalDate.now())) {
+        if (getCurrentDate(filter).isEqual(LocalDate.now())) {
             return false;
         } else {
-            currentDate = LocalDate.now();
+            resetCurrentDate(filter);
         }
 
         // only if sample count mismatch then reset sample data & clear cached data
         String sqlCode = "SELECT count(*) as count FROM sample "
                 + "WHERE"
                 + filter.getSampleSQL()
-                + filter.getPhenotypeSQL()
                 + filter.getAvailableControlUseSQL();
 
         Connection connection = DBManager.getConnection();
@@ -116,5 +117,17 @@ public class SampleManager {
 
     public static HashMap<String, ArrayList<Sample>> getMap(FilterManager filter) {
         return filter.isAvailableControlUseOnly() ? publicAvailableSampleMap : allSampleMap;
+    }
+    
+    private static LocalDate getCurrentDate(FilterManager filter) {
+        return filter.isAvailableControlUseOnly() ? currentDate4PublicAvailableSample : currentDate4AllSample;
+    }
+    
+    private static void resetCurrentDate(FilterManager filter) {
+        if(filter.isAvailableControlUseOnly()) {
+            currentDate4PublicAvailableSample = LocalDate.now();
+        } else {
+            currentDate4AllSample = LocalDate.now();
+        }
     }
 }
