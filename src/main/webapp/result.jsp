@@ -290,6 +290,7 @@
                                 <th data-toggle="tooltip" title="Ancestry probability >= 0.5 in sequenceDB">Ancestry</th>
                                 <th data-toggle="tooltip" title="Genotype">GT</th>
                                 <th data-toggle="tooltip" title="Read Depth">DP</th>
+                                <th data-toggle="tooltip" title="Percentage of all the reads at the site that support the alternative allele">Percent Alt Read</th>
                                 <th data-toggle="tooltip" title="Genotype Quality">GQ</th>
                                 <th data-toggle="tooltip" title="PASS->PASS, VQSRTrancheSNP90.00to99.00->LIKELY, VQSRTrancheSNP99.00to99.90->INTERMEDIATE, VQSRTrancheSNP99.90to100.00->FAIL">FILTER</th>
                                 </tr>
@@ -310,6 +311,7 @@
                                     <td>${carrier.getAncestry()}</td>
                                     <td>${carrier.getGTStr()}</td>
                                     <td>${carrier.getDP()}</td>
+                                    <td>${carrier.getPercAltRead()}</td>
                                     <td>${carrier.getGQ()}</td>
                                     <td>${carrier.getFILTER()}</td>
                                     </tr>

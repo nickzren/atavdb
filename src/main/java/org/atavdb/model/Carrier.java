@@ -6,6 +6,7 @@ import org.atavdb.global.Enum.FILTER;
 import org.atavdb.global.Enum.GT;
 import java.sql.ResultSet;
 import org.atavdb.service.FormatManager;
+import org.atavdb.service.MathManager;
 
 /**
  *
@@ -174,5 +175,9 @@ public class Carrier extends NonCarrier {
                 gt = Data.BYTE_NA;
             }
         }
+    }
+    
+    public String getPercAltRead() {
+        return FormatManager.getFloat(MathManager.devide(adAlt, dp));
     }
 }
