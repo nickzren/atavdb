@@ -1,8 +1,8 @@
-package model;
+package org.atavdb.model;
 
-import global.Enum.Ethnicity;
-import global.Enum.Gender;
-import util.FormatManager;
+import org.atavdb.global.Enum.Ethnicity;
+import org.atavdb.global.Enum.Gender;
+import org.atavdb.service.FormatManager;
 
 /**
  *

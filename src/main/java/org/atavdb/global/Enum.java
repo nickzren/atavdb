@@ -1,4 +1,4 @@
-package global;
+package org.atavdb.global;
 
 import java.util.stream.Stream;
 

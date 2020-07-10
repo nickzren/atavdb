@@ -1,7 +1,7 @@
-package model;
+package org.atavdb.service;
 
-import global.Enum;
-import global.Data;
+import org.atavdb.global.Enum;
+import org.atavdb.global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;

@@ -4,18 +4,18 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
-import model.EffectManager;
-import model.FilterManager;
-import model.SampleManager;
-import model.Variant;
-import model.VariantManager;
+import org.atavdb.service.EffectManager;
+import org.atavdb.service.FilterManager;
+import org.atavdb.service.SampleManager;
+import org.atavdb.model.Variant;
+import org.atavdb.service.VariantManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-import util.DBManager;
-import util.LDAP;
-import util.VerifyUser;
+import org.atavdb.service.DBManager;
+import org.atavdb.service.LDAP;
+import org.atavdb.service.VerifyUser;
 
 /**
  *
@@ -96,11 +96,11 @@ public class WebController {
             session.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));
 
             if (session.getAttribute("genders") == null) {
-                session.setAttribute("genders", global.Enum.Gender.values());
+                session.setAttribute("genders", org.atavdb.global.Enum.Gender.values());
             }
             
             if (session.getAttribute("ethnicities") == null) {
-                session.setAttribute("ethnicities", global.Enum.Ethnicity.values());
+                session.setAttribute("ethnicities", org.atavdb.global.Enum.Ethnicity.values());
             }
         } catch (Exception ex) {
             // debug purpose

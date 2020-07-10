@@ -1,14 +1,19 @@
-package model;
+package org.atavdb.model;
 
-import global.Data;
-import util.FormatManager;
+import org.atavdb.service.SampleManager;
+import org.atavdb.service.FilterManager;
+import org.atavdb.service.ExternalDataManager;
+import org.atavdb.service.CarrierBlockManager;
+import org.atavdb.service.DPBinBlockManager;
+import org.atavdb.global.Data;
+import org.atavdb.service.FormatManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.web.servlet.ModelAndView;
-import util.MathManager;
+import org.atavdb.service.MathManager;
 
 /**
  *
@@ -260,11 +265,11 @@ public class Variant extends Region {
 
             if (carrier != null) {
                 if (!filter.isMinDpBinValid(carrier.getDPBin())) {
-                    carrier.setGT(global.Enum.GT.NA.value());
+                    carrier.setGT(org.atavdb.global.Enum.GT.NA.value());
                     carrier.setDPBin(Data.SHORT_NA);
                 }
 
-                if (carrier.getGT() == global.Enum.GT.NA.value()) {
+                if (carrier.getGT() == org.atavdb.global.Enum.GT.NA.value()) {
                     // have to remove it for init Non-carrier map
                     carrierMap.remove(sample.getId());
                 } else {
@@ -274,7 +279,7 @@ public class Variant extends Region {
                 }
             } else if (noncarrier != null) {
                 if (!filter.isMinDpBinValid(noncarrier.getDPBin())) {
-                    noncarrier.setGT(global.Enum.GT.NA.value());
+                    noncarrier.setGT(org.atavdb.global.Enum.GT.NA.value());
                     noncarrier.setDPBin(Data.SHORT_NA);
                 }
 
@@ -286,22 +291,22 @@ public class Variant extends Region {
     }
 
     public void countGeno(byte geno) {
-        if (geno != global.Enum.GT.NA.value()) {
+        if (geno != org.atavdb.global.Enum.GT.NA.value()) {
             genoCount[geno]++;
         }
     }
 
     public void countGenderEthnicity(byte geno, Sample sample) {
-        if (geno == global.Enum.GT.HOM.value() || geno == global.Enum.GT.HET.value()) {
+        if (geno == org.atavdb.global.Enum.GT.HOM.value() || geno == org.atavdb.global.Enum.GT.HET.value()) {
             genderCount[sample.getGender().getIndex()]++;
             ethnicityCount[sample.getEthnicity().getIndex()]++;
         }
     }
 
     private void calculateAF() {
-        ac = 2 * genoCount[global.Enum.GT.HOM.value()] + genoCount[global.Enum.GT.HET.value()];
+        ac = 2 * genoCount[org.atavdb.global.Enum.GT.HOM.value()] + genoCount[org.atavdb.global.Enum.GT.HET.value()];
 
-        an = ac + genoCount[global.Enum.GT.HET.value()] + 2 * genoCount[global.Enum.GT.REF.value()];
+        an = ac + genoCount[org.atavdb.global.Enum.GT.HET.value()] + 2 * genoCount[org.atavdb.global.Enum.GT.REF.value()];
 
         af = MathManager.devide(ac, an);
     }
@@ -312,7 +317,7 @@ public class Variant extends Region {
 
     // NS = Number of Samples With Data
     public int getNS() {
-        return genoCount[global.Enum.GT.HOM.value()] + genoCount[global.Enum.GT.HET.value()] + genoCount[global.Enum.GT.REF.value()];
+        return genoCount[org.atavdb.global.Enum.GT.HOM.value()] + genoCount[org.atavdb.global.Enum.GT.HET.value()] + genoCount[org.atavdb.global.Enum.GT.REF.value()];
     }
 
     // AC = Allele Count
@@ -332,7 +337,7 @@ public class Variant extends Region {
 
     // NH = Number of homozygotes
     public int getNH() {
-        return genoCount[global.Enum.GT.HOM.value()];
+        return genoCount[org.atavdb.global.Enum.GT.HOM.value()];
     }
 
     public int[] getGenderCount() {

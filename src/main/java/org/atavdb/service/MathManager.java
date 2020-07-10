@@ -1,6 +1,6 @@
-package util;
+package org.atavdb.service;
 
-import global.Data;
+import org.atavdb.global.Data;
 
 /**
  *

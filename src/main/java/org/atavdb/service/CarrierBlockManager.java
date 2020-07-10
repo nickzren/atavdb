@@ -1,12 +1,13 @@
-package model;
+package org.atavdb.service;
 
-import global.Data;
+import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import org.atavdb.model.Carrier;
+import org.atavdb.model.Variant;
 import org.springframework.web.servlet.ModelAndView;
-import util.DBManager;
 
 /**
  *

@@ -1,11 +1,10 @@
-package model;
+package org.atavdb.service;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
-import util.DBManager;
 
 /**
  *

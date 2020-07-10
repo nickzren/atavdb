@@ -1,4 +1,4 @@
-package util;
+package org.atavdb.service;
 
 import java.util.Properties;
 import javax.naming.Context;

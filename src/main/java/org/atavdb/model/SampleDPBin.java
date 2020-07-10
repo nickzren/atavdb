@@ -1,6 +1,7 @@
-package model;
+package org.atavdb.model;
 
-import global.Data;
+import org.atavdb.service.DPBinBlockManager;
+import org.atavdb.global.Data;
 
 /**
  *

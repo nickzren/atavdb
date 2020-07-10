@@ -1,10 +1,11 @@
-package model;
+package org.atavdb.model;
 
-import global.Data;
-import global.Enum.FILTER;
-import global.Enum.GT;
+import org.atavdb.service.FilterManager;
+import org.atavdb.global.Data;
+import org.atavdb.global.Enum.FILTER;
+import org.atavdb.global.Enum.GT;
 import java.sql.ResultSet;
-import util.FormatManager;
+import org.atavdb.service.FormatManager;
 
 /**
  *

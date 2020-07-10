@@ -1,14 +1,15 @@
-package model;
+package org.atavdb.service;
 
-import global.Enum.Ethnicity;
-import global.Enum.Gender;
+import org.atavdb.service.FilterManager;
+import org.atavdb.global.Enum.Ethnicity;
+import org.atavdb.global.Enum.Gender;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import util.DBManager;
+import org.atavdb.model.Sample;
 
 /**
  *
