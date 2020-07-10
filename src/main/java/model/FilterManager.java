@@ -4,7 +4,8 @@ import global.Enum;
 import global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -43,49 +44,51 @@ public class FilterManager {
     public FilterManager() {
     }
 
-    public FilterManager(HttpServletRequest request) throws Exception {
-        query = request.getParameter("query");
-        queryType = getQueryType(query, request);
-
-        if (request.getSession().getAttribute("username") == null
+    public FilterManager(
+            String query, 
+            String maxAF,
+            String phenotype,
+            String isHighQualityVariant,
+            String isUltraRareVariant,
+            String isPublicAvailable,
+            HttpSession session,
+            ModelAndView mv) throws Exception {
+        this.query = query;
+        queryType = getQueryType(query, mv);
+        if (session.getAttribute("username") == null
                 && (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) {
             error = "Permission denied for anonymous user.";
-            request.setAttribute("error", error);
+            mv.addObject("error", error);
         }
 
-        String maxAFStr = request.getParameter("maxAF");
-        String phenotypeStr = request.getParameter("phenotype");
-        String isHighQualityVariantStr = request.getParameter("isHighQualityVariant");
         // default to search high quality variants only for gene or region
         if (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3])) {
-            isHighQualityVariantStr = "on";
+            isHighQualityVariant = "on";
         }
-        String isUltraRareVariantStr = request.getParameter("isUltraRareVariant");
 
-        String isPublicAvailableStr = request.getParameter("isPublicAvailable");
         // for unauthorized user & valid query, public avaiable data only
         if (query != null && !query.isEmpty() &&
-                request.getSession().getAttribute("sequence_authorized") == null) {
+                session.getAttribute("sequence_authorized") == null) {
             isAvailableControlUseOnly = true;
-            isPublicAvailableStr = "on";
+            isPublicAvailable = "on";
         } else {
             // for ahthorized user, use Public Only checkbox as filter
-            isAvailableControlUseOnly = isPublicAvailableStr != null;
+            isAvailableControlUseOnly = isPublicAvailable != null;
         }
 
-        request.setAttribute("query", query);
-        request.setAttribute("queryType", queryType);
-        request.setAttribute("maxAF", maxAFStr);
-        request.setAttribute("phenotype", phenotypeStr);
-        request.setAttribute("isHighQualityVariant", isHighQualityVariantStr);
-        request.setAttribute("isUltraRareVariant", isUltraRareVariantStr);
-        request.setAttribute("isPublicAvailable", isPublicAvailableStr);
+        mv.addObject("query", query);
+        mv.addObject("queryType", queryType);
+        mv.addObject("maxAF", maxAF);
+        mv.addObject("phenotype", phenotype);
+        mv.addObject("isHighQualityVariant", isHighQualityVariant);
+        mv.addObject("isUltraRareVariant", isUltraRareVariant);
+        mv.addObject("isPublicAvailable", isPublicAvailable);
 
-        maxAF = getFloat(maxAFStr);
-        phenotype = phenotypeStr == null ? "" : phenotypeStr;
+        this.maxAF = getFloat(maxAF);
+        this.phenotype = phenotype == null ? "" : phenotype;
 
-        isHighQualityVariant = isHighQualityVariantStr != null && isHighQualityVariantStr.equalsIgnoreCase("on");
-        isUltraRareVariant = isUltraRareVariantStr != null && isUltraRareVariantStr.equalsIgnoreCase("on");
+        this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equalsIgnoreCase("on");
+        this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equalsIgnoreCase("on");
     }
 
     public String getPhenotype() {
@@ -133,7 +136,7 @@ public class FilterManager {
         return value >= minVarPresent;
     }
 
-    private String getQueryType(String query, HttpServletRequest request) throws Exception {
+    private String getQueryType(String query, ModelAndView mv) throws Exception {
         if (query != null && !query.isEmpty()
                 // only allow Alphanumeric, ":" and "-" 
                 && Pattern.matches("^[a-zA-Z0-9\\:\\-]+$", query)) {
@@ -163,7 +166,7 @@ public class FilterManager {
                             return Data.QUERT_TYPE[3]; // Region
                         } else {
                             error = "Invalid region or exceeds maximum limit 10kb.";
-                            request.setAttribute("error", error);
+                            mv.addObject("error", error);
                         }
                     }
                 }

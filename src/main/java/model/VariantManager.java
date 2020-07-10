@@ -7,7 +7,7 @@ import util.DBManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -23,7 +23,7 @@ public class VariantManager {
         return filter.isAvailableControlUseOnly() ? cachedVariant4PublicAvailableSampleMap : cachedVariant4AllSampleMap;
     }
 
-    public static ArrayList<Variant> getVariantList(FilterManager filter, HttpServletRequest request) throws Exception {
+    public static ArrayList<Variant> getVariantList(FilterManager filter, ModelAndView mv) throws Exception {
         ArrayList<Variant> list = new ArrayList<>();
 
         String queryIdentifier = filter.getQueryIdentifier();
@@ -96,7 +96,7 @@ public class VariantManager {
             if (currentVariantId != rs.getInt("variant_id")) {
                 currentVariantId = rs.getInt("variant_id");
 
-                variant = new Variant(chr, rs, filter, request);
+                variant = new Variant(chr, rs, filter, mv);
 
                 if (variant.isValid()) {
                     list.add(variant);

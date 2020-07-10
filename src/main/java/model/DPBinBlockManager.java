@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 import util.DBManager;
 
 /**
@@ -32,12 +32,12 @@ public class DPBinBlockManager {
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
             FilterManager filter,
-            HttpServletRequest request) {
+            ModelAndView mv) {
         int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
 
-        Integer currentBlockId = (Integer) request.getAttribute("currentNonCarrierBlockId");
+        Integer currentBlockId = (Integer) mv.getModel().get("currentNonCarrierBlockId");
 
-        ArrayList<SampleDPBin> currentBlockList = (ArrayList<SampleDPBin>) request.getAttribute("currentBlockList");
+        ArrayList<SampleDPBin> currentBlockList = (ArrayList<SampleDPBin>) mv.getModel().get("currentBlockList");
 
         int blockId = Math.floorDiv(var.getStartPosition(), DP_BIN_BLOCK_SIZE);
 
@@ -71,8 +71,8 @@ public class DPBinBlockManager {
             
             initBlockDPBin(carrierMap, noncarrierMap, var, posIndex, blockId, filter, currentBlockList);
             
-            request.setAttribute("currentNonCarrierBlockId", currentBlockId);
-            request.setAttribute("currentBlockList", currentBlockList);
+            mv.addObject("currentNonCarrierBlockId", currentBlockId);
+            mv.addObject("currentBlockList", currentBlockList);
         }
     }
 

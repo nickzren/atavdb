@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 import util.DBManager;
 
 /**
@@ -16,11 +16,11 @@ public class CarrierBlockManager {
 
     public static final int CARRIER_BLOCK_SIZE = 1000;
 
-    public static void init(Variant var, FilterManager filter, HttpServletRequest request) {
+    public static void init(Variant var, FilterManager filter, ModelAndView mv) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
-        Integer currentBlockId = (Integer) request.getAttribute("currentCarrierBlockId");
-
+        Integer currentBlockId = (Integer) mv.getModel().get("currentCarrierBlockId");
+        
         if (currentBlockId == null || currentBlockId != blockId) {
             currentBlockId = blockId;
 
@@ -28,8 +28,8 @@ public class CarrierBlockManager {
 
             initBlockCarrierMap(var, filter, blockId, blockCarrierMap);
 
-            request.setAttribute("currentCarrierBlockId", currentBlockId);
-            request.setAttribute("blockCarrierMap", blockCarrierMap);
+            mv.addObject("currentCarrierBlockId", currentBlockId);
+            mv.addObject("blockCarrierMap", blockCarrierMap);
         }
     }
 
@@ -142,9 +142,9 @@ public class CarrierBlockManager {
         }
     }
 
-    public static HashMap<Integer, Carrier> getVarCarrierMap(int variantId, HttpServletRequest request) {
+    public static HashMap<Integer, Carrier> getVarCarrierMap(int variantId, ModelAndView mv) {
         HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap
-                = (HashMap<Integer, HashMap<Integer, Carrier>>) request.getAttribute("blockCarrierMap");
+                = (HashMap<Integer, HashMap<Integer, Carrier>>) mv.getModel().get("blockCarrierMap");
 
         return blockCarrierMap == null ? null : blockCarrierMap.get(variantId);
     }

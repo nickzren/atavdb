@@ -16,7 +16,7 @@
                 <a class="nav-item nav-link home-link" href="contact">Contact</a>
                 <c:choose>
                     <c:when test="${not empty username}" >
-                        <a class="nav-item nav-link home-link" href="SignOut"><i class="fas fa-sign-out-alt"></i>&nbsp;Sign Out</a>
+                        <a class="nav-item nav-link home-link" href="signout"><i class="fas fa-sign-out-alt"></i>&nbsp;Sign Out</a>
                     </c:when>
                     <c:otherwise>
                         <a class="nav-item nav-link home-link" href="signin"><i class="fas fa-sign-in-alt"></i>&nbsp;Sign In</a>

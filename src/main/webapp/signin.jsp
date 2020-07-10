@@ -15,7 +15,7 @@
 
     <body>
         <div class="form-signin">
-            <form action="SignIn" method="post">
+            <form action="signin" method="post">
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 
                 <div class="form-label-group">

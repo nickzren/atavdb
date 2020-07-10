@@ -50,7 +50,7 @@
             <%@include file="base/header.jsp" %>
 
             <div class="container-main">
-                <form id="form-search" class="form-search" action="Search">
+                <form id="form-search" class="form-search" action="search">
                     <div class="jumbotron" style="padding:20px 40px 20px 50px">
                         <h2>Data Browser 
                             <small>
@@ -86,7 +86,6 @@
                             </div>
 
                             <div class="col-md-3 form-group text-center">
-                                <c:import url="/SampleCount" />
                                 <c:if test="${not empty sampleCount}" >
                                     <div class="bg-light">
                                         <h2><fmt:formatNumber type = "number" value = "${sampleCount}"/></h2>

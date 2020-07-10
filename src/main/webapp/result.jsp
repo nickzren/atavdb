@@ -149,7 +149,7 @@
                         <c:forEach items="${variantList}" var="variant">
                             <tr>
                                 <td>
-                                    <a href="Search?query=${variant.getVariantIdStr()}" target='_blank'>
+                                    <a href="search?query=${variant.getVariantIdStr()}" target='_blank'>
                                         ${variant.getVariantIdStr()}
                                     </a>
                                 </td>

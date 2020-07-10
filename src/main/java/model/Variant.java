@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 import util.MathManager;
 
 /**
@@ -56,7 +56,7 @@ public class Variant extends Region {
 
     public boolean isValid = true;
 
-    public Variant(String chr, ResultSet rset, FilterManager filter, HttpServletRequest request) throws Exception {
+    public Variant(String chr, ResultSet rset, FilterManager filter, ModelAndView mv) throws Exception {
         variantId = rset.getInt("variant_id");
 
         int pos = rset.getInt("POS");
@@ -72,7 +72,7 @@ public class Variant extends Region {
 
         initExternalAF(filter);
 
-        initCarrier(filter, request);
+        initCarrier(filter, mv);
     }
 
     private void initExternalAF(FilterManager filter) {
@@ -96,10 +96,10 @@ public class Variant extends Region {
     }
 
     // init carrier and non-carrier data, calculate af and count genotype
-    private void initCarrier(FilterManager filter, HttpServletRequest request) throws Exception {
+    private void initCarrier(FilterManager filter, ModelAndView mv) throws Exception {
         if (isValid
-                && initCarrierData(filter, request)) {
-            DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, request);
+                && initCarrierData(filter, mv)) {
+            DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, mv);
 
             initGTCount(filter);
 
@@ -228,7 +228,7 @@ public class Variant extends Region {
         return FormatManager.getFloat(topmed);
     }
 
-    private boolean initCarrierData(FilterManager filter, HttpServletRequest request) {
+    private boolean initCarrierData(FilterManager filter, ModelAndView mv) {
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
             // single variant carriers data process
             CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
@@ -238,9 +238,9 @@ public class Variant extends Region {
             }
         } else {
             // block variants carriers data process
-            CarrierBlockManager.init(this, filter, request);
+            CarrierBlockManager.init(this, filter, mv);
 
-            carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, request);
+            carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, mv);
 
             if (carrierMap == null) {
                 carrierMap = new HashMap<>();
