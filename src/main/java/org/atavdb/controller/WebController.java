@@ -99,8 +99,8 @@ public class WebController {
                 session.setAttribute("genders", org.atavdb.global.Enum.Gender.values());
             }
             
-            if (session.getAttribute("ethnicities") == null) {
-                session.setAttribute("ethnicities", org.atavdb.global.Enum.Ethnicity.values());
+            if (session.getAttribute("ancestries") == null) {
+                session.setAttribute("ancestries", org.atavdb.global.Enum.Ancestry.values());
             }
         } catch (Exception ex) {
             // debug purpose

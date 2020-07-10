@@ -1,7 +1,6 @@
 package org.atavdb.service;
 
-import org.atavdb.service.FilterManager;
-import org.atavdb.global.Enum.Ethnicity;
+import org.atavdb.global.Enum.Ancestry;
 import org.atavdb.global.Enum.Gender;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -69,7 +68,7 @@ public class SampleManager {
         getMap(filter).clear();
         getMap(filter).put("", new ArrayList<>());
 
-        String sqlCode = "SELECT sample_id,seq_gender,experiment_id,broad_phenotype,ethnicity,available_control_use FROM sample "
+        String sqlCode = "SELECT sample_id,seq_gender,experiment_id,broad_phenotype,ancestry,available_control_use FROM sample "
                 + "WHERE"
                 + filter.getSampleSQL()
                 + filter.getPhenotypeSQL()
@@ -85,11 +84,11 @@ public class SampleManager {
             Gender gender = genderStr == null ? Gender.NA : Gender.valueOf(genderStr);
             int experimentId = rs.getInt("experiment_id");
             String broadPhenotype = rs.getString("broad_phenotype");
-            String ethnicityStr = rs.getString("ethnicity");
-            Ethnicity ethnicity = ethnicityStr == null ? Ethnicity.NA : Ethnicity.valueOf(ethnicityStr);
+            String ancestryStr = rs.getString("ancestry");
+            Ancestry ancestry = ancestryStr == null ? Ancestry.NA : Ancestry.valueOf(ancestryStr);
             byte availableControlUse = rs.getByte("available_control_use");
 
-            Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ethnicity, availableControlUse);
+            Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ancestry, availableControlUse);
 
             if (broadPhenotype != null && !broadPhenotype.isEmpty()) {
                 ArrayList<Sample> list = getMap(filter).get(broadPhenotype);

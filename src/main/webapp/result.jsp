@@ -264,11 +264,11 @@
                 </div>
 
                 <div class="row mt-2">
-                    <div class="col-md-auto lead"><span class="badge badge-light">Ethnicity count:</span></div>
-                    <c:forEach items="${ethnicities}" var="ethnicity">
+                    <div class="col-md-auto lead"><span class="badge badge-light">Ancestry count:</span></div>
+                    <c:forEach items="${ancestries}" var="ancestry">
                         <div class="col-md-auto lead">
-                            <span class="badge badge-light">${variant.getEthnicityCount()[ethnicity.getIndex()]}
-                                ${ethnicity.getName()}</span> 
+                            <span class="badge badge-light">${variant.getAncestryCount()[ancestry.getIndex()]}
+                                ${ancestry.getName()}</span> 
                         </div>
                     </c:forEach>
                 </div>
@@ -287,7 +287,7 @@
                                 <th data-toggle="tooltip" title="AvaiContUsed in sequenceDB">Public Available</th>
                                 <th data-toggle="tooltip" title="seqGender in sequenceDB">Gender</th>
                                 <th data-toggle="tooltip" title="Broad Phenotype in sequenceDB">Phenotype</th>
-                                <th data-toggle="tooltip" title="Ethnicity probability >= 0.5 in sequenceDB">Ethnicity</th>
+                                <th data-toggle="tooltip" title="Ancestry probability >= 0.5 in sequenceDB">Ancestry</th>
                                 <th data-toggle="tooltip" title="Genotype">GT</th>
                                 <th data-toggle="tooltip" title="Read Depth">DP</th>
                                 <th data-toggle="tooltip" title="Genotype Quality">GQ</th>
@@ -307,7 +307,7 @@
                                     <td>${carrier.getAvailableControlUse()}</td>
                                     <td>${carrier.getGender()}</td>
                                     <td>${carrier.getPhenotype()}</td>
-                                    <td>${carrier.getEthnicity()}</td>
+                                    <td>${carrier.getAncestry()}</td>
                                     <td>${carrier.getGTStr()}</td>
                                     <td>${carrier.getDP()}</td>
                                     <td>${carrier.getGQ()}</td>

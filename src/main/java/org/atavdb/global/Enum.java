@@ -91,7 +91,7 @@ public class Enum {
         }
     }
 
-    public enum Ethnicity {
+    public enum Ancestry {
         African("African", (byte) 0),
         Caucasian("Caucasian", (byte) 1),
         EastAsian("EastAsian", (byte) 2),
@@ -103,7 +103,7 @@ public class Enum {
         private String name;
         private byte index;
 
-        private Ethnicity(String name, byte index) {
+        private Ancestry(String name, byte index) {
             this.name = name;
             this.index = index;
         }

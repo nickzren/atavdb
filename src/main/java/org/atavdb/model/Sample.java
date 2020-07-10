@@ -1,6 +1,6 @@
 package org.atavdb.model;
 
-import org.atavdb.global.Enum.Ethnicity;
+import org.atavdb.global.Enum.Ancestry;
 import org.atavdb.global.Enum.Gender;
 import org.atavdb.service.FormatManager;
 
@@ -14,7 +14,7 @@ public class Sample {
     private Gender gender;
     private int experimentId;
     private String broadPhenotype;
-    private Ethnicity ethnicity;
+    private Ancestry ancestry;
     private byte availableControlUse;
 
     public Sample(
@@ -22,13 +22,13 @@ public class Sample {
             Gender gender,
             int experimentId,
             String broadPhenotype,
-            Ethnicity ethnicity,
+            Ancestry ancestry,
             byte availableControlUse) {
         id = sampled_id;
         this.gender = gender;
         this.experimentId = experimentId;
         this.broadPhenotype = broadPhenotype;
-        this.ethnicity = ethnicity;
+        this.ancestry = ancestry;
         this.availableControlUse = availableControlUse;
     }
 
@@ -56,8 +56,8 @@ public class Sample {
         return FormatManager.getString(broadPhenotype);
     }
     
-    public Ethnicity getEthnicity() {
-        return ethnicity;
+    public Ancestry getAncestry() {
+        return ancestry;
     }
     
     public String getAvailableControlUse() {

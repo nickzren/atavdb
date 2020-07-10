@@ -119,8 +119,8 @@ public class Carrier extends NonCarrier {
         return sample.getBroadPhenotype();
     }
     
-    public String getEthnicity() {
-        return sample.getEthnicity().name();
+    public String getAncestry() {
+        return sample.getAncestry().name();
     }
     
     public String getAvailableControlUse() {
