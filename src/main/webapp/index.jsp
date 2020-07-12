@@ -80,8 +80,8 @@
                 document.getElementById('btn-submit').click();">21-33040861-G-C</a>, 
                                     Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
                                             document.getElementById('btn-submit').click();">TBK1</a>,
-                                    Region: <a href="#" onclick="document.getElementById('query').value = '2:166889788-166895788';
-                                            document.getElementById('btn-submit').click();">2:166889788-166895788</a>
+                                    Region: <a href="#" onclick="document.getElementById('query').value = '2:166892071-166893071';
+                                            document.getElementById('btn-submit').click();">2:166892071-166893071</a>
                                 </p>
                             </div>
 
@@ -214,7 +214,7 @@
                         });
                     });
                 </script>
-     
+
                 <%@include file="result.jsp" %>  
             </div>
         </div>

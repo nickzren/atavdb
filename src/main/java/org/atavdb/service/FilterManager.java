@@ -45,7 +45,7 @@ public class FilterManager {
     }
 
     public FilterManager(
-            String query, 
+            String query,
             String maxAF,
             String phenotype,
             String isHighQualityVariant,
@@ -56,7 +56,7 @@ public class FilterManager {
         this.query = query;
         queryType = getQueryType(query, mv);
         if (session.getAttribute("username") == null
-                && (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3]))) {
+                && queryType.equals(Data.QUERT_TYPE[2])) {
             error = "Permission denied for anonymous user.";
             mv.addObject("error", error);
         }
@@ -67,8 +67,8 @@ public class FilterManager {
         }
 
         // for unauthorized user & valid query, public avaiable data only
-        if (query != null && !query.isEmpty() &&
-                session.getAttribute("sequence_authorized") == null) {
+        if (query != null && !query.isEmpty()
+                && session.getAttribute("sequence_authorized") == null) {
             isAvailableControlUseOnly = true;
             isPublicAvailable = "on";
         } else {
@@ -165,7 +165,7 @@ public class FilterManager {
                                 && (end - start) <= RegionManager.MAX_SEARCH_LIMIT) {
                             return Data.QUERT_TYPE[3]; // Region
                         } else {
-                            error = "Invalid region or exceeds maximum limit 10kb.";
+                            error = "Invalid region or exceeds maximum limit " + RegionManager.MAX_SEARCH_LIMIT + " base pair.";
                             mv.addObject("error", error);
                         }
                     }
