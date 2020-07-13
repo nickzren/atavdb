@@ -6,4 +6,4 @@ If you would like to use the ATAV data browser, it hosted at http://atavdb.org/
 
 Demo
 ------------
-![Alt Text](demo.gif)
+![Alt Text](https://i.gyazo.com/ac8a251f36f42b4f0fe9d3b0d917eb7c.gif)
