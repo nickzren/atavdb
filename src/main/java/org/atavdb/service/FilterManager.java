@@ -5,7 +5,6 @@ import org.atavdb.global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -44,26 +43,25 @@ public class FilterManager {
     public FilterManager() {
     }
 
-    public FilterManager(
-            String query,
-            String maxAF,
-            String phenotype,
-            String isHighQualityVariant,
-            String isUltraRareVariant,
-            String isPublicAvailable,
-            HttpSession session,
-            ModelAndView mv) throws Exception {
-        this.query = query;
-        queryType = getQueryType(query, mv);
+    public FilterManager(HttpSession session) {
+        this.query = (String) session.getAttribute("query");
+        queryType = getQueryType(query);
+
+        String phenotype = (String) session.getAttribute("phenotype");
+        this.maxAF = getFloat((String) session.getAttribute("maxAF"));
+        String isHighQualityVariant = (String) session.getAttribute("isHighQualityVariant");
+        String isUltraRareVariant = (String) session.getAttribute("isUltraRareVariant");
+        String isPublicAvailable = (String) session.getAttribute("isPublicAvailable");
+
         if (session.getAttribute("username") == null
                 && queryType.equals(Data.QUERT_TYPE[2])) {
-            error = "Permission denied for anonymous user.";
-            mv.addObject("error", error);
+            error = error != null ? error : "Permission denied for anonymous user.";
         }
 
         // default to search high quality variants only for gene or region
         if (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3])) {
             isHighQualityVariant = "on";
+            session.setAttribute("isHighQualityVariant", isHighQualityVariant);
         }
 
         // for unauthorized user & valid query, public avaiable data only
@@ -71,28 +69,23 @@ public class FilterManager {
                 && session.getAttribute("sequence_authorized") == null) {
             isAvailableControlUseOnly = true;
             isPublicAvailable = "on";
+            session.setAttribute("isPublicAvailable", isPublicAvailable);
         } else {
             // for ahthorized user, use Public Only checkbox as filter
             isAvailableControlUseOnly = isPublicAvailable != null;
         }
 
-        mv.addObject("query", query);
-        mv.addObject("queryType", queryType);
-        mv.addObject("maxAF", maxAF);
-        mv.addObject("phenotype", phenotype);
-        mv.addObject("isHighQualityVariant", isHighQualityVariant);
-        mv.addObject("isUltraRareVariant", isUltraRareVariant);
-        mv.addObject("isPublicAvailable", isPublicAvailable);
-
-        this.maxAF = getFloat(maxAF);
         this.phenotype = phenotype == null ? "" : phenotype;
-
         this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equalsIgnoreCase("on");
         this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equalsIgnoreCase("on");
     }
 
     public String getPhenotype() {
         return phenotype;
+    }
+
+    public String getPhenotypeStr() {
+        return phenotype.isEmpty() ? null : phenotype;
     }
 
     public String getPhenotypeSQL() {
@@ -103,6 +96,10 @@ public class FilterManager {
         if (!phenotype.isEmpty()) {
             sj.add(phenotype);
         }
+    }
+
+    public String getMaxAFStr() {
+        return maxAF == Data.NO_FILTER ? null : String.valueOf(maxAF);
     }
 
     public float getMaxAF() {
@@ -136,7 +133,7 @@ public class FilterManager {
         return value >= minVarPresent;
     }
 
-    private String getQueryType(String query, ModelAndView mv) throws Exception {
+    private String getQueryType(String query) {
         if (query != null && !query.isEmpty()
                 // only allow Alphanumeric, ":" and "-" 
                 && Pattern.matches("^[a-zA-Z0-9\\:\\-]+$", query)) {
@@ -166,7 +163,7 @@ public class FilterManager {
                             return Data.QUERT_TYPE[3]; // Region
                         } else {
                             error = "Invalid region or exceeds maximum limit " + RegionManager.MAX_SEARCH_LIMIT + " base pair.";
-                            mv.addObject("error", error);
+                            return Data.QUERT_TYPE[0]; // Invalid
                         }
                     }
                 }
@@ -179,7 +176,7 @@ public class FilterManager {
     }
 
     public String getQuery() {
-        return query;
+        return query.isEmpty() ? null : query;
     }
 
     public String getQueryType() {
@@ -188,6 +185,10 @@ public class FilterManager {
 
     public boolean isQueryValid() {
         return !queryType.equals(Data.QUERT_TYPE[0]) && error == null;
+    }
+
+    public String getError() {
+        return error;
     }
 
     public boolean isMaxAFValid(double value) {
@@ -391,5 +392,17 @@ public class FilterManager {
 
     public String getSampleSQL() {
         return " sample_finished=1 AND sample_failure=0 AND sample_type!='custom_capture'";
+    }
+
+    public String getIsHighQualityVariantStr() {
+        return isHighQualityVariant ? "on" : null;
+    }
+
+    public String getIsUltraRareVariantStr() {
+        return isUltraRareVariant ? "on" : null;
+    }
+
+    public String getIsPublicAvailableStr() {
+        return isAvailableControlUseOnly ? "on" : null;
     }
 }

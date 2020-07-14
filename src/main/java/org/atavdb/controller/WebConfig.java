@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.JstlView;
 
 /**
  *
@@ -15,20 +16,21 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
  */
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "org.atavdb.controller" })
+@ComponentScan(basePackages = {"org.atavdb.controller"})
 public class WebConfig implements WebMvcConfigurer {
- 
-   @Bean
-   public ViewResolver viewResolver() {
-      InternalResourceViewResolver bean = new InternalResourceViewResolver();
- 
-      bean.setPrefix("/");
-      bean.setSuffix(".jsp");
- 
-      return bean;
-   }
-   
-   @Override
+
+    @Bean
+    public ViewResolver viewResolver() {
+        InternalResourceViewResolver bean = new InternalResourceViewResolver();
+
+        bean.setPrefix("/");
+        bean.setSuffix(".jsp");
+        bean.setViewClass(JstlView.class);
+
+        return bean;
+    }
+
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("/css/");
         registry.addResourceHandler("/img/**").addResourceLocations("/img/");

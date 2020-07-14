@@ -9,7 +9,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+        <link rel="shortcut icon" type="image/x-icon" href="<c:url value="/img/favicon.ico" />">
 
         <link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.css">
 
@@ -18,17 +18,17 @@
         <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.bootstrap4.min.css"/>
         <!-- datatables css end-->
 
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <link rel="stylesheet" href="css/all-fontawesome.css">
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="<c:url value="/css/bootstrap.min.css" />">
+        <link rel="stylesheet" href="<c:url value="/css/all-fontawesome.css" />">
+        <link rel="stylesheet" href="<c:url value="/css/main.css" />">
 
         <!-- load jQuery 3.4.1 -->
-        <script type="text/javascript" src="js/jquery-3.4.1.slim.min.js"></script>
+        <script type="text/javascript" src="<c:url value="/js/jquery-3.4.1.slim.min.js" />"></script>
         <script type="text/javascript">
             var jQuery_3_4_1 = $.noConflict();
         </script>
-        <script src="js/popper.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="<c:url value="/js/popper.min.js" />"></script>
+        <script src="<c:url value="/js/bootstrap.min.js" />"></script>
 
         <!-- datatables js start-->
         <!-- load jQuery 3.3.1 -->
@@ -50,7 +50,7 @@
             <%@include file="base/header.jsp" %>
 
             <div class="container-main">
-                <form id="form-search" class="form-search" action="search">
+                <form id="form-search" class="form-search" action="<c:url value="/search" />">
                     <div class="jumbotron" style="padding:20px 40px 20px 50px">
                         <h2>Data Browser 
                             <small>
