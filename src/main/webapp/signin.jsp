@@ -30,20 +30,13 @@
 
                 <button class="btn btn-lg btn-primary btn-block" type="submit"><i class="fas fa-sign-in-alt"></i>&nbsp;Sign in</button>
 
-                <br/>
-
                 <c:if test="${not empty error}" >
-                    <div class="alert alert-warning" role="alert">
+                    <div class="alert alert-warning mt-3" role="alert">
                         <i class="fas fa-exclamation-circle"></i>&nbsp;<strong>${error}</strong>
                     </div>
-                    <br/>
                 </c:if>
 
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i>&nbsp;Login required connection to CUMC network.
-                </div>
-
-                <small class="form-text text-muted">
+                <small class="form-text text-muted mt-2">
                     By using these resources, you agree to abide by Columbia University's 
                     <a href="http://policylibrary.columbia.edu/acceptable-usage-information-resources-policy" target="_blank">Acceptable Usage of Information Resources Policy.</a>
                 </small>
