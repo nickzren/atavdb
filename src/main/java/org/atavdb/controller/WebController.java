@@ -122,12 +122,6 @@ public class WebController {
         session.setAttribute("isPublicAvailable", isPublicAvailable);
 
         FilterManager filter = new FilterManager(session);
-        SampleManager.init(filter);
-        session.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));
-
-        session.setAttribute("queryType", filter.getQueryType());
-        session.setAttribute("error", filter.getError());
-
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) {
             return new ModelAndView("redirect:/variant/" + query);
         } else if (filter.getQueryType().equals(Data.QUERT_TYPE[2])) {
@@ -164,11 +158,12 @@ public class WebController {
             DBManager.init();
 
             FilterManager filter = new FilterManager(session);
+            SampleManager.init(filter);
+            session.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));
+            session.setAttribute("error", filter.getError());
 
             if (filter.isQueryValid()) {
                 EffectManager.init();
-
-                SampleManager.init(filter);
 
                 ArrayList<Variant> variantList = VariantManager.getVariantList(filter, mv);
                 mv.addObject("variantList", variantList);
