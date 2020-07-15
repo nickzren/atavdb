@@ -75,11 +75,11 @@ public class WebController {
     }
 
     @GetMapping("/")
-    public ModelAndView index(String query, HttpSession session) {
+    public ModelAndView index(HttpSession session) {
+        clearSession(session);
         ModelAndView mv = new ModelAndView("index");
         try {
             DBManager.init();
-            session.setAttribute("query", query);
             FilterManager filter = new FilterManager(session);
             SampleManager.init(filter);
             session.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));
@@ -91,8 +91,6 @@ public class WebController {
             if (session.getAttribute("ancestries") == null) {
                 session.setAttribute("ancestries", org.atavdb.global.Enum.Ancestry.values());
             }
-
-            clearSession(session);
         } catch (Exception ex) {
             // debug purpose
 //            mv.addObject("error", convertStackTraceToString(ex));
