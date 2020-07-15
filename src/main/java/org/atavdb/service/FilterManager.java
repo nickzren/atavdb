@@ -46,6 +46,7 @@ public class FilterManager {
     public FilterManager(HttpSession session) {
         this.query = (String) session.getAttribute("query");
         queryType = getQueryType(query);
+        session.setAttribute("queryType", queryType);
 
         String phenotype = (String) session.getAttribute("phenotype");
         this.maxAF = getFloat((String) session.getAttribute("maxAF"));
