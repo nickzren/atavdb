@@ -114,7 +114,8 @@ public class SampleManager {
     }
 
     public static int getTotalSampleNum(FilterManager filter) {
-        return getMap(filter).isEmpty() ? 0 : getMap(filter).get(filter.getPhenotype()).size();
+        return getMap(filter).isEmpty() ? 0 : 
+                getMap(filter).getOrDefault(filter.getPhenotype(), new ArrayList<>()).size();
     }
 
     public static ArrayList<Sample> getList(FilterManager filter) {
