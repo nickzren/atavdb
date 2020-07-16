@@ -9,7 +9,9 @@ import org.atavdb.global.Data;
 import org.atavdb.service.FormatManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.web.servlet.ModelAndView;
@@ -40,6 +42,7 @@ public class Variant extends Region {
     private List<Annotation> annotationList = new ArrayList<>();
 
     // external af
+    private float maxExternalAF;
     private float exac;
     private float genomeAsia;
     private float gnomadExome;
@@ -75,12 +78,12 @@ public class Variant extends Region {
 
         variantIdStr = chrStr + "-" + pos + "-" + ref + "-" + alt;
 
-        initExternalAF(filter);
+        initExternalAF();
 
         initCarrier(filter, mv);
     }
 
-    private void initExternalAF(FilterManager filter) {
+    private void initExternalAF() {
         exac = ExternalDataManager.getExAC(chrStr, startPosition, ref, alt);
         genomeAsia = ExternalDataManager.getGenomeAsia(chrStr, startPosition, ref, alt);
         gnomadExome = ExternalDataManager.getGenoADExome(chrStr, startPosition, ref, alt);
@@ -88,6 +91,9 @@ public class Variant extends Region {
         gme = ExternalDataManager.getGME(chrStr, startPosition, ref, alt);
         iranome = ExternalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
         topmed = ExternalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
+
+        maxExternalAF = Collections.max(Arrays.asList(exac, genomeAsia, gnomadExome,
+                gnomadGenome, gme, iranome, topmed));
     }
 
     public boolean isExternalAFValid(FilterManager filter) {
@@ -205,6 +211,11 @@ public class Variant extends Region {
         return isValid;
     }
 
+    // Maximum External Allele Frequency
+    public String getMEAF() {
+        return FormatManager.getFloat(maxExternalAF);
+    }
+    
     public String getExAC() {
         return FormatManager.getFloat(exac);
     }

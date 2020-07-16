@@ -140,6 +140,7 @@
                                 <th data-toggle="tooltip" title="Allele Acount">AC</th>
                                 <th data-toggle="tooltip" title="Allele Number (total number of alleles)">AN</th>
                                 <th data-toggle="tooltip" title="Allele Frequency">AF</th>
+                                <th data-toggle="tooltip" title="Maximum External Allele Frequency">MEAF</th>
                                 <th data-toggle="tooltip" title="Number of samples having data">NS</th>
                                 <th data-toggle="tooltip" title="Number of homozygotes">NHOM</th>
                             </tr>
@@ -158,6 +159,7 @@
                                 <td>${variant.getAC()}</td>
                                 <td>${variant.getAN()}</td>
                                 <td>${variant.getAF()}</td>
+                                <td>${variant.getMEAF()}</td>
                                 <td>${variant.getNS()}</td>
                                 <td>${variant.getNH()}</td>
                             </tr>
