@@ -128,26 +128,37 @@ public class WebController {
             return new ModelAndView("redirect:/gene/" + query);
         } else if (filter.getQueryType().equals(Data.QUERT_TYPE[3])) {
             return new ModelAndView("redirect:/region/" + query);
+        } else {
+            session.setAttribute("error", filter.getError());
         }
 
         return new ModelAndView("index");
     }
 
     @GetMapping("/variant/{variant}")
-    public ModelAndView variant(@PathVariable String variant, HttpSession session) {
+    public ModelAndView variant(@PathVariable String variant, String phenotype, HttpSession session) {
         session.setAttribute("query", variant);
+        if (phenotype != null) {
+            session.setAttribute("phenotype", phenotype);
+        }
         return doSearch(session);
     }
 
     @GetMapping("/gene/{gene}")
-    public ModelAndView gene(@PathVariable String gene, HttpSession session) {
+    public ModelAndView gene(@PathVariable String gene, String phenotype, HttpSession session) {
         session.setAttribute("query", gene);
+        if (phenotype != null) {
+            session.setAttribute("phenotype", phenotype);
+        }
         return doSearch(session);
     }
 
     @GetMapping("/region/{region}")
-    public ModelAndView region(@PathVariable String region, HttpSession session) {
+    public ModelAndView region(@PathVariable String region, String phenotype, HttpSession session) {
         session.setAttribute("query", region);
+        if (phenotype != null) {
+            session.setAttribute("phenotype", phenotype);
+        }
         return doSearch(session);
     }
 
