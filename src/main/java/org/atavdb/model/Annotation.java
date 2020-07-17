@@ -41,7 +41,7 @@ public class Annotation {
         }
 
         effectID = rset.getInt("effect_id");
-        effect = EffectManager.getEffectById(effectID);
+        effect = EffectManager.getEffectById(effectID).replace("_variant", "");
         HGVS_c = FormatManager.getString(rset.getString("HGVS_c"));
         HGVS_p = FormatManager.getString(rset.getString("HGVS_p"));
         geneName = FormatManager.getString(rset.getString("gene"));

@@ -135,14 +135,15 @@
                         <thead>
                             <tr>
                                 <th data-toggle="tooltip" title="chr-pos-ref-alt">Variant ID</th>
-                                <th data-toggle="tooltip" title="Consequence type of this variation (Ensemble 87)">Effect</th>
-                                <th data-toggle="tooltip" title="HGNC gene identifier (Ensemble 87)">Gene</th>
+                                <th data-toggle="tooltip" title="HGVS_p or HGVS_c for most damaging effect (Ensemble 87)">Consequence</th>
+                                <th data-toggle="tooltip" title="Consequence type of this variation for most damaging effect (Ensemble 87)">Effect</th>
+                                <th data-toggle="tooltip" title="HGNC gene for most damaging effect (Ensemble 87)">Gene</th>
                                 <th data-toggle="tooltip" title="Allele Acount">AC</th>
                                 <th data-toggle="tooltip" title="Allele Number (total number of alleles)">AN</th>
                                 <th data-toggle="tooltip" title="Allele Frequency">AF</th>
-                                <th data-toggle="tooltip" title="Maximum External Allele Frequency">MEAF</th>
                                 <th data-toggle="tooltip" title="Number of samples having data">NS</th>
                                 <th data-toggle="tooltip" title="Number of homozygotes">NHOM</th>
+                                <th data-toggle="tooltip" title="Maximum External Allele Frequency">maxEAF</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -154,14 +155,15 @@
                                         ${variant.getVariantIdStr()}
                                     </a>
                                 </td>
+                                <td>${variant.getConsequence()}</td>
                                 <td>${variant.getEffect()}</td>
                                 <td>${variant.getGeneName()}</td>
                                 <td>${variant.getAC()}</td>
                                 <td>${variant.getAN()}</td>
                                 <td>${variant.getAF()}</td>
-                                <td>${variant.getMEAF()}</td>
                                 <td>${variant.getNS()}</td>
                                 <td>${variant.getNH()}</td>
+                                <td>${variant.getMaxEAF()}</td>
                             </tr>
                         </c:forEach>
                         </tbody>

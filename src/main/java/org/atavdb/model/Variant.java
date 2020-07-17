@@ -190,6 +190,10 @@ public class Variant extends Region {
     public String getEffect() {
         return effect;
     }
+    
+    public String getConsequence() {        
+        return HGVS_p.equals(Data.STRING_NA) ? HGVS_c : HGVS_p;
+    }
 
     public String getHGVS_c() {
         return HGVS_c;
@@ -212,7 +216,7 @@ public class Variant extends Region {
     }
 
     // Maximum External Allele Frequency
-    public String getMEAF() {
+    public String getMaxEAF() {
         return FormatManager.getFloat(maxExternalAF);
     }
     
