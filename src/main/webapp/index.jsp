@@ -77,11 +77,11 @@
                                 <p class="text-muted" style="margin-left: 5px">
                                     Examples - 
                                     Variant: <a href="#" onclick="document.getElementById('query').value = '21-33040861-G-C';
-                document.getElementById('btn-submit').click();">21-33040861-G-C</a>, 
-                                    Gene: <a href="#" onclick="document.getElementById('query').value = 'TBK1';
-                                            document.getElementById('btn-submit').click();">TBK1</a>,
-                                    Region: <a href="#" onclick="document.getElementById('query').value = '2:166892071-166893071';
-                                            document.getElementById('btn-submit').click();">2:166892071-166893071</a>
+                document.getElementById('btn-submit').click();">21-33040861-G-C</a>,
+                                    Gene: <a href="<c:url value="/gene/TBK1" />">TBK1</a>,
+                                    Region: <a href="<c:url value="/region/2:166892071-166893071" />">2:166892071-166893071</a>
+                                    
+                                    
                                 </p>
                             </div>
 

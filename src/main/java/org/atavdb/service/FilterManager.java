@@ -406,4 +406,18 @@ public class FilterManager {
     public String getIsPublicAvailableStr() {
         return isAvailableControlUseOnly ? "on" : null;
     }
+    
+    public String getFlankingRegion() {
+        if(queryType.equals(Data.QUERT_TYPE[1])) {
+            String[] tmp = query.split("-");
+            String chr = tmp[0];
+            int pos = Integer.valueOf(tmp[1]);
+            int start = pos - 10;
+            int end = pos + 10;
+            
+            return chr + ":" + start + "-" + end;
+        }
+        
+        return null;
+    }
 }

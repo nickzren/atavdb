@@ -181,6 +181,7 @@ public class WebController {
 
                 if (variantList.isEmpty()) {
                     mv.addObject("message", "No results found from search query.");
+                    mv.addObject("flankingRegion", filter.getFlankingRegion());
                 }
             }
         } catch (Exception ex) {

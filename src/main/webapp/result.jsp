@@ -42,6 +42,16 @@
         </div>
 
         <c:if test="${queryType == 'Variant'}" >
+            <div class="col-md-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://franklin.genoox.com/variant/snp/chr${query}" target="_blank">Franklin</a>
+            </div>
+            <div class="col-md-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://gnomad.broadinstitute.org/variant/${query}" target="_blank">gnomAD</a>
+            </div>
+            <div class="col-md-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="http://trap-score.org/Search?query=${query}" target="_blank">TraP</a>
+            </div>
+
             <c:forEach items="${variantList}" var="variant">
                 <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/clinvar/?term=(${variant.getChrStr()}[Chromosome] AND ${variant.getStartPosition()}[Base Position for Assembly GRCh37])" target="_blank">ClinVar</a>
@@ -49,17 +59,9 @@
                 <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/snp/?term=(${variant.getChrStr()}[Chromosome] AND ${variant.getStartPosition()}[Base Position Previous])" target="_blank">dbSNP</a>
                 </div>
-                <div class="col-md-auto">
-                    <a class="btn btn-outline-secondary btn-sm" href="https://franklin.genoox.com/variant/snp/chr${variant.getVariantIdStr()}" target="_blank">Franklin</a>
-                </div>
-                <div class="col-md-auto">
-                    <a class="btn btn-outline-secondary btn-sm" href="https://gnomad.broadinstitute.org/variant/${variant.getVariantIdStr()}" target="_blank">gnomAD</a>
-                </div>
+
                 <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
-                </div>
-                <div class="col-md-auto">
-                    <a class="btn btn-outline-secondary btn-sm" href="http://trap-score.org/Search?query=${variant.getVariantIdStr()}" target="_blank">TraP</a>
                 </div>
                 <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${variant.getChrStr()}${variant.getStartPosition()}-${variant.getStartPosition()}" target="_blank">UCSC</a>
@@ -114,7 +116,19 @@
         <div class="row">
             <div class="col-auto">
                 <div class="alert alert-warning" role="alert">
-                    <i class="fas fa-exclamation-circle"></i>&nbsp;${message}
+                    <i class="fas fa-exclamation-circle"></i>&nbsp;
+                    ${message}
+                </div>
+            </div>
+        </div>
+    </c:if>
+
+    <c:if test="${not empty flankingRegion}" >
+        <div class="row">
+            <div class="col-auto">
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>&nbsp;
+                    Search by flanking region <a href="<c:url value="/region/${flankingRegion}" />">${flankingRegion}</a>
                 </div>
             </div>
         </div>
@@ -152,26 +166,26 @@
                             <tr>
                                 <td>
                                     <a href="<c:url value="/variant/${variant.getVariantIdStr()}" />" target='_blank'>
-                                        ${variant.getVariantIdStr()}
-                                    </a>
-                                </td>
-                                <td>${variant.getConsequence()}</td>
-                                <td>${variant.getEffect()}</td>
-                                <td>${variant.getGeneName()}</td>
-                                <td>${variant.getAC()}</td>
-                                <td>${variant.getAN()}</td>
-                                <td>${variant.getAF()}</td>
-                                <td>${variant.getNS()}</td>
-                                <td>${variant.getNH()}</td>
-                                <td>${variant.getMaxEAF()}</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
+                                       ${variant.getVariantIdStr()}
+                                </a>
+                            </td>
+                            <td>${variant.getConsequence()}</td>
+                            <td>${variant.getEffect()}</td>
+                            <td>${variant.getGeneName()}</td>
+                            <td>${variant.getAC()}</td>
+                            <td>${variant.getAN()}</td>
+                            <td>${variant.getAF()}</td>
+                            <td>${variant.getNS()}</td>
+                            <td>${variant.getNH()}</td>
+                            <td>${variant.getMaxEAF()}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </c:if>
+    </div>
+</c:if>
 </c:if>
 
 <br/>
