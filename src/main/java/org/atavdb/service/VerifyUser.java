@@ -2,19 +2,22 @@ package org.atavdb.service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
+
+@Service
 public class VerifyUser {
 
-    private final static String IGM_SEQUENCE_VERIFY_USER_URL = "https://sequence.igm.cumc.columbia.edu/api/verifyuser.php?";
+    private final String IGM_SEQUENCE_VERIFY_USER_URL = "https://sequence.igm.cumc.columbia.edu/api/verifyuser.php?";
 
     /*
         check whether user has valid account in igm sequence
      */
-    public static boolean isAuthorizedFromSequence(String username) {
+    public boolean isAuthorizedFromSequence(String username) {
         try {
             String command = "curl " + IGM_SEQUENCE_VERIFY_USER_URL + "netID=" + username;
             Process process = Runtime.getRuntime().exec(command);

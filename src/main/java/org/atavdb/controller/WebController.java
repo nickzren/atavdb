@@ -12,19 +12,28 @@ import org.atavdb.model.Variant;
 import org.atavdb.service.VariantManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.DBManager;
 import org.atavdb.service.LDAP;
 import org.atavdb.service.VerifyUser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
  * @author nick
  */
 @Controller
+@ComponentScan("org.atavdb.service")
 public class WebController {
+
+    @Autowired
+    LDAP ldap;
+
+    @Autowired
+    VerifyUser verifyUser;
 
     @GetMapping("/about")
     public ModelAndView about() {
@@ -47,15 +56,15 @@ public class WebController {
     @RequestMapping("/signin")
     public ModelAndView signin(String username, String password,
             HttpSession session) {
-        clearSession(session);
+        WebController.clearSession(session);
         ModelAndView mv = new ModelAndView("signin");
 
         if (username != null && password != null) {
 
-            if (LDAP.isMCAccountValid(username, password)) {
+            if (ldap.isMCAccountValid(username, password)) {
                 session.setAttribute("username", username);
 
-                if (VerifyUser.isAuthorizedFromSequence(username)) {
+                if (verifyUser.isAuthorizedFromSequence(username)) {
                     session.setAttribute("sequence_authorized", true);
                 }
 
@@ -73,7 +82,7 @@ public class WebController {
         session.invalidate();
         return new ModelAndView("redirect:/");
     }
-
+    
     @GetMapping("/")
     public ModelAndView index(HttpSession session) {
         clearSession(session);
@@ -99,7 +108,7 @@ public class WebController {
         return mv;
     }
 
-    private void clearSession(HttpSession session) {
+    public static void clearSession(HttpSession session) {
         session.removeAttribute("query");
         session.removeAttribute("queryType");
         session.removeAttribute("maxAF");
