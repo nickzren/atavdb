@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = {"org.atavdb.controller"})
-public class WebConfig implements WebMvcConfigurer {
+public class Config implements WebMvcConfigurer {
 
     @Bean
     public ViewResolver viewResolver() {

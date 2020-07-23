@@ -56,7 +56,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>    
-                    <mainClass>org.atavdb.WebApplication</mainClass>
+                    <mainClass>org.atavdb.Application</mainClass>
                 </configuration>
             </plugin>
         </plugins>

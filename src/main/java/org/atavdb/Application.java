@@ -8,6 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author nick
  */
 @SpringBootApplication
-public class WebApplication {
-   public static void main(String[] args) {SpringApplication.run(WebApplication.class, args);}
+public class Application {
+   public static void main(String[] args) {SpringApplication.run(Application.class, args);}
 }

@@ -1,7 +1,5 @@
 package org.atavdb.controller;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import org.atavdb.global.Data;
@@ -14,110 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.DBManager;
-import org.atavdb.service.LDAP;
-import org.atavdb.service.VerifyUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
  * @author nick
  */
 @Controller
-@ComponentScan("org.atavdb.service")
-public class WebController {
-
-    @Autowired
-    LDAP ldap;
-
-    @Autowired
-    VerifyUser verifyUser;
-
-    @GetMapping("/about")
-    public ModelAndView about() {
-        ModelAndView mv = new ModelAndView("about");
-        return mv;
-    }
-
-    @GetMapping("/contact")
-    public ModelAndView contact() {
-        ModelAndView mv = new ModelAndView("contact");
-        return mv;
-    }
-
-    @GetMapping("/terms")
-    public ModelAndView terms() {
-        ModelAndView mv = new ModelAndView("terms");
-        return mv;
-    }
-
-    @RequestMapping("/signin")
-    public ModelAndView signin(String username, String password,
-            HttpSession session) {
-        WebController.clearSession(session);
-        ModelAndView mv = new ModelAndView("signin");
-
-        if (username != null && password != null) {
-
-            if (ldap.isMCAccountValid(username, password)) {
-                session.setAttribute("username", username);
-
-                if (verifyUser.isAuthorizedFromSequence(username)) {
-                    session.setAttribute("sequence_authorized", true);
-                }
-
-                return new ModelAndView("redirect:/");
-            } else {
-                mv.addObject("error", "Invalid CUMC MC account username/password.");
-            }
-        }
-
-        return mv;
-    }
-
-    @RequestMapping("/signout")
-    public ModelAndView signout(HttpSession session) {
-        session.invalidate();
-        return new ModelAndView("redirect:/");
-    }
-    
-    @GetMapping("/")
-    public ModelAndView index(HttpSession session) {
-        clearSession(session);
-        ModelAndView mv = new ModelAndView("index");
-        try {
-            DBManager.init();
-            FilterManager filter = new FilterManager(session);
-            SampleManager.init(filter);
-            session.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));
-
-            if (session.getAttribute("genders") == null) {
-                session.setAttribute("genders", org.atavdb.global.Enum.Gender.values());
-            }
-
-            if (session.getAttribute("ancestries") == null) {
-                session.setAttribute("ancestries", org.atavdb.global.Enum.Ancestry.values());
-            }
-        } catch (Exception ex) {
-            // debug purpose
-//            mv.addObject("error", convertStackTraceToString(ex));
-        }
-
-        return mv;
-    }
-
-    public static void clearSession(HttpSession session) {
-        session.removeAttribute("query");
-        session.removeAttribute("queryType");
-        session.removeAttribute("maxAF");
-        session.removeAttribute("phenotype");
-        session.removeAttribute("isHighQualityVariant");
-        session.removeAttribute("isUltraRareVariant");
-        session.removeAttribute("isPublicAvailable");
-        session.removeAttribute("error");
-    }
+public class SearchController {
 
     @GetMapping("/search")
     public ModelAndView search(String query, String maxAF, String phenotype,
@@ -199,22 +101,5 @@ public class WebController {
         }
 
         return mv;
-    }
-
-    /**
-     * Convert a stack trace to a string for printing or logging including
-     * nested exception ("caused by")
-     *
-     * @param pThrowable
-     * @return
-     */
-    private static String convertStackTraceToString(Throwable pThrowable) {
-        if (pThrowable == null) {
-            return null;
-        } else {
-            StringWriter sw = new StringWriter();
-            pThrowable.printStackTrace(new PrintWriter(sw));
-            return sw.toString();
-        }
     }
 }
