@@ -10,27 +10,32 @@ import org.atavdb.model.Annotation;
 import org.atavdb.model.Variant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author Nick
  */
+@Service
 @ComponentScan("org.atavdb.service")
 public class VariantManager {
 
     @Autowired
     DBManager dbManager;
     
+    @Autowired
+    GeneManager geneManager;
+    
     // cached data when no new samples data loaded
-    private static HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
-    private static HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
+    private HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
+    private HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
 
-    private static HashMap<String, ArrayList<Variant>> getMap(FilterManager filter) {
+    private HashMap<String, ArrayList<Variant>> getMap(FilterManager filter) {
         return filter.isAvailableControlUseOnly() ? cachedVariant4PublicAvailableSampleMap : cachedVariant4AllSampleMap;
     }
 
-    public static ArrayList<Variant> getVariantList(FilterManager filter, ModelAndView mv) throws Exception {
+    public ArrayList<Variant> getVariantList(FilterManager filter, ModelAndView mv) throws Exception {
         ArrayList<Variant> list = new ArrayList<>();
 
         String queryIdentifier = filter.getQueryIdentifier();
@@ -53,7 +58,7 @@ public class VariantManager {
             chr = tmp[0];
             whereSQL = "WHERE POS=? AND REF=? AND ALT =? ";
         } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
-            chr = GeneManager.getChr(query);
+            chr = geneManager.getChr(query);
             // it's important to force using gene key here for better performance
             joinSQL = "FORCE INDEX (gene_idx),codingandsplice_effect e ";
             whereSQL = "WHERE gene=? AND v.effect_id=e.id ";
@@ -120,7 +125,7 @@ public class VariantManager {
         return applyFilter(filter, list);
     }
 
-    private static ArrayList<Variant> applyFilter(FilterManager filter, ArrayList<Variant> list) {
+    private ArrayList<Variant> applyFilter(FilterManager filter, ArrayList<Variant> list) {
         if (!filter.isUltraRareVariant() && filter.getMaxAF() == Data.NO_FILTER) {
             return list;
         }
@@ -145,7 +150,7 @@ public class VariantManager {
         return newList;
     }
 
-    public static void clearCachedData(FilterManager filter) {
+    public void clearCachedData(FilterManager filter) {
         getMap(filter).clear();
     }
 }

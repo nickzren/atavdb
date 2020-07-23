@@ -2,13 +2,19 @@ package org.atavdb.model;
 
 import org.atavdb.service.DPBinBlockManager;
 import org.atavdb.global.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class SampleDPBin {
 
+    @Autowired
+    DPBinBlockManager dpBinBlockManager;
+    
     private int sampleId;
     private int dpBinCursor; // point to current coverage bin
     private int endPos; // end position of one coverage bin
@@ -42,7 +48,7 @@ public class SampleDPBin {
 
             for (int pos = dpBinCursor; pos < dpBinStr.length(); pos++) {
                 char bin = dpBinStr.charAt(pos);
-                if (!DPBinBlockManager.getCoverageBin().containsKey(bin)) {
+                if (!dpBinBlockManager.getCoverageBin().containsKey(bin)) {
                     sb.append(bin);
                 } else {
                     dpBinPos = pos;           
@@ -50,7 +56,7 @@ public class SampleDPBin {
                     sb.setLength(0); // clear StringBuilder
 
                     if (varPosIndex <= endPos) {
-                        dpBin = DPBinBlockManager.getCoverageByBin(bin);
+                        dpBin = dpBinBlockManager.getCoverageByBin(bin);
                         return dpBin;
                     } else {
                         dpBinCursor = dpBinPos + 1; // move cursor for current variant

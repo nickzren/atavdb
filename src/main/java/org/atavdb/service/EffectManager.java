@@ -7,26 +7,28 @@ import java.sql.Statement;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
+@Service
 @ComponentScan("org.atavdb.service")
 public class EffectManager {
 
     @Autowired
     DBManager dbManager;
     
-    private static HashMap<Integer, String> id2EffectMap = new HashMap<>();
+    private HashMap<Integer, String> id2EffectMap = new HashMap<>();
 
-    public static void init() throws SQLException {
+    EffectManager() throws SQLException {
         if (id2EffectMap.isEmpty()) {
             initDefaultEffectSet();
         }
     }
 
-    private static void initDefaultEffectSet() {
+    private void initDefaultEffectSet() {
         try {
             String sql = "SELECT * FROM effect_ranking";
 
@@ -47,7 +49,7 @@ public class EffectManager {
         }
     }
 
-    public static String getEffectById(int id) {
+    public String getEffectById(int id) {
         return id2EffectMap.get(id);
     }
 }

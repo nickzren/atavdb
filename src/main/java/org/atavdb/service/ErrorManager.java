@@ -17,7 +17,7 @@ public class ErrorManager {
      * @param pThrowable
      * @return
      */
-    private String convertStackTraceToString(Throwable pThrowable) {
+    public String convertStackTraceToString(Throwable pThrowable) {
         if (pThrowable == null) {
             return null;
         } else {

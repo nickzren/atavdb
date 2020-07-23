@@ -12,22 +12,24 @@ import org.atavdb.model.SampleDPBin;
 import org.atavdb.model.Variant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author nick
  */
+@Service
 @ComponentScan("org.atavdb.service")
 public class DPBinBlockManager {
 
     @Autowired
     DBManager dbManager;
     
-    public static final int DP_BIN_BLOCK_SIZE = 1000;
+    public final int DP_BIN_BLOCK_SIZE = 1000;
 
-    private static HashMap<Character, Short> dpBin = new HashMap<>();
+    private HashMap<Character, Short> dpBin = new HashMap<>();
 
-    static {
+    DPBinBlockManager() {
         dpBin.put('b', Data.SHORT_NA);
         dpBin.put('c', (short) 10);
         dpBin.put('d', (short) 20);
@@ -36,7 +38,7 @@ public class DPBinBlockManager {
         dpBin.put('g', (short) 200);
     }
 
-    public static void initCarrierAndNonCarrierByDPBin(
+    public void initCarrierAndNonCarrierByDPBin(
             Variant var,
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
@@ -85,7 +87,7 @@ public class DPBinBlockManager {
         }
     }
 
-    public static void initBlockDPBin(
+    public void initBlockDPBin(
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
             Variant var,
@@ -132,11 +134,11 @@ public class DPBinBlockManager {
         }
     }
 
-    public static short getCoverageByBin(Character bin) {
+    public short getCoverageByBin(Character bin) {
         return dpBin.get(bin);
     }
 
-    public static HashMap<Character, Short> getCoverageBin() {
+    public HashMap<Character, Short> getCoverageBin() {
         return dpBin;
     }
 }

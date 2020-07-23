@@ -6,13 +6,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.atavdb.service.FormatManager;
 import org.atavdb.service.MathManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 /**
  *
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class Annotation {
 
+    @Autowired
+    EffectManager effectManager;
+    
     private String chr;
     private int pos;
     private String ref;
@@ -30,6 +37,8 @@ public class Annotation {
     public static final int TRANSCRIPT_LENGTH = 15;
 
     public Annotation(String chr, ResultSet rset) throws SQLException {
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+        
         this.chr = chr;
         pos = rset.getInt("POS");
         ref = rset.getString("REF");
@@ -41,7 +50,7 @@ public class Annotation {
         }
 
         effectID = rset.getInt("effect_id");
-        effect = EffectManager.getEffectById(effectID).replace("_variant", "");
+        effect = effectManager.getEffectById(effectID).replace("_variant", "");
         HGVS_c = FormatManager.getString(rset.getString("HGVS_c"));
         HGVS_p = FormatManager.getString(rset.getString("HGVS_p"));
         geneName = FormatManager.getString(rset.getString("gene"));

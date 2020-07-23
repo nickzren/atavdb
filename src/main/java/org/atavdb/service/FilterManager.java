@@ -5,13 +5,19 @@ import org.atavdb.global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class FilterManager {
 
+    @Autowired
+    GeneManager geneManager;
+    
     private String query;
     private String queryType;
     private float maxAF;
@@ -168,7 +174,7 @@ public class FilterManager {
                         }
                     }
                 }
-            } else if (GeneManager.isValid(query)) {
+            } else if (geneManager.isValid(query)) {
                 return Data.QUERT_TYPE[2]; // Gene
             }
         }

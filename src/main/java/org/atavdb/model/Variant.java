@@ -16,12 +16,27 @@ import java.util.HashMap;
 import java.util.List;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.MathManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class Variant extends Region {
+
+    @Autowired
+    CarrierBlockManager carrierBlockManager;
+
+    @Autowired
+    DPBinBlockManager dpBinBlockManager;
+
+    @Autowired
+    ExternalDataManager externalDataManager;
+
+    @Autowired
+    SampleManager sampleManager;
 
     public int variantId;
     public String variantIdStr;
@@ -84,13 +99,13 @@ public class Variant extends Region {
     }
 
     private void initExternalAF() {
-        exac = ExternalDataManager.getExAC(chrStr, startPosition, ref, alt);
-        genomeAsia = ExternalDataManager.getGenomeAsia(chrStr, startPosition, ref, alt);
-        gnomadExome = ExternalDataManager.getGenoADExome(chrStr, startPosition, ref, alt);
-        gnomadGenome = ExternalDataManager.getGenoADGenome(chrStr, startPosition, ref, alt);
-        gme = ExternalDataManager.getGME(chrStr, startPosition, ref, alt);
-        iranome = ExternalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
-        topmed = ExternalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
+        exac = externalDataManager.getExAC(chrStr, startPosition, ref, alt);
+        genomeAsia = externalDataManager.getGenomeAsia(chrStr, startPosition, ref, alt);
+        gnomadExome = externalDataManager.getGenoADExome(chrStr, startPosition, ref, alt);
+        gnomadGenome = externalDataManager.getGenoADGenome(chrStr, startPosition, ref, alt);
+        gme = externalDataManager.getGME(chrStr, startPosition, ref, alt);
+        iranome = externalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
+        topmed = externalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
 
         maxExternalAF = Collections.max(Arrays.asList(exac, genomeAsia, gnomadExome,
                 gnomadGenome, gme, iranome, topmed));
@@ -110,7 +125,7 @@ public class Variant extends Region {
     private void initCarrier(FilterManager filter, ModelAndView mv) throws Exception {
         if (isValid
                 && initCarrierData(filter, mv)) {
-            DPBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, mv);
+            dpBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, mv);
 
             initGTCount(filter);
 
@@ -190,8 +205,8 @@ public class Variant extends Region {
     public String getEffect() {
         return effect;
     }
-    
-    public String getConsequence() {        
+
+    public String getConsequence() {
         return HGVS_p.equals(Data.STRING_NA) ? HGVS_c : HGVS_p;
     }
 
@@ -219,7 +234,7 @@ public class Variant extends Region {
     public String getMaxEAF() {
         return FormatManager.getFloat(maxExternalAF);
     }
-    
+
     public String getExAC() {
         return FormatManager.getFloat(exac);
     }
@@ -251,14 +266,14 @@ public class Variant extends Region {
     private boolean initCarrierData(FilterManager filter, ModelAndView mv) {
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
             // single variant carriers data process
-            CarrierBlockManager.initCarrierMap(carrierMap, this, filter);
+            carrierBlockManager.initCarrierMap(carrierMap, this, filter);
 
             if (!FilterManager.isMinVarPresentValid(carrierMap.size())) {
                 isValid = false;
             }
         } else {
             // block variants carriers data process
-            CarrierBlockManager.init(this, filter, mv);
+            carrierBlockManager.init(this, filter, mv);
 
             carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, mv);
 
@@ -274,7 +289,7 @@ public class Variant extends Region {
     }
 
     private void initGTCount(FilterManager filter) {
-        SampleManager.getList(filter).forEach((sample) -> {
+        sampleManager.getList(filter).forEach((sample) -> {
             Carrier carrier = carrierMap.get(sample.getId());
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());
 

@@ -9,21 +9,23 @@ import org.atavdb.model.Carrier;
 import org.atavdb.model.Variant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author nick
  */
+@Service
 @ComponentScan("org.atavdb.service")
 public class CarrierBlockManager {
 
     @Autowired
     DBManager dbManager;
     
-    public static final int CARRIER_BLOCK_SIZE = 1000;
+    public final int CARRIER_BLOCK_SIZE = 1000;
 
-    public static void init(Variant var, FilterManager filter, ModelAndView mv) {
+    public void init(Variant var, FilterManager filter, ModelAndView mv) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         Integer currentBlockId = (Integer) mv.getModel().get("currentCarrierBlockId");
@@ -105,7 +107,7 @@ public class CarrierBlockManager {
         }
     }
 
-    public static void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, FilterManager filter) {
+    public void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, FilterManager filter) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         StringBuilder sqlSB = new StringBuilder();
@@ -130,7 +132,7 @@ public class CarrierBlockManager {
         sqlSB.append(filter.getAvailableControlUseSQL());
 
         try {
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
             preparedStatement.setInt(1, blockId);
             ResultSet rs = preparedStatement.executeQuery();

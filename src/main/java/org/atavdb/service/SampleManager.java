@@ -11,36 +11,41 @@ import java.util.HashMap;
 import org.atavdb.model.Sample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
+@Service
 @ComponentScan("org.atavdb.service")
 public class SampleManager {
 
     @Autowired
     DBManager dbManager;
     
+    @Autowired
+    VariantManager variantManager;
+    
     // date point for clearing cached data
-    private static LocalDate currentDate4AllSample = LocalDate.now();
-    private static LocalDate currentDate4PublicAvailableSample = LocalDate.now();
+    private LocalDate currentDate4AllSample = LocalDate.now();
+    private LocalDate currentDate4PublicAvailableSample = LocalDate.now();
 
     // authorized user init all sample map , key is phenotype and value is list of samples associated
-    private static HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
-    private static HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
+    private HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
+    private HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
-    public static void init(FilterManager filter) {
+    public void init(FilterManager filter) {
         if (getMap(filter).isEmpty()
                 || checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
 
             // trigger to clear cached data when sample count mismatch
-            VariantManager.clearCachedData(filter);
+            variantManager.clearCachedData(filter);
         }
     }
 
-    private static boolean checkSampleCount(FilterManager filter) {
+    private boolean checkSampleCount(FilterManager filter) {
         // reset sample data & clear cached data once a day
         if (getCurrentDate(filter).isEqual(LocalDate.now())) {
             return false;
@@ -73,7 +78,7 @@ public class SampleManager {
         return false;
     }
 
-    private static void initAllSampleFromDB(FilterManager filter) {
+    private void initAllSampleFromDB(FilterManager filter) {
         getMap(filter).clear();
         getMap(filter).put("", new ArrayList<>());
 
@@ -84,7 +89,7 @@ public class SampleManager {
                     + filter.getPhenotypeSQL()
                     + filter.getAvailableControlUseSQL();
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sqlCode);
 
@@ -119,24 +124,24 @@ public class SampleManager {
         }
     }
 
-    public static int getTotalSampleNum(FilterManager filter) {
+    public int getTotalSampleNum(FilterManager filter) {
         return getMap(filter).isEmpty() ? 0 : 
                 getMap(filter).getOrDefault(filter.getPhenotype(), new ArrayList<>()).size();
     }
 
-    public static ArrayList<Sample> getList(FilterManager filter) {
+    public ArrayList<Sample> getList(FilterManager filter) {
         return getMap(filter).get(filter.getPhenotype());
     }
 
-    public static HashMap<String, ArrayList<Sample>> getMap(FilterManager filter) {
+    public HashMap<String, ArrayList<Sample>> getMap(FilterManager filter) {
         return filter.isAvailableControlUseOnly() ? publicAvailableSampleMap : allSampleMap;
     }
 
-    private static LocalDate getCurrentDate(FilterManager filter) {
+    private LocalDate getCurrentDate(FilterManager filter) {
         return filter.isAvailableControlUseOnly() ? currentDate4PublicAvailableSample : currentDate4AllSample;
     }
 
-    private static void resetCurrentDate(FilterManager filter) {
+    private void resetCurrentDate(FilterManager filter) {
         if (filter.isAvailableControlUseOnly()) {
             currentDate4PublicAvailableSample = LocalDate.now();
         } else {

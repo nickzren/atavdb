@@ -3,7 +3,6 @@ package org.atavdb.controller;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import org.atavdb.global.Data;
-import org.atavdb.service.EffectManager;
 import org.atavdb.service.FilterManager;
 import org.atavdb.service.SampleManager;
 import org.atavdb.model.Variant;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.DBManager;
+import org.atavdb.service.ErrorManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +26,15 @@ public class SearchController {
 
     @Autowired
     DBManager dbManager;
+    
+    @Autowired
+    VariantManager variantManager;
+    
+    @Autowired
+    SampleManager sampleManager;
+    
+    @Autowired
+    ErrorManager errorManager;
     
     @GetMapping("/search")
     public ModelAndView search(String query, String maxAF, String phenotype,
@@ -86,14 +95,12 @@ public class SearchController {
             dbManager.init();
 
             FilterManager filter = new FilterManager(session);
-            SampleManager.init(filter);
-            session.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));
+            sampleManager.init(filter);
+            session.setAttribute("sampleCount", sampleManager.getTotalSampleNum(filter));
             session.setAttribute("error", filter.getError());
 
             if (filter.isQueryValid()) {
-                EffectManager.init();
-
-                ArrayList<Variant> variantList = VariantManager.getVariantList(filter, mv);
+                ArrayList<Variant> variantList = variantManager.getVariantList(filter, mv);
                 mv.addObject("variantList", variantList);
 
                 if (variantList.isEmpty()) {
@@ -102,8 +109,8 @@ public class SearchController {
                 }
             }
         } catch (Exception ex) {
-            // debug purpose
-//             mv.addObject("error", convertStackTraceToString(ex));
+//             debug purpose
+             mv.addObject("error", errorManager.convertStackTraceToString(ex));
         }
 
         return mv;

@@ -6,18 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
+@Service
 @ComponentScan("org.atavdb.service")
 public class GeneManager {
 
     @Autowired
     DBManager dbManager;
     
-    public static String getChr(String gene) {
+    public String getChr(String gene) {
         try {
             String sql = "SELECT chrom FROM hgnc WHERE gene=?";
 
@@ -39,11 +41,7 @@ public class GeneManager {
         return Data.STRING_NA;
     }
 
-    public static boolean isValid(String gene) {
-        if (getChr(gene).equals(Data.STRING_NA)) {
-            return false;
-        }
-
-        return true;
+    public boolean isValid(String gene) {
+        return !getChr(gene).equals(Data.STRING_NA);
     }
 }

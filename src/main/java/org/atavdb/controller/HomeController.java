@@ -18,12 +18,16 @@ import org.springframework.stereotype.Controller;
 @Controller
 @ComponentScan("org.atavdb.service")
 public class HomeController {
-    @Autowired
-    SessionManager sessionManager;
-    
+
     @Autowired
     DBManager dbManager;
-    
+
+    @Autowired
+    SessionManager sessionManager;
+
+    @Autowired
+    SampleManager sampleManager;
+
     @GetMapping("/")
     public ModelAndView index(HttpSession session) {
         sessionManager.clearSession4Search(session);
@@ -31,8 +35,8 @@ public class HomeController {
         try {
             dbManager.init();
             FilterManager filter = new FilterManager(session);
-            SampleManager.init(filter);
-            session.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));
+            sampleManager.init(filter);
+            session.setAttribute("sampleCount", sampleManager.getTotalSampleNum(filter));
 
             if (session.getAttribute("genders") == null) {
                 session.setAttribute("genders", org.atavdb.global.Enum.Gender.values());
