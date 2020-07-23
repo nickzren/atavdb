@@ -10,13 +10,19 @@ import org.atavdb.model.Carrier;
 import org.atavdb.model.NonCarrier;
 import org.atavdb.model.SampleDPBin;
 import org.atavdb.model.Variant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class DPBinBlockManager {
 
+    @Autowired
+    DBManager dbManager;
+    
     public static final int DP_BIN_BLOCK_SIZE = 1000;
 
     private static HashMap<Character, Short> dpBin = new HashMap<>();
@@ -96,7 +102,7 @@ public class DPBinBlockManager {
             sqlSB.append(filter.getPhenotypeSQL());
             sqlSB.append(filter.getAvailableControlUseSQL());
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
             preparedStatement.setInt(1, blockId);
             ResultSet rs = preparedStatement.executeQuery();

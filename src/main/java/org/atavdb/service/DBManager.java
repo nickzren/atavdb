@@ -9,28 +9,30 @@ import org.apache.commons.dbcp2.PoolingDataSource;
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
+@Service
 public class DBManager {
 
-    private static PoolingDataSource<PoolableConnection> dataSource;
-    private static Connection connection;
+    private PoolingDataSource<PoolableConnection> dataSource;
+    private Connection connection;
 
-    private static final String dbDriver = "com.mysql.cj.jdbc.Driver";
-    private static String dbUrl;
-    private static String dbUser;
-    private static String dbPassword;
+    private final String dbDriver = "com.mysql.cj.jdbc.Driver";
+    private String dbUrl;
+    private String dbUser;
+    private String dbPassword;
 
-    public static void init() throws Exception {
+    public void init() throws Exception {
         initDataSource();
 
         initConnection();
     }
 
-    private static void initDataFromSystemConfig() {
+    private void initDataFromSystemConfig() {
         // server config - $CATALINA_HOME/bin/setenv.sh
         dbUrl = System.getenv("DB_URL");
         dbUser = System.getenv("DB_USER");
@@ -42,7 +44,7 @@ public class DBManager {
 //            dbPassword = "test";
     }
 
-    private static void initDataSource() {
+    private void initDataSource() {
         if (dataSource == null) {
             try {
                 Class.forName(dbDriver);
@@ -71,13 +73,13 @@ public class DBManager {
         }
     }
 
-    private static void initConnection() throws Exception {        
+    private void initConnection() throws Exception {        
         if (connection == null || connection.isClosed()) {
             connection = dataSource.getConnection();
         }
     }
 
-    public static Connection getConnection() {
+    public Connection getConnection() {
         return connection;
     }
 }

@@ -9,13 +9,19 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.atavdb.model.Sample;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class SampleManager {
 
+    @Autowired
+    DBManager dbManager;
+    
     // date point for clearing cached data
     private static LocalDate currentDate4AllSample = LocalDate.now();
     private static LocalDate currentDate4PublicAvailableSample = LocalDate.now();
@@ -49,7 +55,7 @@ public class SampleManager {
                     + filter.getSampleSQL()
                     + filter.getAvailableControlUseSQL();
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sqlCode);
 

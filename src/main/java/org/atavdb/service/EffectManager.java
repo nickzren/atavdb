@@ -5,13 +5,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class EffectManager {
 
+    @Autowired
+    DBManager dbManager;
+    
     private static HashMap<Integer, String> id2EffectMap = new HashMap<>();
 
     public static void init() throws SQLException {
@@ -24,7 +30,7 @@ public class EffectManager {
         try {
             String sql = "SELECT * FROM effect_ranking";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
 

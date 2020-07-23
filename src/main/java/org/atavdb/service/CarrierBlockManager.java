@@ -7,14 +7,20 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import org.atavdb.model.Carrier;
 import org.atavdb.model.Variant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class CarrierBlockManager {
 
+    @Autowired
+    DBManager dbManager;
+    
     public static final int CARRIER_BLOCK_SIZE = 1000;
 
     public static void init(Variant var, FilterManager filter, ModelAndView mv) {
@@ -34,7 +40,7 @@ public class CarrierBlockManager {
         }
     }
 
-    private static void initBlockCarrierMap(
+    private void initBlockCarrierMap(
             Variant var,
             FilterManager filter,
             int currentBlockId,
@@ -62,7 +68,7 @@ public class CarrierBlockManager {
         try {
             HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
             preparedStatement.setInt(1, currentBlockId);
             ResultSet rs = preparedStatement.executeQuery();

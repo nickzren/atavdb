@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.DBManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
@@ -19,8 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
  * @author nick
  */
 @Controller
+@ComponentScan("org.atavdb.service")
 public class SearchController {
 
+    @Autowired
+    DBManager dbManager;
+    
     @GetMapping("/search")
     public ModelAndView search(String query, String maxAF, String phenotype,
             String isHighQualityVariant, String isUltraRareVariant,
@@ -77,7 +83,7 @@ public class SearchController {
         ModelAndView mv = new ModelAndView("index");
 
         try {
-            DBManager.init();
+            dbManager.init();
 
             FilterManager filter = new FilterManager(session);
             SampleManager.init(filter);

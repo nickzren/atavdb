@@ -21,12 +21,15 @@ public class HomeController {
     @Autowired
     SessionManager sessionManager;
     
+    @Autowired
+    DBManager dbManager;
+    
     @GetMapping("/")
     public ModelAndView index(HttpSession session) {
         sessionManager.clearSession4Search(session);
         ModelAndView mv = new ModelAndView("index");
         try {
-            DBManager.init();
+            dbManager.init();
             FilterManager filter = new FilterManager(session);
             SampleManager.init(filter);
             session.setAttribute("sampleCount", SampleManager.getTotalSampleNum(filter));

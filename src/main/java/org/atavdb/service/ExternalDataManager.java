@@ -5,13 +5,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author nick
  */
+@ComponentScan("org.atavdb.service")
 public class ExternalDataManager {
 
+    @Autowired
+    DBManager dbManager;
+    
     private static final String EXAC_TABLE = "exac.variant_r03_2015_09_16";
     private static final String GENOMEASIA_TABLE = "genomeasia.variant_chr";
     private static final String GNOMAD_EXOME_TABLE = "gnomad_2_1.exome_variant";
@@ -27,7 +33,7 @@ public class ExternalDataManager {
             String sql = "SELECT global_af FROM " + EXAC_TABLE
                     + " WHERE chr=? AND pos=? AND ref_allele=? AND alt_allele=?";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, chr);
             preparedStatement.setInt(2, pos);

@@ -1,7 +1,5 @@
 package org.atavdb.service;
 
-import org.atavdb.service.GeneManager;
-import org.atavdb.service.FilterManager;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,14 +8,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.atavdb.model.Annotation;
 import org.atavdb.model.Variant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author Nick
  */
+@ComponentScan("org.atavdb.service")
 public class VariantManager {
 
+    @Autowired
+    DBManager dbManager;
+    
     // cached data when no new samples data loaded
     private static HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
     private static HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
@@ -72,7 +76,7 @@ public class VariantManager {
                 + whereSQL
                 + "ORDER BY POS,variant_id,effect_id,transcript_stable_id;";
 
-        Connection connection = DBManager.getConnection();
+        Connection connection = dbManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
