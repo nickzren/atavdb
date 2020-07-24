@@ -1,7 +1,6 @@
 package org.atavdb.model;
 
 import org.atavdb.service.SampleManager;
-import org.atavdb.service.FilterManager;
 import org.atavdb.service.ExternalDataManager;
 import org.atavdb.service.CarrierBlockManager;
 import org.atavdb.service.DPBinBlockManager;
@@ -18,11 +17,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.MathManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author nick
  */
+@Component
+@Scope("prototype")
 @ComponentScan("org.atavdb.service")
 public class Variant extends Region {
 
@@ -79,7 +82,7 @@ public class Variant extends Region {
 
     public boolean isValid = true;
 
-    public Variant(String chr, ResultSet rset, FilterManager filter, ModelAndView mv) throws Exception {
+    public void init(String chr, ResultSet rset, SearchFilter filter, ModelAndView mv) throws Exception {
         variantId = rset.getInt("variant_id");
 
         int pos = rset.getInt("POS");
@@ -111,7 +114,7 @@ public class Variant extends Region {
                 gnomadGenome, gme, iranome, topmed));
     }
 
-    public boolean isExternalAFValid(FilterManager filter) {
+    public boolean isExternalAFValid(SearchFilter filter) {
         return filter.isExternalAFValid(exac)
                 && filter.isExternalAFValid(genomeAsia)
                 && filter.isExternalAFValid(gnomadExome)
@@ -122,7 +125,7 @@ public class Variant extends Region {
     }
 
     // init carrier and non-carrier data, calculate af and count genotype
-    private void initCarrier(FilterManager filter, ModelAndView mv) throws Exception {
+    private void initCarrier(SearchFilter filter, ModelAndView mv) throws Exception {
         if (isValid
                 && initCarrierData(filter, mv)) {
             dpBinBlockManager.initCarrierAndNonCarrierByDPBin(this, carrierMap, noncarrierMap, filter, mv);
@@ -131,20 +134,20 @@ public class Variant extends Region {
 
             calculateAF();
 
-            isValid = FilterManager.isMinVarPresentValid(carrierMap.size());
+            isValid = SearchFilter.isMinVarPresentValid(carrierMap.size());
 
             // if not valid
             // if gene / region search then free carriers
             // if variant search and when af > MAX AF then free carriers
             if (!isValid
                     || !filter.getQueryType().equals((Data.QUERT_TYPE[1]))
-                    || af > FilterManager.MAX_AF_TO_DISPLAY_CARRIER) {
+                    || af > SearchFilter.MAX_AF_TO_DISPLAY_CARRIER) {
                 carrierMap = null;
             }
         }
     }
 
-    public boolean isMaxAFValid(FilterManager filter) {
+    public boolean isMaxAFValid(SearchFilter filter) {
         return filter.isMaxAFValid(af);
     }
 
@@ -263,24 +266,24 @@ public class Variant extends Region {
         return FormatManager.getFloat(topmed);
     }
 
-    private boolean initCarrierData(FilterManager filter, ModelAndView mv) {
+    private boolean initCarrierData(SearchFilter filter, ModelAndView mv) {
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
             // single variant carriers data process
             carrierBlockManager.initCarrierMap(carrierMap, this, filter);
 
-            if (!FilterManager.isMinVarPresentValid(carrierMap.size())) {
+            if (!SearchFilter.isMinVarPresentValid(carrierMap.size())) {
                 isValid = false;
             }
         } else {
             // block variants carriers data process
             carrierBlockManager.init(this, filter, mv);
 
-            carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, mv);
+            carrierMap = carrierBlockManager.getVarCarrierMap(variantId, mv);
 
             if (carrierMap == null) {
                 carrierMap = new HashMap<>();
                 isValid = false;
-            } else if (!FilterManager.isMinVarPresentValid(carrierMap.size())) {
+            } else if (!SearchFilter.isMinVarPresentValid(carrierMap.size())) {
                 isValid = false;
             }
         }
@@ -288,7 +291,7 @@ public class Variant extends Region {
         return isValid;
     }
 
-    private void initGTCount(FilterManager filter) {
+    private void initGTCount(SearchFilter filter) {
         sampleManager.getList(filter).forEach((sample) -> {
             Carrier carrier = carrierMap.get(sample.getId());
             NonCarrier noncarrier = noncarrierMap.get(sample.getId());

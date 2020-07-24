@@ -1,5 +1,6 @@
 package org.atavdb.service;
 
+import org.atavdb.model.SearchFilter;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +26,7 @@ public class CarrierBlockManager {
     
     public final int CARRIER_BLOCK_SIZE = 1000;
 
-    public void init(Variant var, FilterManager filter, ModelAndView mv) {
+    public void init(Variant var, SearchFilter filter, ModelAndView mv) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         Integer currentBlockId = (Integer) mv.getModel().get("currentCarrierBlockId");
@@ -44,7 +45,7 @@ public class CarrierBlockManager {
 
     private void initBlockCarrierMap(
             Variant var,
-            FilterManager filter,
+            SearchFilter filter,
             int currentBlockId,
             HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap) {
         StringBuilder sqlSB = new StringBuilder();
@@ -107,7 +108,7 @@ public class CarrierBlockManager {
         }
     }
 
-    public void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, FilterManager filter) {
+    public void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, SearchFilter filter) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         StringBuilder sqlSB = new StringBuilder();
@@ -151,7 +152,7 @@ public class CarrierBlockManager {
         }
     }
 
-    public static HashMap<Integer, Carrier> getVarCarrierMap(int variantId, ModelAndView mv) {
+    public HashMap<Integer, Carrier> getVarCarrierMap(int variantId, ModelAndView mv) {
         HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap
                 = (HashMap<Integer, HashMap<Integer, Carrier>>) mv.getModel().get("blockCarrierMap");
 

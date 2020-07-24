@@ -3,7 +3,7 @@ package org.atavdb.controller;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import org.atavdb.global.Data;
-import org.atavdb.service.FilterManager;
+import org.atavdb.model.SearchFilter;
 import org.atavdb.service.SampleManager;
 import org.atavdb.model.Variant;
 import org.atavdb.service.VariantManager;
@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.DBManager;
 import org.atavdb.service.ErrorManager;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -22,20 +25,28 @@ import org.springframework.web.bind.annotation.PathVariable;
  */
 @Controller
 @ComponentScan("org.atavdb.service")
-public class SearchController {
+@ComponentScan("org.atavdb.model")
+public class SearchController implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
     @Autowired
     DBManager dbManager;
-    
+
     @Autowired
     VariantManager variantManager;
-    
+
     @Autowired
     SampleManager sampleManager;
-    
+
     @Autowired
     ErrorManager errorManager;
-    
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
     @GetMapping("/search")
     public ModelAndView search(String query, String maxAF, String phenotype,
             String isHighQualityVariant, String isUltraRareVariant,
@@ -47,7 +58,8 @@ public class SearchController {
         session.setAttribute("isUltraRareVariant", isUltraRareVariant);
         session.setAttribute("isPublicAvailable", isPublicAvailable);
 
-        FilterManager filter = new FilterManager(session);
+        SearchFilter filter = applicationContext.getBean(SearchFilter.class);
+        filter.init(session);
         if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) {
             return new ModelAndView("redirect:/variant/" + query);
         } else if (filter.getQueryType().equals(Data.QUERT_TYPE[2])) {
@@ -94,7 +106,8 @@ public class SearchController {
         try {
             dbManager.init();
 
-            FilterManager filter = new FilterManager(session);
+            SearchFilter filter = applicationContext.getBean(SearchFilter.class);
+            filter.init(session);
             sampleManager.init(filter);
             session.setAttribute("sampleCount", sampleManager.getTotalSampleNum(filter));
             session.setAttribute("error", filter.getError());
@@ -110,7 +123,7 @@ public class SearchController {
             }
         } catch (Exception ex) {
 //             debug purpose
-             mv.addObject("error", errorManager.convertStackTraceToString(ex));
+            mv.addObject("error", errorManager.convertStackTraceToString(ex));
         }
 
         return mv;

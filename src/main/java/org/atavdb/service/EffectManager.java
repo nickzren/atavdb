@@ -2,7 +2,6 @@ package org.atavdb.service;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +20,6 @@ public class EffectManager {
     DBManager dbManager;
     
     private HashMap<Integer, String> id2EffectMap = new HashMap<>();
-
-    EffectManager() throws SQLException {
-        if (id2EffectMap.isEmpty()) {
-            initDefaultEffectSet();
-        }
-    }
 
     private void initDefaultEffectSet() {
         try {
@@ -50,6 +43,10 @@ public class EffectManager {
     }
 
     public String getEffectById(int id) {
+        if (id2EffectMap.isEmpty()) {
+            initDefaultEffectSet();
+        }
+        
         return id2EffectMap.get(id);
     }
 }

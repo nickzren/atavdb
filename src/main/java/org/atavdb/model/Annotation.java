@@ -8,22 +8,21 @@ import org.atavdb.service.FormatManager;
 import org.atavdb.service.MathManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author nick
  */
+@Component
+@Scope("prototype")
 @ComponentScan("org.atavdb.service")
 public class Annotation {
-
+    
     @Autowired
     EffectManager effectManager;
     
-    private String chr;
-    private int pos;
-    private String ref;
-    private String alt;
     public String effect;
     public int effectID;
     public String geneName;
@@ -34,15 +33,9 @@ public class Annotation {
     public float polyphenHumvar = Data.FLOAT_NA;
     private boolean isValid;
     
-    public static final int TRANSCRIPT_LENGTH = 15;
-
-    public Annotation(String chr, ResultSet rset) throws SQLException {
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-        
-        this.chr = chr;
-        pos = rset.getInt("POS");
-        ref = rset.getString("REF");
-        alt = rset.getString("ALT");
+    public static final int TRANSCRIPT_LENGTH = 15;      
+    
+    public void init(ResultSet rset) throws SQLException {        
         stableId = rset.getInt("transcript_stable_id");
 
         if (stableId < 0) {

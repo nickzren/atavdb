@@ -1,13 +1,16 @@
 package org.atavdb.controller;
 
 import javax.servlet.http.HttpSession;
-import org.atavdb.service.FilterManager;
+import org.atavdb.model.SearchFilter;
 import org.atavdb.service.SampleManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.DBManager;
 import org.atavdb.service.SessionManager;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 
@@ -17,7 +20,10 @@ import org.springframework.stereotype.Controller;
  */
 @Controller
 @ComponentScan("org.atavdb.service")
-public class HomeController {
+@ComponentScan("org.atavdb.model")
+public class HomeController implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
 
     @Autowired
     DBManager dbManager;
@@ -28,13 +34,19 @@ public class HomeController {
     @Autowired
     SampleManager sampleManager;
 
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
     @GetMapping("/")
     public ModelAndView index(HttpSession session) {
         sessionManager.clearSession4Search(session);
         ModelAndView mv = new ModelAndView("index");
         try {
             dbManager.init();
-            FilterManager filter = new FilterManager(session);
+            SearchFilter filter = applicationContext.getBean(SearchFilter.class);
+            filter.init(session);
             sampleManager.init(filter);
             session.setAttribute("sampleCount", sampleManager.getTotalSampleNum(filter));
 

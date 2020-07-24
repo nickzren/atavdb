@@ -1,5 +1,6 @@
 package org.atavdb.service;
 
+import org.atavdb.model.SearchFilter;
 import org.atavdb.global.Enum.Ancestry;
 import org.atavdb.global.Enum.Gender;
 import java.sql.Connection;
@@ -23,10 +24,10 @@ public class SampleManager {
 
     @Autowired
     DBManager dbManager;
-    
+
     @Autowired
     VariantManager variantManager;
-    
+
     // date point for clearing cached data
     private LocalDate currentDate4AllSample = LocalDate.now();
     private LocalDate currentDate4PublicAvailableSample = LocalDate.now();
@@ -35,7 +36,7 @@ public class SampleManager {
     private HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
     private HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
-    public void init(FilterManager filter) {
+    public void init(SearchFilter filter) {
         if (getMap(filter).isEmpty()
                 || checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
@@ -45,7 +46,7 @@ public class SampleManager {
         }
     }
 
-    private boolean checkSampleCount(FilterManager filter) {
+    private boolean checkSampleCount(SearchFilter filter) {
         // reset sample data & clear cached data once a day
         if (getCurrentDate(filter).isEqual(LocalDate.now())) {
             return false;
@@ -78,7 +79,7 @@ public class SampleManager {
         return false;
     }
 
-    private void initAllSampleFromDB(FilterManager filter) {
+    private void initAllSampleFromDB(SearchFilter filter) {
         getMap(filter).clear();
         getMap(filter).put("", new ArrayList<>());
 
@@ -124,24 +125,24 @@ public class SampleManager {
         }
     }
 
-    public int getTotalSampleNum(FilterManager filter) {
-        return getMap(filter).isEmpty() ? 0 : 
-                getMap(filter).getOrDefault(filter.getPhenotype(), new ArrayList<>()).size();
+    public int getTotalSampleNum(SearchFilter filter) {
+        return getMap(filter).isEmpty() ? 0
+                : getMap(filter).getOrDefault(filter.getPhenotype(), new ArrayList<>()).size();
     }
 
-    public ArrayList<Sample> getList(FilterManager filter) {
+    public ArrayList<Sample> getList(SearchFilter filter) {
         return getMap(filter).get(filter.getPhenotype());
     }
 
-    public HashMap<String, ArrayList<Sample>> getMap(FilterManager filter) {
+    public HashMap<String, ArrayList<Sample>> getMap(SearchFilter filter) {
         return filter.isAvailableControlUseOnly() ? publicAvailableSampleMap : allSampleMap;
     }
 
-    private LocalDate getCurrentDate(FilterManager filter) {
+    private LocalDate getCurrentDate(SearchFilter filter) {
         return filter.isAvailableControlUseOnly() ? currentDate4PublicAvailableSample : currentDate4AllSample;
     }
 
-    private void resetCurrentDate(FilterManager filter) {
+    private void resetCurrentDate(SearchFilter filter) {
         if (filter.isAvailableControlUseOnly()) {
             currentDate4PublicAvailableSample = LocalDate.now();
         } else {

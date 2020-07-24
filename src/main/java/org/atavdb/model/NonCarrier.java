@@ -1,14 +1,18 @@
 package org.atavdb.model;
 
-import org.atavdb.service.FilterManager;
 import org.atavdb.global.Data;
 import org.atavdb.global.Enum.GT;
 import java.util.ArrayList;
+import org.atavdb.service.DPBinBlockManager;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author nick
  */
+@Component
+@Scope("prototype")
 public class NonCarrier {
 
     protected int sampleId;
@@ -25,11 +29,12 @@ public class NonCarrier {
         initGenotype();
     }
 
-    public NonCarrier(int sampleId, String minDPBin, int posIndex, ArrayList<SampleDPBin> currentBlockList) throws Exception {
+    public NonCarrier(int sampleId, String minDPBin, int posIndex, 
+            ArrayList<SampleDPBin> currentBlockList, DPBinBlockManager dpBinBlockManager) throws Exception {
         this.sampleId = sampleId;
         SampleDPBin sampleDPBin = new SampleDPBin(sampleId, minDPBin);
         currentBlockList.add(sampleDPBin);
-        dpBin = sampleDPBin.getDPBin(posIndex);
+        dpBin = sampleDPBin.getDPBin(posIndex, dpBinBlockManager);
 
         initGenotype();
     }
@@ -62,7 +67,7 @@ public class NonCarrier {
         return dpBin;
     }
 
-    public void applyCoverageFilter(FilterManager filter) {
+    public void applyCoverageFilter(SearchFilter filter) {
         if (!filter.isMinDpBinValid(dpBin)) {
             gt = Data.BYTE_NA;
         }

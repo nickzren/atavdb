@@ -1,5 +1,6 @@
 package org.atavdb.service;
 
+import org.atavdb.model.SearchFilter;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,7 +43,7 @@ public class DPBinBlockManager {
             Variant var,
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
-            FilterManager filter,
+            SearchFilter filter,
             ModelAndView mv) {
         int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
 
@@ -60,13 +61,13 @@ public class DPBinBlockManager {
                     carrier.applyQualityFilter(filter, var.isSnv());
 
                     if (carrier.isValid()) {
-                        carrier.setDPBin(sampleDPBin.getDPBin(posIndex));
+                        carrier.setDPBin(sampleDPBin.getDPBin(posIndex, this));
 
                         carrier.applyCoverageFilter(filter);
                     }
                 } else {
                     NonCarrier noncarrier = new NonCarrier(sampleDPBin.getSampleId(),
-                            sampleDPBin.getDPBin(posIndex));
+                            sampleDPBin.getDPBin(posIndex, this));
 
                     noncarrier.applyCoverageFilter(filter);
 
@@ -93,7 +94,7 @@ public class DPBinBlockManager {
             Variant var,
             int posIndex,
             int blockId,
-            FilterManager filter,
+            SearchFilter filter,
             ArrayList<SampleDPBin> currentBlockList) {
         try {
             StringBuilder sqlSB = new StringBuilder();
@@ -110,7 +111,8 @@ public class DPBinBlockManager {
             ResultSet rs = preparedStatement.executeQuery();
             
             while (rs.next()) {
-                NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), rs.getString("DP_string"), posIndex, currentBlockList);
+                NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), 
+                        rs.getString("DP_string"), posIndex, currentBlockList, this);
 
                 Carrier carrier = carrierMap.get(noncarrier.getSampleId());
 
@@ -131,6 +133,7 @@ public class DPBinBlockManager {
             rs.close();
             preparedStatement.close();
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

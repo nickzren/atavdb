@@ -2,18 +2,12 @@ package org.atavdb.model;
 
 import org.atavdb.service.DPBinBlockManager;
 import org.atavdb.global.Data;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
  * @author nick
  */
-@ComponentScan("org.atavdb.service")
 public class SampleDPBin {
-
-    @Autowired
-    DPBinBlockManager dpBinBlockManager;
     
     private int sampleId;
     private int dpBinCursor; // point to current coverage bin
@@ -34,7 +28,7 @@ public class SampleDPBin {
         return sampleId;
     }
 
-    public short getDPBin(int varPosIndex) {
+    public short getDPBin(int varPosIndex, DPBinBlockManager dpBinBlockManager) {
         if (dpBinStr != null) {
             if (endPos != 0) {
                 if (varPosIndex <= endPos) {

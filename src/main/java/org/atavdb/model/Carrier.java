@@ -1,6 +1,5 @@
 package org.atavdb.model;
 
-import org.atavdb.service.FilterManager;
 import org.atavdb.global.Data;
 import org.atavdb.global.Enum.FILTER;
 import org.atavdb.global.Enum.GT;
@@ -128,7 +127,7 @@ public class Carrier extends NonCarrier {
         return sample.getAvailableControlUse();
     }
 
-    public void applyQualityFilter(FilterManager filter, boolean isSnv) {
+    public void applyQualityFilter(SearchFilter filter, boolean isSnv) {
         if (gt != GT.NA.value()) {
             if (!filter.isFilterValid(filterValue)
                     || !filter.isMinGqValid(gq)
