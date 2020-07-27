@@ -5,7 +5,7 @@ import org.atavdb.global.Enum.FILTER;
 import org.atavdb.global.Enum.GT;
 import java.sql.ResultSet;
 import org.atavdb.service.util.FormatManager;
-import org.atavdb.service.model.MathManager;
+import org.atavdb.service.util.MathManager;
 
 /**
  *

@@ -1,4 +1,4 @@
-package org.atavdb.service.model;
+package org.atavdb.service.util;
 
 import org.atavdb.global.Data;
 

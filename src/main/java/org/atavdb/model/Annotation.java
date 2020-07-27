@@ -5,7 +5,7 @@ import org.atavdb.global.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.atavdb.service.util.FormatManager;
-import org.atavdb.service.model.MathManager;
+import org.atavdb.service.util.MathManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
