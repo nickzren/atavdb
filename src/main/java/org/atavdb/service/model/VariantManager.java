@@ -1,7 +1,7 @@
-package org.atavdb.service;
+package org.atavdb.service.model;
 
-import org.atavdb.service.GeneManager;
-import org.atavdb.service.FilterManager;
+import org.atavdb.service.util.DBManager;
+import org.atavdb.model.SearchFilter;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,23 +10,45 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.atavdb.model.Annotation;
 import org.atavdb.model.Variant;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author Nick
  */
-public class VariantManager {
+@Service
+@ComponentScan("org.atavdb.service")
+@ComponentScan("org.atavdb.model")
+public class VariantManager implements ApplicationContextAware {
+
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    DBManager dbManager;
+
+    @Autowired
+    GeneManager geneManager;
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
     // cached data when no new samples data loaded
-    private static HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
-    private static HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
+    private HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
+    private HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
 
-    private static HashMap<String, ArrayList<Variant>> getMap(FilterManager filter) {
+    private HashMap<String, ArrayList<Variant>> getMap(SearchFilter filter) {
         return filter.isAvailableControlUseOnly() ? cachedVariant4PublicAvailableSampleMap : cachedVariant4AllSampleMap;
     }
 
-    public static ArrayList<Variant> getVariantList(FilterManager filter, ModelAndView mv) throws Exception {
+    public ArrayList<Variant> getVariantList(SearchFilter filter, ModelAndView mv) throws Exception {
         ArrayList<Variant> list = new ArrayList<>();
 
         String queryIdentifier = filter.getQueryIdentifier();
@@ -49,7 +71,7 @@ public class VariantManager {
             chr = tmp[0];
             whereSQL = "WHERE POS=? AND REF=? AND ALT =? ";
         } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
-            chr = GeneManager.getChr(query);
+            chr = geneManager.getChr(query);
             // it's important to force using gene key here for better performance
             joinSQL = "FORCE INDEX (gene_idx),codingandsplice_effect e ";
             whereSQL = "WHERE gene=? AND v.effect_id=e.id ";
@@ -72,7 +94,7 @@ public class VariantManager {
                 + whereSQL
                 + "ORDER BY POS,variant_id,effect_id,transcript_stable_id;";
 
-        Connection connection = DBManager.getConnection();
+        Connection connection = dbManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
@@ -94,12 +116,14 @@ public class VariantManager {
         Variant variant = null;
         int currentVariantId = Data.INTEGER_NA;
         while (rs.next()) {
-            Annotation annotation = new Annotation(chr, rs);
+            Annotation annotation = applicationContext.getBean(Annotation.class);
+            annotation.init(rs);
 
             if (currentVariantId != rs.getInt("variant_id")) {
                 currentVariantId = rs.getInt("variant_id");
 
-                variant = new Variant(chr, rs, filter, mv);
+                variant = applicationContext.getBean(Variant.class);
+                variant.init(chr, rs, filter, mv);
 
                 if (variant.isValid()) {
                     list.add(variant);
@@ -116,7 +140,7 @@ public class VariantManager {
         return applyFilter(filter, list);
     }
 
-    private static ArrayList<Variant> applyFilter(FilterManager filter, ArrayList<Variant> list) {
+    private ArrayList<Variant> applyFilter(SearchFilter filter, ArrayList<Variant> list) {
         if (!filter.isUltraRareVariant() && filter.getMaxAF() == Data.NO_FILTER) {
             return list;
         }
@@ -141,7 +165,7 @@ public class VariantManager {
         return newList;
     }
 
-    public static void clearCachedData(FilterManager filter) {
+    public void clearCachedData(SearchFilter filter) {
         getMap(filter).clear();
     }
 }

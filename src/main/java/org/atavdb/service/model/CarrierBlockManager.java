@@ -1,5 +1,7 @@
-package org.atavdb.service;
+package org.atavdb.service.model;
 
+import org.atavdb.service.util.DBManager;
+import org.atavdb.model.SearchFilter;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,17 +9,25 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import org.atavdb.model.Carrier;
 import org.atavdb.model.Variant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author nick
  */
+@Service
+@ComponentScan("org.atavdb.service")
 public class CarrierBlockManager {
 
-    public static final int CARRIER_BLOCK_SIZE = 1000;
+    @Autowired
+    DBManager dbManager;
+    
+    public final int CARRIER_BLOCK_SIZE = 1000;
 
-    public static void init(Variant var, FilterManager filter, ModelAndView mv) {
+    public void init(Variant var, SearchFilter filter, ModelAndView mv) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         Integer currentBlockId = (Integer) mv.getModel().get("currentCarrierBlockId");
@@ -34,9 +44,9 @@ public class CarrierBlockManager {
         }
     }
 
-    private static void initBlockCarrierMap(
+    private void initBlockCarrierMap(
             Variant var,
-            FilterManager filter,
+            SearchFilter filter,
             int currentBlockId,
             HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap) {
         StringBuilder sqlSB = new StringBuilder();
@@ -62,7 +72,7 @@ public class CarrierBlockManager {
         try {
             HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
             preparedStatement.setInt(1, currentBlockId);
             ResultSet rs = preparedStatement.executeQuery();
@@ -99,7 +109,7 @@ public class CarrierBlockManager {
         }
     }
 
-    public static void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, FilterManager filter) {
+    public void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, SearchFilter filter) {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         StringBuilder sqlSB = new StringBuilder();
@@ -124,7 +134,7 @@ public class CarrierBlockManager {
         sqlSB.append(filter.getAvailableControlUseSQL());
 
         try {
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
             preparedStatement.setInt(1, blockId);
             ResultSet rs = preparedStatement.executeQuery();
@@ -143,7 +153,7 @@ public class CarrierBlockManager {
         }
     }
 
-    public static HashMap<Integer, Carrier> getVarCarrierMap(int variantId, ModelAndView mv) {
+    public HashMap<Integer, Carrier> getVarCarrierMap(int variantId, ModelAndView mv) {
         HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap
                 = (HashMap<Integer, HashMap<Integer, Carrier>>) mv.getModel().get("blockCarrierMap");
 

@@ -1,5 +1,7 @@
-package org.atavdb.service;
+package org.atavdb.service.model;
 
+import org.atavdb.service.util.DBManager;
+import org.atavdb.model.SearchFilter;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,18 +12,26 @@ import org.atavdb.model.Carrier;
 import org.atavdb.model.NonCarrier;
 import org.atavdb.model.SampleDPBin;
 import org.atavdb.model.Variant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author nick
  */
+@Service
+@ComponentScan("org.atavdb.service")
 public class DPBinBlockManager {
 
-    public static final int DP_BIN_BLOCK_SIZE = 1000;
+    @Autowired
+    DBManager dbManager;
+    
+    public final int DP_BIN_BLOCK_SIZE = 1000;
 
-    private static HashMap<Character, Short> dpBin = new HashMap<>();
+    private HashMap<Character, Short> dpBin = new HashMap<>();
 
-    static {
+    DPBinBlockManager() {
         dpBin.put('b', Data.SHORT_NA);
         dpBin.put('c', (short) 10);
         dpBin.put('d', (short) 20);
@@ -30,11 +40,11 @@ public class DPBinBlockManager {
         dpBin.put('g', (short) 200);
     }
 
-    public static void initCarrierAndNonCarrierByDPBin(
+    public void initCarrierAndNonCarrierByDPBin(
             Variant var,
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
-            FilterManager filter,
+            SearchFilter filter,
             ModelAndView mv) {
         int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
 
@@ -52,13 +62,13 @@ public class DPBinBlockManager {
                     carrier.applyQualityFilter(filter, var.isSnv());
 
                     if (carrier.isValid()) {
-                        carrier.setDPBin(sampleDPBin.getDPBin(posIndex));
+                        carrier.setDPBin(sampleDPBin.getDPBin(posIndex, this));
 
                         carrier.applyCoverageFilter(filter);
                     }
                 } else {
                     NonCarrier noncarrier = new NonCarrier(sampleDPBin.getSampleId(),
-                            sampleDPBin.getDPBin(posIndex));
+                            sampleDPBin.getDPBin(posIndex, this));
 
                     noncarrier.applyCoverageFilter(filter);
 
@@ -79,13 +89,13 @@ public class DPBinBlockManager {
         }
     }
 
-    public static void initBlockDPBin(
+    public void initBlockDPBin(
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
             Variant var,
             int posIndex,
             int blockId,
-            FilterManager filter,
+            SearchFilter filter,
             ArrayList<SampleDPBin> currentBlockList) {
         try {
             StringBuilder sqlSB = new StringBuilder();
@@ -96,13 +106,14 @@ public class DPBinBlockManager {
             sqlSB.append(filter.getPhenotypeSQL());
             sqlSB.append(filter.getAvailableControlUseSQL());
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
             preparedStatement.setInt(1, blockId);
             ResultSet rs = preparedStatement.executeQuery();
             
             while (rs.next()) {
-                NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), rs.getString("DP_string"), posIndex, currentBlockList);
+                NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), 
+                        rs.getString("DP_string"), posIndex, currentBlockList, this);
 
                 Carrier carrier = carrierMap.get(noncarrier.getSampleId());
 
@@ -123,14 +134,15 @@ public class DPBinBlockManager {
             rs.close();
             preparedStatement.close();
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public static short getCoverageByBin(Character bin) {
+    public short getCoverageByBin(Character bin) {
         return dpBin.get(bin);
     }
 
-    public static HashMap<Character, Short> getCoverageBin() {
+    public HashMap<Character, Short> getCoverageBin() {
         return dpBin;
     }
 }

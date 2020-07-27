@@ -1,30 +1,32 @@
-package org.atavdb.service;
+package org.atavdb.service.model;
 
+import org.atavdb.service.util.DBManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
+@Service
+@ComponentScan("org.atavdb.service")
 public class EffectManager {
 
-    private static HashMap<Integer, String> id2EffectMap = new HashMap<>();
+    @Autowired
+    DBManager dbManager;
+    
+    private HashMap<Integer, String> id2EffectMap = new HashMap<>();
 
-    public static void init() throws SQLException {
-        if (id2EffectMap.isEmpty()) {
-            initDefaultEffectSet();
-        }
-    }
-
-    private static void initDefaultEffectSet() {
+    private void initDefaultEffectSet() {
         try {
             String sql = "SELECT * FROM effect_ranking";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
 
@@ -41,7 +43,11 @@ public class EffectManager {
         }
     }
 
-    public static String getEffectById(int id) {
+    public String getEffectById(int id) {
+        if (id2EffectMap.isEmpty()) {
+            initDefaultEffectSet();
+        }
+        
         return id2EffectMap.get(id);
     }
 }

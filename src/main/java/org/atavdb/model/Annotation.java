@@ -1,22 +1,28 @@
 package org.atavdb.model;
 
-import org.atavdb.service.EffectManager;
+import org.atavdb.service.model.EffectManager;
 import org.atavdb.global.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.atavdb.service.FormatManager;
-import org.atavdb.service.MathManager;
+import org.atavdb.service.util.FormatManager;
+import org.atavdb.service.util.MathManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author nick
  */
+@Component
+@Scope("prototype")
+@ComponentScan("org.atavdb.service.model")
 public class Annotation {
-
-    private String chr;
-    private int pos;
-    private String ref;
-    private String alt;
+    
+    @Autowired
+    EffectManager effectManager;
+    
     public String effect;
     public int effectID;
     public String geneName;
@@ -27,13 +33,9 @@ public class Annotation {
     public float polyphenHumvar = Data.FLOAT_NA;
     private boolean isValid;
     
-    public static final int TRANSCRIPT_LENGTH = 15;
-
-    public Annotation(String chr, ResultSet rset) throws SQLException {
-        this.chr = chr;
-        pos = rset.getInt("POS");
-        ref = rset.getString("REF");
-        alt = rset.getString("ALT");
+    public static final int TRANSCRIPT_LENGTH = 15;      
+    
+    public void init(ResultSet rset) throws SQLException {        
         stableId = rset.getInt("transcript_stable_id");
 
         if (stableId < 0) {
@@ -41,7 +43,7 @@ public class Annotation {
         }
 
         effectID = rset.getInt("effect_id");
-        effect = EffectManager.getEffectById(effectID);
+        effect = effectManager.getEffectById(effectID).replace("_variant", "");
         HGVS_c = FormatManager.getString(rset.getString("HGVS_c"));
         HGVS_p = FormatManager.getString(rset.getString("HGVS_p"));
         geneName = FormatManager.getString(rset.getString("gene"));

@@ -1,33 +1,42 @@
-package org.atavdb.service;
+package org.atavdb.service.model;
 
+import org.atavdb.service.util.DBManager;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
+@Service
+@ComponentScan("org.atavdb.service")
 public class ExternalDataManager {
 
-    private static final String EXAC_TABLE = "exac.variant_r03_2015_09_16";
-    private static final String GENOMEASIA_TABLE = "genomeasia.variant_chr";
-    private static final String GNOMAD_EXOME_TABLE = "gnomad_2_1.exome_variant";
-    private static final String GNOMAD_GENOME_TABLE = "gnomad_2_1.genome_variant_chr";
-    private static final String GME_TABLE = "gme.variant";
-    private static final String IRANOME_TABLE = "iranome.variant";
-    private static final String TOPMED_TABLE = "topmed.variant_chr";
+    @Autowired
+    DBManager dbManager;
+    
+    private final String EXAC_TABLE = "exac.variant_r03_2015_09_16";
+    private final String GENOMEASIA_TABLE = "genomeasia.variant_chr";
+    private final String GNOMAD_EXOME_TABLE = "gnomad_2_1.exome_variant";
+    private final String GNOMAD_GENOME_TABLE = "gnomad_2_1.genome_variant_chr";
+    private final String GME_TABLE = "gme.variant";
+    private final String IRANOME_TABLE = "iranome.variant";
+    private final String TOPMED_TABLE = "topmed.variant_chr";
 
-    public static float getExAC(String chr, int pos, String ref, String alt) {
+    public float getExAC(String chr, int pos, String ref, String alt) {
         float af = Data.FLOAT_NA;
 
         try {
             String sql = "SELECT global_af FROM " + EXAC_TABLE
                     + " WHERE chr=? AND pos=? AND ref_allele=? AND alt_allele=?";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, chr);
             preparedStatement.setInt(2, pos);
@@ -47,7 +56,7 @@ public class ExternalDataManager {
         return af;
     }
 
-    public static float getGenomeAsia(String chr, int pos, String ref, String alt) {
+    public float getGenomeAsia(String chr, int pos, String ref, String alt) {
         float af = Data.FLOAT_NA;
 
         if (chr.equalsIgnoreCase("MT")) { // not support MT regions
@@ -58,7 +67,7 @@ public class ExternalDataManager {
             String sql = "SELECT af FROM " + GENOMEASIA_TABLE
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, chr);
             preparedStatement.setInt(2, pos);
@@ -78,14 +87,14 @@ public class ExternalDataManager {
         return af;
     }
 
-    public static float getGenoADExome(String chr, int pos, String ref, String alt) {
+    public float getGenoADExome(String chr, int pos, String ref, String alt) {
         float af = Data.FLOAT_NA;
 
         try {
             String sql = "SELECT global_AF FROM " + GNOMAD_EXOME_TABLE
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, chr);
             preparedStatement.setInt(2, pos);
@@ -105,14 +114,14 @@ public class ExternalDataManager {
         return af;
     }
 
-    public static float getGenoADGenome(String chr, int pos, String ref, String alt) {
+    public float getGenoADGenome(String chr, int pos, String ref, String alt) {
         float af = Data.FLOAT_NA;
 
         try {
             String sql = "SELECT global_AF FROM " + GNOMAD_GENOME_TABLE
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, chr);
             preparedStatement.setInt(2, pos);
@@ -132,7 +141,7 @@ public class ExternalDataManager {
         return af;
     }
 
-    public static float getGME(String chr, int pos, String ref, String alt) {
+    public float getGME(String chr, int pos, String ref, String alt) {
         float af = Data.FLOAT_NA;
 
         if (chr.equalsIgnoreCase("Y") || chr.equalsIgnoreCase("MT")) { // not support Y or MT regions
@@ -143,7 +152,7 @@ public class ExternalDataManager {
             String sql = "SELECT af FROM " + GME_TABLE
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, chr);
             preparedStatement.setInt(2, pos);
@@ -163,7 +172,7 @@ public class ExternalDataManager {
         return af;
     }
 
-    public static float getIRANOME(String chr, int pos, String ref, String alt) {
+    public float getIRANOME(String chr, int pos, String ref, String alt) {
         float af = Data.FLOAT_NA;
 
         if (chr.equalsIgnoreCase("MT")) { // not support Y or MT regions
@@ -174,7 +183,7 @@ public class ExternalDataManager {
             String sql = "SELECT af FROM " + IRANOME_TABLE
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, chr);
             preparedStatement.setInt(2, pos);
@@ -194,7 +203,7 @@ public class ExternalDataManager {
         return af;
     }
 
-    public static float getTOPMED(String chr, int pos, String ref, String alt) {
+    public float getTOPMED(String chr, int pos, String ref, String alt) {
         float af = Data.FLOAT_NA;
 
         if (chr.equalsIgnoreCase("Y") || chr.equalsIgnoreCase("MT")) { // not support Y and MT regions
@@ -205,7 +214,7 @@ public class ExternalDataManager {
             String sql = "SELECT af FROM " + TOPMED_TABLE
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
-            Connection connection = DBManager.getConnection();
+            Connection connection = dbManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, chr);
             preparedStatement.setInt(2, pos);

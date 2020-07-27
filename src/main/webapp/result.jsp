@@ -42,6 +42,16 @@
         </div>
 
         <c:if test="${queryType == 'Variant'}" >
+            <div class="col-md-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://franklin.genoox.com/variant/snp/chr${query}" target="_blank">Franklin</a>
+            </div>
+            <div class="col-md-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="https://gnomad.broadinstitute.org/variant/${query}" target="_blank">gnomAD</a>
+            </div>
+            <div class="col-md-auto">
+                <a class="btn btn-outline-secondary btn-sm" href="http://trap-score.org/Search?query=${query}" target="_blank">TraP</a>
+            </div>
+
             <c:forEach items="${variantList}" var="variant">
                 <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/clinvar/?term=(${variant.getChrStr()}[Chromosome] AND ${variant.getStartPosition()}[Base Position for Assembly GRCh37])" target="_blank">ClinVar</a>
@@ -49,17 +59,9 @@
                 <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://www.ncbi.nlm.nih.gov/snp/?term=(${variant.getChrStr()}[Chromosome] AND ${variant.getStartPosition()}[Base Position Previous])" target="_blank">dbSNP</a>
                 </div>
-                <div class="col-md-auto">
-                    <a class="btn btn-outline-secondary btn-sm" href="https://franklin.genoox.com/variant/snp/chr${variant.getVariantIdStr()}" target="_blank">Franklin</a>
-                </div>
-                <div class="col-md-auto">
-                    <a class="btn btn-outline-secondary btn-sm" href="https://gnomad.broadinstitute.org/variant/${variant.getVariantIdStr()}" target="_blank">gnomAD</a>
-                </div>
+
                 <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="http://myvariant.info/v1/variant/${variant.getVariantIdStr2()}?assembly=hg19&format=html" target="_blank">MyVariant</a>
-                </div>
-                <div class="col-md-auto">
-                    <a class="btn btn-outline-secondary btn-sm" href="http://trap-score.org/Search?query=${variant.getVariantIdStr()}" target="_blank">TraP</a>
                 </div>
                 <div class="col-md-auto">
                     <a class="btn btn-outline-secondary btn-sm" href="https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr${variant.getChrStr()}${variant.getStartPosition()}-${variant.getStartPosition()}" target="_blank">UCSC</a>
@@ -114,7 +116,19 @@
         <div class="row">
             <div class="col-auto">
                 <div class="alert alert-warning" role="alert">
-                    <i class="fas fa-exclamation-circle"></i>&nbsp;${message}
+                    <i class="fas fa-exclamation-circle"></i>&nbsp;
+                    ${message}
+                </div>
+            </div>
+        </div>
+    </c:if>
+
+    <c:if test="${not empty flankingRegion}" >
+        <div class="row">
+            <div class="col-auto">
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-exclamation-circle"></i>&nbsp;
+                    Search by flanking region <a href="<c:url value="/region/${flankingRegion}" />">${flankingRegion}</a>
                 </div>
             </div>
         </div>
@@ -131,45 +145,47 @@
                 </c:if>
 
                 <div class='table-responsive'>
-                    <table id="${variant_table}" class="table table-hover text-center align-middle">
+                    <table id="${variant_table}" class="table table-sm table-hover text-center">
                         <thead>
                             <tr>
-                                <th data-toggle="tooltip" title="chr-pos-ref-alt">Variant ID</th>
-                                <th data-toggle="tooltip" title="Consequence type of this variation (Ensemble 87)">Effect</th>
-                                <th data-toggle="tooltip" title="HGNC gene identifier (Ensemble 87)">Gene</th>
-                                <th data-toggle="tooltip" title="Allele Acount">AC</th>
-                                <th data-toggle="tooltip" title="Allele Number (total number of alleles)">AN</th>
-                                <th data-toggle="tooltip" title="Allele Frequency">AF</th>
-                                <th data-toggle="tooltip" title="Maximum External Allele Frequency">MEAF</th>
-                                <th data-toggle="tooltip" title="Number of samples having data">NS</th>
-                                <th data-toggle="tooltip" title="Number of homozygotes">NHOM</th>
+                                <th class="align-middle" data-toggle="tooltip" title="chr-pos-ref-alt">Variant ID</th>
+                                <th class="align-middle" data-toggle="tooltip" title="HGVS_p or HGVS_c for most damaging effect (Ensemble 87)">Consequence</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Consequence type of this variation for most damaging effect (Ensemble 87)">Effect</th>
+                                <th class="align-middle" data-toggle="tooltip" title="HGNC gene for most damaging effect (Ensemble 87)">Gene</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Allele Acount">AC</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Allele Number (total number of alleles)">AN</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Allele Frequency">AF</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Number of samples having data">NS</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Number of homozygotes">NHOM</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Maximum External Allele Frequency">maxEAF</th>
                             </tr>
                         </thead>
-                        <tbody>
 
+                        <tbody>
                         <c:forEach items="${variantList}" var="variant">
                             <tr>
-                                <td>
+                                <td class="align-middle">
                                     <a href="<c:url value="/variant/${variant.getVariantIdStr()}" />" target='_blank'>
-                                        ${variant.getVariantIdStr()}
-                                    </a>
-                                </td>
-                                <td>${variant.getEffect()}</td>
-                                <td>${variant.getGeneName()}</td>
-                                <td>${variant.getAC()}</td>
-                                <td>${variant.getAN()}</td>
-                                <td>${variant.getAF()}</td>
-                                <td>${variant.getMEAF()}</td>
-                                <td>${variant.getNS()}</td>
-                                <td>${variant.getNH()}</td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
+                                       ${variant.getVariantIdStr()}
+                                </a>
+                            </td>
+                            <td class="align-middle">${variant.getConsequence()}</td>
+                            <td class="align-middle">${variant.getEffect()}</td>
+                            <td class="align-middle">${variant.getGeneName()}</td>
+                            <td class="align-middle">${variant.getAC()}</td>
+                            <td class="align-middle">${variant.getAN()}</td>
+                            <td class="align-middle">${variant.getAF()}</td>
+                            <td class="align-middle">${variant.getNS()}</td>
+                            <td class="align-middle">${variant.getNH()}</td>
+                            <td class="align-middle">${variant.getMaxEAF()}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </c:if>
+    </div>
+</c:if>
 </c:if>
 
 <br/>
@@ -180,29 +196,28 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">Annotation</h4>
-
                 <div class='table-responsive'>
-                    <table class="table table-hover text-center align-middle">
+                    <table class="table table-sm table-hover text-center">
                         <thead>
                             <tr>
-                                <th data-toggle="tooltip" title="Consequence type of this variation (Ensemble 87)">Effect</th>
-                                <th data-toggle="tooltip" title="HGNC gene identifier (Ensemble 87)">Gene</th>
-                                <th data-toggle="tooltip" title="Transcript stable id (Ensemble 87)">Transcript</th>
-                                <th data-toggle="tooltip" title="HGVS coding sequence name (Ensemble 87)">HGVS_c</th>
-                                <th data-toggle="tooltip" title="HGVS protein sequence name (Ensemble 87)">HGVS_p</th>
-                                <th data-toggle="tooltip" title="PolyPhen-2 HumDiv Classification for missense variants from Ensembl 87">PolyPhen</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Consequence type of this variation (Ensemble 87)">Effect</th>
+                                <th class="align-middle" data-toggle="tooltip" title="HGNC gene identifier (Ensemble 87)">Gene</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Transcript stable id (Ensemble 87)">Transcript</th>
+                                <th class="align-middle" data-toggle="tooltip" title="HGVS coding sequence name (Ensemble 87)">HGVS_c</th>
+                                <th class="align-middle" data-toggle="tooltip" title="HGVS protein sequence name (Ensemble 87)">HGVS_p</th>
+                                <th class="align-middle" data-toggle="tooltip" title="PolyPhen-2 HumDiv Classification for missense variants from Ensembl 87">PolyPhen</th>
                             </tr>
                         </thead>
 
                         <tbody>    
                         <c:forEach items="${variant.getAllAnnotation()}" var="annotation">
                             <tr>
-                                <td>${annotation.getEffect()}</td>
-                                <td>${annotation.getGeneName()}</td>
-                                <td>${annotation.getStableId()}</td>
-                                <td>${annotation.getHGVS_c()}</td>
-                                <td>${annotation.getHGVS_p()}</td>
-                                <td>${annotation.getPolyphen()}</td>
+                                <td class="align-middle">${annotation.getEffect()}</td>
+                                <td class="align-middle">${annotation.getGeneName()}</td>
+                                <td class="align-middle">${annotation.getStableId()}</td>
+                                <td class="align-middle">${annotation.getHGVS_c()}</td>
+                                <td class="align-middle">${annotation.getHGVS_p()}</td>
+                                <td class="align-middle">${annotation.getPolyphen()}</td>
                             </tr>
                         </c:forEach>
                         </tbody>
@@ -217,30 +232,29 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="card-title">External AF</h4>
-
                 <div class='table-responsive'>
-                    <table class="table table-hover text-center align-middle">
+                    <table class="table table-sm table-hover text-center">
                         <thead>
                             <tr>
-                                <th data-toggle="tooltip" title="Version 0.3">ExAC</th>
-                                <th data-toggle="tooltip" title="Version 2020-02-19">Genome Asia</th>
-                                <th data-toggle="tooltip" title="Version 2.1">gnomAD Exome</th>
-                                <th data-toggle="tooltip" title="Version 2.1">gnomAD Genome</th>
-                                <th data-toggle="tooltip" title="Version 2016-09-18">GME Variome</th>
-                                <th data-toggle="tooltip" title="Version 2020-02-24">Iranome</th>
-                                <th data-toggle="tooltip" title="Version Freeze3a hg19">TOPMED</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Version 0.3">ExAC</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Version 2020-02-19">Genome Asia</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Version 2.1">gnomAD Exome</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Version 2.1">gnomAD Genome</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Version 2016-09-18">GME Variome</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Version 2020-02-24">Iranome</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Version Freeze3a hg19">TOPMED</th>
                             </tr>
                         </thead>
 
                         <tbody>    
                             <tr>
-                                <td>${variant.getExAC()}</td>
-                                <td>${variant.getGenomeAsia()}</td>
-                                <td>${variant.getGnomADExome()}</td>
-                                <td>${variant.getGnomADGenome()}</td>
-                                <td>${variant.getGME()}</td>
-                                <td>${variant.getIranme()}</td>
-                                <td>${variant.getTopMed()}</td>
+                                <td class="align-middle">${variant.getExAC()}</td>
+                                <td class="align-middle">${variant.getGenomeAsia()}</td>
+                                <td class="align-middle">${variant.getGnomADExome()}</td>
+                                <td class="align-middle">${variant.getGnomADGenome()}</td>
+                                <td class="align-middle">${variant.getGME()}</td>
+                                <td class="align-middle">${variant.getIranme()}</td>
+                                <td class="align-middle">${variant.getTopMed()}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -280,42 +294,42 @@
                 <c:choose>
                     <c:when test="${not empty variant.getCarriers()}" >
                         <div class='table-responsive'>
-                            <table id="carrier_table" class="table table-hover text-center align-middle">
+                            <table id="carrier_table" class="table table-sm table-hover text-center">
                                 <thead>
                                     <tr>
                                 <c:if test="${not empty sequence_authorized}" >
-                                    <th data-toggle="tooltip" title="Sample experiment_id in sequenceDB">Experiment ID</th>
+                                    <th class="align-middle" data-toggle="tooltip" title="Sample experiment_id in sequenceDB">Experiment ID</th>
                                 </c:if>
-                                <th data-toggle="tooltip" title="AvaiContUsed in sequenceDB">Public Available</th>
-                                <th data-toggle="tooltip" title="seqGender in sequenceDB">Gender</th>
-                                <th data-toggle="tooltip" title="Broad Phenotype in sequenceDB">Phenotype</th>
-                                <th data-toggle="tooltip" title="Ancestry probability >= 0.5 in sequenceDB">Ancestry</th>
-                                <th data-toggle="tooltip" title="Genotype">GT</th>
-                                <th data-toggle="tooltip" title="Read Depth">DP</th>
-                                <th data-toggle="tooltip" title="Percentage of all the reads at the site that support the alternative allele">Percent Alt Read</th>
-                                <th data-toggle="tooltip" title="Genotype Quality">GQ</th>
-                                <th data-toggle="tooltip" title="PASS->PASS, VQSRTrancheSNP90.00to99.00->LIKELY, VQSRTrancheSNP99.00to99.90->INTERMEDIATE, VQSRTrancheSNP99.90to100.00->FAIL">FILTER</th>
+                                <th class="align-middle" data-toggle="tooltip" title="AvaiContUsed in sequenceDB">Public Available</th>
+                                <th class="align-middle" data-toggle="tooltip" title="seqGender in sequenceDB">Gender</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Broad Phenotype in sequenceDB">Phenotype</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Ancestry probability >= 0.5 in sequenceDB">Ancestry</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Genotype">GT</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Read Depth">DP</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Percentage of all the reads at the site that support the alternative allele">Percent Alt Read</th>
+                                <th class="align-middle" data-toggle="tooltip" title="Genotype Quality">GQ</th>
+                                <th class="align-middle" data-toggle="tooltip" title="PASS->PASS, VQSRTrancheSNP90.00to99.00->LIKELY, VQSRTrancheSNP99.00to99.90->INTERMEDIATE, VQSRTrancheSNP99.90to100.00->FAIL">FILTER</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach items="${variant.getCarriers()}" var="carrier">                                
                                     <tr>
                                     <c:if test="${not empty sequence_authorized}" >
-                                        <td>
+                                        <td class="align-middle">
                                             <a href="https://sequence.igm.cumc.columbia.edu/search.php?action=viewSample&experiment_id=${carrier.getExperimentId()}" target="_blank">
                                                 ${carrier.getExperimentId()}
                                             </a>
                                         </td>
                                     </c:if>
-                                    <td>${carrier.getAvailableControlUse()}</td>
-                                    <td>${carrier.getGender()}</td>
-                                    <td>${carrier.getPhenotype()}</td>
-                                    <td>${carrier.getAncestry()}</td>
-                                    <td>${carrier.getGTStr()}</td>
-                                    <td>${carrier.getDP()}</td>
-                                    <td>${carrier.getPercAltRead()}</td>
-                                    <td>${carrier.getGQ()}</td>
-                                    <td>${carrier.getFILTER()}</td>
+                                    <td class="align-middle">${carrier.getAvailableControlUse()}</td>
+                                    <td class="align-middle">${carrier.getGender()}</td>
+                                    <td class="align-middle">${carrier.getPhenotype()}</td>
+                                    <td class="align-middle">${carrier.getAncestry()}</td>
+                                    <td class="align-middle">${carrier.getGTStr()}</td>
+                                    <td class="align-middle">${carrier.getDP()}</td>
+                                    <td class="align-middle">${carrier.getPercAltRead()}</td>
+                                    <td class="align-middle">${carrier.getGQ()}</td>
+                                    <td class="align-middle">${carrier.getFILTER()}</td>
                                     </tr>
                                 </c:forEach>
 

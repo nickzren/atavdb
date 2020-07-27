@@ -1,17 +1,29 @@
-package org.atavdb.service;
+package org.atavdb.model;
 
 import org.atavdb.global.Enum;
 import org.atavdb.global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;
+import org.atavdb.service.model.GeneManager;
+import org.atavdb.service.model.RegionManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author nick
  */
-public class FilterManager {
+@Component
+@Scope("prototype")
+@ComponentScan("org.atavdb.service.model")
+public class SearchFilter {
 
+    @Autowired
+    GeneManager geneManager;
+    
     private String query;
     private String queryType;
     private float maxAF;
@@ -40,10 +52,7 @@ public class FilterManager {
 
     public final static float MAX_AF_TO_DISPLAY_CARRIER = 0.01f;
 
-    public FilterManager() {
-    }
-
-    public FilterManager(HttpSession session) {
+    public void init(HttpSession session) {
         this.query = (String) session.getAttribute("query");
         queryType = getQueryType(query);
         session.setAttribute("queryType", queryType);
@@ -168,7 +177,7 @@ public class FilterManager {
                         }
                     }
                 }
-            } else if (GeneManager.isValid(query)) {
+            } else if (geneManager.isValid(query)) {
                 return Data.QUERT_TYPE[2]; // Gene
             }
         }
@@ -405,5 +414,19 @@ public class FilterManager {
 
     public String getIsPublicAvailableStr() {
         return isAvailableControlUseOnly ? "on" : null;
+    }
+    
+    public String getFlankingRegion() {
+        if(queryType.equals(Data.QUERT_TYPE[1])) {
+            String[] tmp = query.split("-");
+            String chr = tmp[0];
+            int pos = Integer.valueOf(tmp[1]);
+            int start = pos - 10;
+            int end = pos + 10;
+            
+            return chr + ":" + start + "-" + end;
+        }
+        
+        return null;
     }
 }

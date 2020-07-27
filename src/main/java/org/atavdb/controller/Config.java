@@ -14,10 +14,10 @@ import org.springframework.web.servlet.view.JstlView;
  *
  * @author nick
  */
-@EnableWebMvc
 @Configuration
+@EnableWebMvc
 @ComponentScan(basePackages = {"org.atavdb.controller"})
-public class WebConfig implements WebMvcConfigurer {
+public class Config implements WebMvcConfigurer {
 
     @Bean
     public ViewResolver viewResolver() {
