@@ -4,9 +4,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.atavdb.service.LDAP;
-import org.atavdb.service.SessionManager;
-import org.atavdb.service.VerifyUser;
+import org.atavdb.service.util.LDAP;
+import org.atavdb.service.util.SessionManager;
+import org.atavdb.service.util.VerifyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author nick
  */
 @Controller
-@ComponentScan("org.atavdb.service")
+@ComponentScan("org.atavdb.service.util")
 public class UserAccessController {
 
     @Autowired

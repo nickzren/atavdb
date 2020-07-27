@@ -1,4 +1,4 @@
-package org.atavdb.service;
+package org.atavdb.service.util;
 
 import org.atavdb.global.Data;
 import java.sql.ResultSet;

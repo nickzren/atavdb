@@ -1,6 +1,6 @@
 package org.atavdb.model;
 
-import org.atavdb.service.DPBinBlockManager;
+import org.atavdb.service.model.DPBinBlockManager;
 import org.atavdb.global.Data;
 
 /**

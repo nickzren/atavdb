@@ -1,4 +1,4 @@
-package org.atavdb.service;
+package org.atavdb.service.util;
 
 import java.sql.Connection;
 import org.apache.commons.dbcp2.ConnectionFactory;

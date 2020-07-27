@@ -1,5 +1,6 @@
-package org.atavdb.service;
+package org.atavdb.service.model;
 
+import org.atavdb.service.util.DBManager;
 import org.atavdb.model.SearchFilter;
 import org.atavdb.global.Enum.Ancestry;
 import org.atavdb.global.Enum.Gender;

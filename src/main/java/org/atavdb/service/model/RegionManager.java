@@ -1,4 +1,4 @@
-package org.atavdb.service;
+package org.atavdb.service.model;
 
 import java.util.Arrays;
 import java.util.HashSet;

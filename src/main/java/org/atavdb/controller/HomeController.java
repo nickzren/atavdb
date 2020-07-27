@@ -2,11 +2,11 @@ package org.atavdb.controller;
 
 import javax.servlet.http.HttpSession;
 import org.atavdb.model.SearchFilter;
-import org.atavdb.service.SampleManager;
+import org.atavdb.service.model.SampleManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.atavdb.service.DBManager;
-import org.atavdb.service.SessionManager;
+import org.atavdb.service.util.DBManager;
+import org.atavdb.service.util.SessionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

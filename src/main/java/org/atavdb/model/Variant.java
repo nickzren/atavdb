@@ -1,11 +1,11 @@
 package org.atavdb.model;
 
-import org.atavdb.service.SampleManager;
-import org.atavdb.service.ExternalDataManager;
-import org.atavdb.service.CarrierBlockManager;
-import org.atavdb.service.DPBinBlockManager;
+import org.atavdb.service.model.SampleManager;
+import org.atavdb.service.model.ExternalDataManager;
+import org.atavdb.service.model.CarrierBlockManager;
+import org.atavdb.service.model.DPBinBlockManager;
 import org.atavdb.global.Data;
-import org.atavdb.service.FormatManager;
+import org.atavdb.service.util.FormatManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import org.springframework.web.servlet.ModelAndView;
-import org.atavdb.service.MathManager;
+import org.atavdb.service.model.MathManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-@ComponentScan("org.atavdb.service")
+@ComponentScan("org.atavdb.service.model")
 public class Variant extends Region {
 
     @Autowired

@@ -1,4 +1,4 @@
-package org.atavdb.service;
+package org.atavdb.service.util;
 
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;

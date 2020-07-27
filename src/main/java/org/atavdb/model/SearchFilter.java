@@ -5,8 +5,8 @@ import org.atavdb.global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;
-import org.atavdb.service.GeneManager;
-import org.atavdb.service.RegionManager;
+import org.atavdb.service.model.GeneManager;
+import org.atavdb.service.model.RegionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-@ComponentScan("org.atavdb.service")
+@ComponentScan("org.atavdb.service.model")
 public class SearchFilter {
 
     @Autowired

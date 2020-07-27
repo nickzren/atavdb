@@ -1,11 +1,11 @@
 package org.atavdb.model;
 
-import org.atavdb.service.EffectManager;
+import org.atavdb.service.model.EffectManager;
 import org.atavdb.global.Data;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.atavdb.service.FormatManager;
-import org.atavdb.service.MathManager;
+import org.atavdb.service.util.FormatManager;
+import org.atavdb.service.model.MathManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Scope("prototype")
-@ComponentScan("org.atavdb.service")
+@ComponentScan("org.atavdb.service.model")
 public class Annotation {
     
     @Autowired

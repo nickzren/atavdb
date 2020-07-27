@@ -3,7 +3,7 @@ package org.atavdb.model;
 import org.atavdb.global.Data;
 import org.atavdb.global.Enum.GT;
 import java.util.ArrayList;
-import org.atavdb.service.DPBinBlockManager;
+import org.atavdb.service.model.DPBinBlockManager;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
