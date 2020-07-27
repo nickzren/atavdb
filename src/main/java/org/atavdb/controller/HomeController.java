@@ -64,4 +64,22 @@ public class HomeController implements ApplicationContextAware {
 
         return mv;
     }
+
+    @GetMapping("/about")
+    public ModelAndView about() {
+        ModelAndView mv = new ModelAndView("about");
+        return mv;
+    }
+
+    @GetMapping("/contact")
+    public ModelAndView contact() {
+        ModelAndView mv = new ModelAndView("contact");
+        return mv;
+    }
+
+    @GetMapping("/terms")
+    public ModelAndView terms() {
+        ModelAndView mv = new ModelAndView("terms");
+        return mv;
+    }
 }
