@@ -1,4 +1,4 @@
-package org.atavdb.controller;
+package org.atavdb.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -6,7 +6,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
  *
  * @author nick
  */
-public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {

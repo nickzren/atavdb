@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">    
+    <head>
+        <title>Contact</title>
+
+        <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/css/all-fontawesome.css}">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
+    </head>
+    
+    <body>
+        <div class="container">
+            <div th:replace="fragments/header :: header"></div>
+            
+            <div class="container-main">
+                <h3 class="page-header">Contact</h3>
+
+                <address>
+                    <strong>Nick Ren</strong><br>
+                    <a href="mailto: z.ren@columbia.edu" target="_blank">
+                        <i class="far fa-envelope">
+                            z.ren@columbia.edu
+                        </i>
+                    </a>
+                </address>
+
+                <address>
+                    <strong>Institute for Genomic Medicine</strong><br>
+                    Columbia University Medical Center<br>
+                    701 W 168th Street<br>
+                    Hammer Building 404C<br>
+                    New York, NY 10032
+                </address>
+            </div>
+            
+            <div th:replace="fragments/footer :: footer"></div>
+            <div th:replace="fragments/counter :: counter"></div>
+        </div>
+    </body>
+</html>

@@ -19,35 +19,32 @@ public class EffectManager {
 
     @Autowired
     DBManager dbManager;
-    
+
     private HashMap<Integer, String> id2EffectMap = new HashMap<>();
 
-    private void initDefaultEffectSet() {
-        try {
-            String sql = "SELECT * FROM effect_ranking";
+    private void initDefaultEffectSet() throws Exception {
+        String sql = "SELECT * FROM effect_ranking";
 
-            Connection connection = dbManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sql);
+        Connection connection = dbManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sql);
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String effect = rs.getString("effect");
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String effect = rs.getString("effect");
 
-                id2EffectMap.put(id, effect);
-            }
-            
-            rs.close();
-            statement.close();
-        } catch (Exception e) {
+            id2EffectMap.put(id, effect);
         }
+
+        rs.close();
+        statement.close();
     }
 
-    public String getEffectById(int id) {
+    public String getEffectById(int id) throws Exception {
         if (id2EffectMap.isEmpty()) {
             initDefaultEffectSet();
         }
-        
+
         return id2EffectMap.get(id);
     }
 }

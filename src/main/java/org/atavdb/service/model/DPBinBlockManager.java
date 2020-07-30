@@ -26,7 +26,7 @@ public class DPBinBlockManager {
 
     @Autowired
     DBManager dbManager;
-    
+
     public final int DP_BIN_BLOCK_SIZE = 1000;
 
     private HashMap<Character, Short> dpBin = new HashMap<>();
@@ -45,7 +45,7 @@ public class DPBinBlockManager {
             HashMap<Integer, Carrier> carrierMap,
             HashMap<Integer, NonCarrier> noncarrierMap,
             SearchFilter filter,
-            ModelAndView mv) {
+            ModelAndView mv) throws Exception {
         int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
 
         Integer currentBlockId = (Integer) mv.getModel().get("currentNonCarrierBlockId");
@@ -79,11 +79,11 @@ public class DPBinBlockManager {
             }
         } else {
             currentBlockId = blockId;
-            
+
             currentBlockList = new ArrayList<>();
-            
+
             initBlockDPBin(carrierMap, noncarrierMap, var, posIndex, blockId, filter, currentBlockList);
-            
+
             mv.addObject("currentNonCarrierBlockId", currentBlockId);
             mv.addObject("currentBlockList", currentBlockList);
         }
@@ -96,46 +96,42 @@ public class DPBinBlockManager {
             int posIndex,
             int blockId,
             SearchFilter filter,
-            ArrayList<SampleDPBin> currentBlockList) {
-        try {
-            StringBuilder sqlSB = new StringBuilder();
-            
-            sqlSB.append("SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s ");
-            sqlSB.append("WHERE block_id=? AND d.sample_id=s.sample_id AND");
-            sqlSB.append(filter.getSampleSQL());
-            sqlSB.append(filter.getPhenotypeSQL());
-            sqlSB.append(filter.getAvailableControlUseSQL());
+            ArrayList<SampleDPBin> currentBlockList) throws Exception {
+        StringBuilder sqlSB = new StringBuilder();
 
-            Connection connection = dbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
-            preparedStatement.setInt(1, blockId);
-            ResultSet rs = preparedStatement.executeQuery();
-            
-            while (rs.next()) {
-                NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"), 
-                        rs.getString("DP_string"), posIndex, currentBlockList, this);
+        sqlSB.append("SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s ");
+        sqlSB.append("WHERE block_id=? AND d.sample_id=s.sample_id AND");
+        sqlSB.append(filter.getSampleSQL());
+        sqlSB.append(filter.getPhenotypeSQL());
+        sqlSB.append(filter.getAvailableControlUseSQL());
 
-                Carrier carrier = carrierMap.get(noncarrier.getSampleId());
+        Connection connection = dbManager.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
+        preparedStatement.setInt(1, blockId);
+        ResultSet rs = preparedStatement.executeQuery();
 
-                if (carrier != null) {
-                    if (carrier.isValid()) {
-                        carrier.setDPBin(noncarrier.getDPBin());
+        while (rs.next()) {
+            NonCarrier noncarrier = new NonCarrier(rs.getInt("sample_id"),
+                    rs.getString("DP_string"), posIndex, currentBlockList, this);
 
-                        carrier.applyCoverageFilter(filter);
-                    }
-                } else {
-                    noncarrier.applyCoverageFilter(filter);
+            Carrier carrier = carrierMap.get(noncarrier.getSampleId());
 
-                    if (noncarrier.isValid()) {
-                        noncarrierMap.put(noncarrier.getSampleId(), noncarrier);
-                    }
+            if (carrier != null) {
+                if (carrier.isValid()) {
+                    carrier.setDPBin(noncarrier.getDPBin());
+
+                    carrier.applyCoverageFilter(filter);
+                }
+            } else {
+                noncarrier.applyCoverageFilter(filter);
+
+                if (noncarrier.isValid()) {
+                    noncarrierMap.put(noncarrier.getSampleId(), noncarrier);
                 }
             }
-            rs.close();
-            preparedStatement.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        rs.close();
+        preparedStatement.close();
     }
 
     public short getCoverageByBin(Character bin) {

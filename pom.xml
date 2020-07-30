@@ -3,14 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Inherit defaults from Spring Boot -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
 
-    <groupId>edu.columbia.cumc</groupId>
+    <groupId>org.atavdb</groupId>
     <artifactId>atavdb</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
@@ -21,12 +22,21 @@
         <java.version>1.8</java.version>
     </properties>
 
+    <!-- Add typical dependencies for a web application -->
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -55,6 +65,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>    
                     <mainClass>org.atavdb.Application</mainClass>
+                    <excludeDevtools>true</excludeDevtools>
                 </configuration>
             </plugin>
         </plugins>

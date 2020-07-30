@@ -2,7 +2,6 @@ package org.atavdb.controller;
 
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
-import org.atavdb.global.Data;
 import org.atavdb.model.SearchFilter;
 import org.atavdb.service.model.SampleManager;
 import org.atavdb.model.Variant;
@@ -51,23 +50,28 @@ public class SearchController implements ApplicationContextAware {
     public ModelAndView search(String query, String maxAF, String phenotype,
             String isHighQualityVariant, String isUltraRareVariant,
             String isPublicAvailable, HttpSession session) {
-        session.setAttribute("query", query);
-        session.setAttribute("phenotype", phenotype);
-        session.setAttribute("maxAF", maxAF);
-        session.setAttribute("isHighQualityVariant", isHighQualityVariant);
-        session.setAttribute("isUltraRareVariant", isUltraRareVariant);
-        session.setAttribute("isPublicAvailable", isPublicAvailable);
+        try {
+            session.setAttribute("query", query);
+            session.setAttribute("phenotype", phenotype);
+            session.setAttribute("maxAF", maxAF);
+            session.setAttribute("isHighQualityVariant", isHighQualityVariant);
+            session.setAttribute("isUltraRareVariant", isUltraRareVariant);
+            session.setAttribute("isPublicAvailable", isPublicAvailable);
 
-        SearchFilter filter = applicationContext.getBean(SearchFilter.class);
-        filter.init(session);
-        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) {
-            return new ModelAndView("redirect:/variant/" + query);
-        } else if (filter.getQueryType().equals(Data.QUERT_TYPE[2])) {
-            return new ModelAndView("redirect:/gene/" + query);
-        } else if (filter.getQueryType().equals(Data.QUERT_TYPE[3])) {
-            return new ModelAndView("redirect:/region/" + query);
-        } else {
-            session.setAttribute("error", filter.getError());
+            SearchFilter filter = applicationContext.getBean(SearchFilter.class);
+            filter.init(session);
+            if (filter.isQueryVariant()) {
+                return new ModelAndView("redirect:/variant/" + query);
+            } else if (filter.isQueryGene()) {
+                return new ModelAndView("redirect:/gene/" + query);
+            } else if (filter.isQueryRegion()) {
+                return new ModelAndView("redirect:/region/" + query);
+            } else {
+                session.setAttribute("error", filter.getError());
+            }
+        } catch (Exception ex) {
+            session.setAttribute("error", errorManager.convertStackTraceToString(ex));
+            return new ModelAndView("redirect:/error");
         }
 
         return new ModelAndView("index");
@@ -122,8 +126,8 @@ public class SearchController implements ApplicationContextAware {
                 }
             }
         } catch (Exception ex) {
-//             debug purpose
-            mv.addObject("error", errorManager.convertStackTraceToString(ex));
+            session.setAttribute("error", errorManager.convertStackTraceToString(ex));
+            return new ModelAndView("redirect:/error");
         }
 
         return mv;

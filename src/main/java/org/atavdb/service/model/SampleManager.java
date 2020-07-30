@@ -37,7 +37,7 @@ public class SampleManager {
     private HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
     private HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
-    public void init(SearchFilter filter) {
+    public void init(SearchFilter filter) throws Exception {
         if (getMap(filter).isEmpty()
                 || checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
@@ -47,7 +47,7 @@ public class SampleManager {
         }
     }
 
-    private boolean checkSampleCount(SearchFilter filter) {
+    private boolean checkSampleCount(SearchFilter filter) throws Exception {
         // reset sample data & clear cached data once a day
         if (getCurrentDate(filter).isEqual(LocalDate.now())) {
             return false;
@@ -55,75 +55,69 @@ public class SampleManager {
             resetCurrentDate(filter);
         }
 
-        try {
-            // only if sample count mismatch then reset sample data & clear cached data
-            String sqlCode = "SELECT count(*) as count FROM sample "
-                    + "WHERE"
-                    + filter.getSampleSQL()
-                    + filter.getAvailableControlUseSQL();
+        // only if sample count mismatch then reset sample data & clear cached data
+        String sqlCode = "SELECT count(*) as count FROM sample "
+                + "WHERE"
+                + filter.getSampleSQL()
+                + filter.getAvailableControlUseSQL();
 
-            Connection connection = dbManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sqlCode);
+        Connection connection = dbManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sqlCode);
 
-            if (rs.next()) {
-                if (getMap(filter).get("").size() != rs.getInt("count")) {
-                    return true;
-                }
+        if (rs.next()) {
+            if (getMap(filter).get("").size() != rs.getInt("count")) {
+                return true;
             }
-
-            rs.close();
-            statement.close();
-        } catch (Exception e) {
         }
+
+        rs.close();
+        statement.close();
 
         return false;
     }
 
-    private void initAllSampleFromDB(SearchFilter filter) {
+    private void initAllSampleFromDB(SearchFilter filter) throws Exception {
         getMap(filter).clear();
         getMap(filter).put("", new ArrayList<>());
 
-        try {
-            String sqlCode = "SELECT sample_id,seq_gender,experiment_id,broad_phenotype,ancestry,available_control_use FROM sample "
-                    + "WHERE"
-                    + filter.getSampleSQL()
-                    + filter.getPhenotypeSQL()
-                    + filter.getAvailableControlUseSQL();
+        String sqlCode = "SELECT sample_id,seq_gender,experiment_id,broad_phenotype,ancestry,available_control_use FROM sample "
+                + "WHERE"
+                + filter.getSampleSQL()
+                + filter.getPhenotypeSQL()
+                + filter.getAvailableControlUseSQL();
 
-            Connection connection = dbManager.getConnection();
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(sqlCode);
+        Connection connection = dbManager.getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet rs = statement.executeQuery(sqlCode);
 
-            while (rs.next()) {
-                int sampleId = rs.getInt("sample_id");
-                String genderStr = rs.getString("seq_gender");
-                Gender gender = genderStr == null ? Gender.NA : Gender.valueOf(genderStr);
-                int experimentId = rs.getInt("experiment_id");
-                String broadPhenotype = rs.getString("broad_phenotype");
-                String ancestryStr = rs.getString("ancestry");
-                Ancestry ancestry = ancestryStr == null ? Ancestry.NA : Ancestry.valueOf(ancestryStr);
-                byte availableControlUse = rs.getByte("available_control_use");
+        while (rs.next()) {
+            int sampleId = rs.getInt("sample_id");
+            String genderStr = rs.getString("seq_gender");
+            Gender gender = genderStr == null ? Gender.NA : Gender.valueOf(genderStr);
+            int experimentId = rs.getInt("experiment_id");
+            String broadPhenotype = rs.getString("broad_phenotype");
+            String ancestryStr = rs.getString("ancestry");
+            Ancestry ancestry = ancestryStr == null ? Ancestry.NA : Ancestry.valueOf(ancestryStr);
+            byte availableControlUse = rs.getByte("available_control_use");
 
-                Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ancestry, availableControlUse);
+            Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ancestry, availableControlUse);
 
-                if (broadPhenotype != null && !broadPhenotype.isEmpty()) {
-                    ArrayList<Sample> list = getMap(filter).get(broadPhenotype);
-                    if (list == null) {
-                        list = new ArrayList<>();
-                        getMap(filter).put(broadPhenotype, list);
-                    }
-
-                    list.add(sample);
+            if (broadPhenotype != null && !broadPhenotype.isEmpty()) {
+                ArrayList<Sample> list = getMap(filter).get(broadPhenotype);
+                if (list == null) {
+                    list = new ArrayList<>();
+                    getMap(filter).put(broadPhenotype, list);
                 }
 
-                getMap(filter).get("").add(sample);
+                list.add(sample);
             }
 
-            rs.close();
-            statement.close();
-        } catch (Exception e) {
+            getMap(filter).get("").add(sample);
         }
+
+        rs.close();
+        statement.close();
     }
 
     public int getTotalSampleNum(SearchFilter filter) {

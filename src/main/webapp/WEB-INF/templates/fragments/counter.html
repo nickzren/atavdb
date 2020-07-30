@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <div th:fragment="counter">
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-32885253-12"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() {
+                    dataLayer.push(arguments);
+                }
+                gtag('js', new Date());
+
+                gtag('config', 'UA-32885253-12');
+            </script>
+        </div>
+    </body>
+</html>
+

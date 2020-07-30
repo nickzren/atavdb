@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LDAP {
 
-    private final String IGM_LDAP_SERVER = "ldap://rbwdcmc001.mc.cumc.columbia.edu:389";
+    private final String LDAP_SERVER = "ldap://rbwdcmc001.mc.cumc.columbia.edu:389";
 
     /*
         check whether user has a valid CUMC MC account
@@ -22,7 +22,7 @@ public class LDAP {
         try {
             Properties props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-            props.put(Context.PROVIDER_URL, IGM_LDAP_SERVER);
+            props.put(Context.PROVIDER_URL, LDAP_SERVER);
             props.put(Context.SECURITY_PRINCIPAL, "MC\\" + username);
             props.put(Context.SECURITY_CREDENTIALS, password);
 
