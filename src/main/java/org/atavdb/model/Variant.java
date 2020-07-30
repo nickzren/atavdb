@@ -140,7 +140,8 @@ public class Variant extends Region {
             // if gene / region search then free carriers
             // if variant search and when af > MAX AF then free carriers
             if (!isValid
-                    || !filter.getQueryType().equals((Data.QUERT_TYPE[1]))
+                    || filter.isQueryGene()
+                    || filter.isQueryRegion()
                     || af > SearchFilter.MAX_AF_TO_DISPLAY_CARRIER) {
                 carrierMap = null;
             }
@@ -267,7 +268,7 @@ public class Variant extends Region {
     }
 
     private boolean initCarrierData(SearchFilter filter, ModelAndView mv) {
-        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) { // variant search
+        if (filter.isQueryVariant()) { // variant search
             // single variant carriers data process
             carrierBlockManager.initCarrierMap(carrierMap, this, filter);
 

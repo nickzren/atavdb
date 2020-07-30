@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">    
+    <head>
+        <title>Error</title>
+
+        <link rel="shortcut icon" type="image/x-icon" th:href="@{/img/favicon.ico}">
+
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+        <link rel="stylesheet" th:href="@{/css/all-fontawesome.css}">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
+    </head>
+
+    <body>
+        <div class="container">
+            <div th:replace="fragments/header :: header"></div>
+
+            <div class="container-main">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="error-template text-center">
+                            <h1>
+                                Oops!
+                            </h1>
+                            <h2>
+                                404 Not Found
+                            </h2>
+                            <p>
+                                Sorry, an error has occured, Requested page not found!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:replace="fragments/footer :: footer"></div>
+            <div th:replace="fragments/counter :: counter"></div>
+        </div>
+    </body>
+</html>

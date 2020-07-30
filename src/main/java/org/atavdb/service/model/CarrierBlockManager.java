@@ -2,7 +2,6 @@ package org.atavdb.service.model;
 
 import org.atavdb.service.util.DBManager;
 import org.atavdb.model.SearchFilter;
-import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -54,7 +53,7 @@ public class CarrierBlockManager {
         sqlSB.append("SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 ");
         sqlSB.append("FROM called_variant_chr").append(var.getChrStr()).append(" c,");
 
-        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) // variant 
+        if (filter.isQueryVariant()) // variant 
         {
             sqlSB.append("full_impact,");
         } else { // gene or region
@@ -117,7 +116,7 @@ public class CarrierBlockManager {
         sqlSB.append("SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 ");
         sqlSB.append("FROM called_variant_chr").append(var.getChrStr()).append(" c,");
 
-        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) // variant 
+        if (filter.isQueryVariant()) // variant 
         {
             sqlSB.append("full_impact,");
         } else { // gene or region

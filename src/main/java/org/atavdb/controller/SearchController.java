@@ -60,11 +60,11 @@ public class SearchController implements ApplicationContextAware {
 
         SearchFilter filter = applicationContext.getBean(SearchFilter.class);
         filter.init(session);
-        if (filter.getQueryType().equals(Data.QUERT_TYPE[1])) {
+        if (filter.isQueryVariant()) {
             return new ModelAndView("redirect:/variant/" + query);
-        } else if (filter.getQueryType().equals(Data.QUERT_TYPE[2])) {
+        } else if (filter.isQueryGene()) {
             return new ModelAndView("redirect:/gene/" + query);
-        } else if (filter.getQueryType().equals(Data.QUERT_TYPE[3])) {
+        } else if (filter.isQueryRegion()) {
             return new ModelAndView("redirect:/region/" + query);
         } else {
             session.setAttribute("error", filter.getError());

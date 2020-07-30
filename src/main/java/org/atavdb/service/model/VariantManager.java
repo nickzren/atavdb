@@ -61,21 +61,20 @@ public class VariantManager implements ApplicationContextAware {
         }
 
         String chr = "";
-        String joinSQL = "";// codingandsplice_effect
+        String joinSQL = ""; // codingandsplice_effect
         String whereSQL = "";
 
         String query = filter.getQuery();
-        String queryType = filter.getQueryType();
-        if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
+        if (filter.isQueryVariant()) {
             String[] tmp = query.split("-");
             chr = tmp[0];
             whereSQL = "WHERE POS=? AND REF=? AND ALT =? ";
-        } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
+        } else if (filter.isQueryGene()) {
             chr = geneManager.getChr(query);
             // it's important to force using gene key here for better performance
             joinSQL = "FORCE INDEX (gene_idx),codingandsplice_effect e ";
             whereSQL = "WHERE gene=? AND v.effect_id=e.id ";
-        } else if (queryType.equals(Data.QUERT_TYPE[3])) { // region chr:start-end
+        } else if (filter.isQueryRegion()) {
             String[] tmp = query.split(":");
             chr = tmp[0];
             tmp = tmp[1].split("-");
@@ -97,14 +96,14 @@ public class VariantManager implements ApplicationContextAware {
         Connection connection = dbManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-        if (queryType.equals(Data.QUERT_TYPE[1])) { // variant chr-pos-ref-alt
+        if (filter.isQueryVariant()) { // variant chr-pos-ref-alt
             String[] tmp = query.split("-");
             preparedStatement.setInt(1, Integer.valueOf(tmp[1]));
             preparedStatement.setString(2, tmp[2]);
             preparedStatement.setString(3, tmp[3]);
-        } else if (queryType.equals(Data.QUERT_TYPE[2])) { // gene
+        } else if (filter.isQueryGene()) { // gene
             preparedStatement.setString(1, query);
-        } else if (queryType.equals(Data.QUERT_TYPE[3])) { // region chr:start-end
+        } else if (filter.isQueryRegion()) { // region chr:start-end
             String[] tmp = query.split(":");
             tmp = tmp[1].split("-");
             preparedStatement.setInt(1, Integer.valueOf(tmp[0]));

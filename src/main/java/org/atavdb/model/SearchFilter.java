@@ -23,7 +23,8 @@ public class SearchFilter {
 
     @Autowired
     GeneManager geneManager;
-    
+
+    // user input
     private String query;
     private String queryType;
     private float maxAF;
@@ -31,6 +32,10 @@ public class SearchFilter {
     private boolean isHighQualityVariant;
     private boolean isUltraRareVariant;
     private boolean isAvailableControlUseOnly;
+    
+    private String error;
+    
+    // system default
     private final static int minVarPresent = 1;
     private final static boolean isQcMissingIncluded = true;
     private final static int minDpBin = 10;
@@ -44,13 +49,28 @@ public class SearchFilter {
     private final static int minQual = 50;
     private final static float minRPRS = -3;
     private final static float minMQRS = -10;
-    private static final byte[] validFILTER = {
+    private final static byte[] validFILTER = {
         Enum.FILTER.PASS.getValue(),
         Enum.FILTER.LIKELY.getValue(),
         Enum.FILTER.INTERMEDIATE.getValue()};
-    private String error;
 
     public final static float MAX_AF_TO_DISPLAY_CARRIER = 0.01f;
+
+    public final static String[] QUERT_TYPE = {"Invalid", "Variant", "Gene", "Region"};
+
+    public final static String[] AF_LIST = {"", "0.01", "0.005", "0.001"};
+
+    public final static String[] PHENOTYPE_LIST = {"", "amyotrophic lateral sclerosis",
+        "autoimmune disease", "bone disease", "brain malformation", "cancer", "cardiovascular disease",
+        "congenital disorder", "control", "control mild neuropsychiatric disease", "covid-19",
+        "dementia", "dermatological disease", "diseases that affect the ear",
+        "endocrine disorder", "epilepsy", "febrile seizures", "fetal ultrasound anomaly",
+        "gastrointestinal disease", "healthy family member", "hematological disease",
+        "infectious disease", "intellectual disability", "kidney and urological disease",
+        "liver disease", "metabolic disease", "neurodegenerative", "nonhuman", "obsessive compulsive disorder",
+        "ophthalmic disease", "other", "other neurodevelopmental disease", "other neurological disease",
+        "other neuropsychiatric disease", "primary immune deficiency", "pulmonary disease",
+        "schizophrenia", "sudden death", "alzheimers disease", "cerebral palsy"};
 
     public void init(HttpSession session) {
         this.query = (String) session.getAttribute("query");
@@ -63,13 +83,12 @@ public class SearchFilter {
         String isUltraRareVariant = (String) session.getAttribute("isUltraRareVariant");
         String isPublicAvailable = (String) session.getAttribute("isPublicAvailable");
 
-        if (session.getAttribute("username") == null
-                && queryType.equals(Data.QUERT_TYPE[2])) {
+        if (session.getAttribute("username") == null && isQueryGene()) {
             error = error != null ? error : "Permission denied for anonymous user.";
         }
 
         // default to search high quality variants only for gene or region
-        if (queryType.equals(Data.QUERT_TYPE[2]) || queryType.equals(Data.QUERT_TYPE[3])) {
+        if (isQueryGene() || isQueryRegion()) {
             isHighQualityVariant = "on";
             session.setAttribute("isHighQualityVariant", isHighQualityVariant);
         }
@@ -154,7 +173,7 @@ public class SearchFilter {
                         && tmp[2].matches("^[ATCG]+$") // valid if only contains ATCG 
                         && tmp[3].matches("^[ATCG]+$") // valid if only contains ATCG 
                         ) {
-                    return Data.QUERT_TYPE[1]; // Variant
+                    return QUERT_TYPE[1]; // Variant
                 }
             } else if (query.contains(":")) {
                 String[] tmp = query.split(":");
@@ -170,19 +189,19 @@ public class SearchFilter {
 
                         if (end >= start
                                 && (end - start) <= RegionManager.MAX_SEARCH_LIMIT) {
-                            return Data.QUERT_TYPE[3]; // Region
+                            return QUERT_TYPE[3]; // Region
                         } else {
                             error = "Invalid region or exceeds maximum limit " + RegionManager.MAX_SEARCH_LIMIT + " base pair.";
-                            return Data.QUERT_TYPE[0]; // Invalid
+                            return QUERT_TYPE[0]; // Invalid
                         }
                     }
                 }
             } else if (geneManager.isValid(query)) {
-                return Data.QUERT_TYPE[2]; // Gene
+                return QUERT_TYPE[2]; // Gene
             }
         }
 
-        return Data.QUERT_TYPE[0]; // Invalid
+        return QUERT_TYPE[0]; // Invalid
     }
 
     public String getQuery() {
@@ -194,7 +213,19 @@ public class SearchFilter {
     }
 
     public boolean isQueryValid() {
-        return !queryType.equals(Data.QUERT_TYPE[0]) && error == null;
+        return !queryType.equals(QUERT_TYPE[0]) && error == null;
+    }
+
+    public boolean isQueryVariant() {
+        return queryType.equals(QUERT_TYPE[1]);
+    }
+
+    public boolean isQueryGene() {
+        return queryType.equals(QUERT_TYPE[2]);
+    }
+
+    public boolean isQueryRegion() {
+        return queryType.equals(QUERT_TYPE[3]);
     }
 
     public String getError() {
@@ -415,18 +446,18 @@ public class SearchFilter {
     public String getIsPublicAvailableStr() {
         return isAvailableControlUseOnly ? "on" : null;
     }
-    
+
     public String getFlankingRegion() {
-        if(queryType.equals(Data.QUERT_TYPE[1])) {
+        if (isQueryVariant()) {
             String[] tmp = query.split("-");
             String chr = tmp[0];
             int pos = Integer.valueOf(tmp[1]);
             int start = pos - 10;
             int end = pos + 10;
-            
+
             return chr + ":" + start + "-" + end;
         }
-        
+
         return null;
     }
 }

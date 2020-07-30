@@ -57,6 +57,14 @@ public class HomeController implements ApplicationContextAware {
             if (session.getAttribute("ancestries") == null) {
                 session.setAttribute("ancestries", org.atavdb.global.Enum.Ancestry.values());
             }
+            
+            if (session.getAttribute("af_list") == null) {
+                session.setAttribute("af_list", SearchFilter.AF_LIST);
+            }
+            
+            if (session.getAttribute("phenotype_list") == null) {
+                session.setAttribute("phenotype_list", SearchFilter.PHENOTYPE_LIST);
+            }
         } catch (Exception ex) {
             // debug purpose
 //            mv.addObject("error", convertStackTraceToString(ex));
