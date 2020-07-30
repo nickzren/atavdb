@@ -19,30 +19,26 @@ public class GeneManager {
 
     @Autowired
     DBManager dbManager;
-    
-    public String getChr(String gene) {
-        try {
-            String sql = "SELECT chrom FROM hgnc WHERE gene=?";
 
-            Connection connection = dbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, gene);
-            ResultSet rs = preparedStatement.executeQuery();
+    public String getChr(String gene) throws Exception {
+        String sql = "SELECT chrom FROM hgnc WHERE gene=?";
 
-            if (rs.next()) {
-                return rs.getString("chrom");
-            }
+        Connection connection = dbManager.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, gene);
+        ResultSet rs = preparedStatement.executeQuery();
 
-            rs.close();
-            preparedStatement.close();
-        } catch (Exception e) {
-            return Data.STRING_NA;
+        if (rs.next()) {
+            return rs.getString("chrom");
         }
+
+        rs.close();
+        preparedStatement.close();
 
         return Data.STRING_NA;
     }
 
-    public boolean isValid(String gene) {
+    public boolean isValid(String gene) throws Exception {
         return !getChr(gene).equals(Data.STRING_NA);
     }
 }

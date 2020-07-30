@@ -23,14 +23,14 @@ public class CarrierBlockManager {
 
     @Autowired
     DBManager dbManager;
-    
+
     public final int CARRIER_BLOCK_SIZE = 1000;
 
-    public void init(Variant var, SearchFilter filter, ModelAndView mv) {
+    public void init(Variant var, SearchFilter filter, ModelAndView mv) throws Exception {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         Integer currentBlockId = (Integer) mv.getModel().get("currentCarrierBlockId");
-        
+
         if (currentBlockId == null || currentBlockId != blockId) {
             currentBlockId = blockId;
 
@@ -47,7 +47,7 @@ public class CarrierBlockManager {
             Variant var,
             SearchFilter filter,
             int currentBlockId,
-            HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap) {
+            HashMap<Integer, HashMap<Integer, Carrier>> blockCarrierMap) throws Exception {
         StringBuilder sqlSB = new StringBuilder();
 
         sqlSB.append("SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 ");
@@ -67,48 +67,45 @@ public class CarrierBlockManager {
         sqlSB.append("AND").append(filter.getSampleSQL());
         sqlSB.append(filter.getPhenotypeSQL());
         sqlSB.append(filter.getAvailableControlUseSQL());
-        
-        try {
-            HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
-            Connection connection = dbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
-            preparedStatement.setInt(1, currentBlockId);
-            ResultSet rs = preparedStatement.executeQuery();
+        HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
-            while (rs.next()) {
-                Carrier carrier = new Carrier(rs);
+        Connection connection = dbManager.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
+        preparedStatement.setInt(1, currentBlockId);
+        ResultSet rs = preparedStatement.executeQuery();
 
-                int variantId = rs.getInt("variant_id");
+        while (rs.next()) {
+            Carrier carrier = new Carrier(rs);
 
-                HashMap<Integer, Carrier> varCarrierMap = blockCarrierMap.get(variantId);
+            int variantId = rs.getInt("variant_id");
 
-                if (varCarrierMap == null) {
-                    varCarrierMap = new HashMap<>();
-                    blockCarrierMap.put(variantId, varCarrierMap);
+            HashMap<Integer, Carrier> varCarrierMap = blockCarrierMap.get(variantId);
 
-                    validVariantCarrierCount.put(variantId, 0);
-                }
+            if (varCarrierMap == null) {
+                varCarrierMap = new HashMap<>();
+                blockCarrierMap.put(variantId, varCarrierMap);
 
-                if (carrier.isValid()) {
-                    validVariantCarrierCount.computeIfPresent(variantId, (k, v) -> v + 1);
-                }
-
-                varCarrierMap.put(carrier.getSampleId(), carrier);
+                validVariantCarrierCount.put(variantId, 0);
             }
-            
-            rs.close();
-            preparedStatement.close();
 
-            // removed no qualified carriers variant
-            validVariantCarrierCount.entrySet().stream().filter((entry) -> (entry.getValue() == 0)).forEachOrdered((entry) -> {
-                blockCarrierMap.remove(entry.getKey());
-            });
-        } catch (Exception e) {
+            if (carrier.isValid()) {
+                validVariantCarrierCount.computeIfPresent(variantId, (k, v) -> v + 1);
+            }
+
+            varCarrierMap.put(carrier.getSampleId(), carrier);
         }
+
+        rs.close();
+        preparedStatement.close();
+
+        // removed no qualified carriers variant
+        validVariantCarrierCount.entrySet().stream().filter((entry) -> (entry.getValue() == 0)).forEachOrdered((entry) -> {
+            blockCarrierMap.remove(entry.getKey());
+        });
     }
 
-    public void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, SearchFilter filter) {
+    public void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, SearchFilter filter) throws Exception {
         int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
 
         StringBuilder sqlSB = new StringBuilder();
@@ -132,24 +129,21 @@ public class CarrierBlockManager {
         sqlSB.append(filter.getPhenotypeSQL());
         sqlSB.append(filter.getAvailableControlUseSQL());
 
-        try {
-            Connection connection = dbManager.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
-            preparedStatement.setInt(1, blockId);
-            ResultSet rs = preparedStatement.executeQuery();
+        Connection connection = dbManager.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());
+        preparedStatement.setInt(1, blockId);
+        ResultSet rs = preparedStatement.executeQuery();
 
-            while (rs.next()) {
-                Carrier carrier = new Carrier(rs);
+        while (rs.next()) {
+            Carrier carrier = new Carrier(rs);
 
-                carrier.applyQualityFilter(filter, var.isSnv());
+            carrier.applyQualityFilter(filter, var.isSnv());
 
-                carrierMap.put(carrier.getSampleId(), carrier);
-            }
-            
-            rs.close();
-            preparedStatement.close();
-        } catch (Exception e) {
+            carrierMap.put(carrier.getSampleId(), carrier);
         }
+
+        rs.close();
+        preparedStatement.close();
     }
 
     public HashMap<Integer, Carrier> getVarCarrierMap(int variantId, ModelAndView mv) {

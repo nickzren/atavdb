@@ -3,7 +3,6 @@ package org.atavdb.model;
 import org.atavdb.service.model.EffectManager;
 import org.atavdb.global.Data;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import org.atavdb.service.util.FormatManager;
 import org.atavdb.service.util.MathManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class Annotation {
     
     public static final int TRANSCRIPT_LENGTH = 15;      
     
-    public void init(ResultSet rset) throws SQLException {        
+    public void init(ResultSet rset) throws Exception {        
         stableId = rset.getInt("transcript_stable_id");
 
         if (stableId < 0) {

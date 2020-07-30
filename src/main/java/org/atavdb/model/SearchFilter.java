@@ -72,7 +72,7 @@ public class SearchFilter {
         "other neuropsychiatric disease", "primary immune deficiency", "pulmonary disease",
         "schizophrenia", "sudden death", "alzheimers disease", "cerebral palsy"};
 
-    public void init(HttpSession session) {
+    public void init(HttpSession session) throws Exception {
         this.query = (String) session.getAttribute("query");
         queryType = getQueryType(query);
         session.setAttribute("queryType", queryType);
@@ -162,7 +162,7 @@ public class SearchFilter {
         return value >= minVarPresent;
     }
 
-    private String getQueryType(String query) {
+    private String getQueryType(String query) throws Exception {
         if (query != null && !query.isEmpty()
                 // only allow Alphanumeric, ":" and "-" 
                 && Pattern.matches("^[a-zA-Z0-9\\:\\-]+$", query)) {

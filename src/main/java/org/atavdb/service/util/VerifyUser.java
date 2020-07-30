@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
  *
  * @author nick
  */
-
 @Service
 public class VerifyUser {
 
@@ -36,7 +35,6 @@ public class VerifyUser {
                 return true;
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
         }
 
         return false;

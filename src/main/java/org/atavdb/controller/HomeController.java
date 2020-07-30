@@ -6,6 +6,7 @@ import org.atavdb.service.model.SampleManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.util.DBManager;
+import org.atavdb.service.util.ErrorManager;
 import org.atavdb.service.util.SessionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class HomeController implements ApplicationContextAware {
     @Autowired
     SampleManager sampleManager;
 
+    @Autowired
+    ErrorManager errorManager;
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -57,17 +61,17 @@ public class HomeController implements ApplicationContextAware {
             if (session.getAttribute("ancestries") == null) {
                 session.setAttribute("ancestries", org.atavdb.global.Enum.Ancestry.values());
             }
-            
+
             if (session.getAttribute("af_list") == null) {
                 session.setAttribute("af_list", SearchFilter.AF_LIST);
             }
-            
+
             if (session.getAttribute("phenotype_list") == null) {
                 session.setAttribute("phenotype_list", SearchFilter.PHENOTYPE_LIST);
             }
         } catch (Exception ex) {
-            // debug purpose
-//            mv.addObject("error", convertStackTraceToString(ex));
+            session.setAttribute("error", errorManager.convertStackTraceToString(ex));
+            return new ModelAndView("redirect:/error");
         }
 
         return mv;
@@ -88,6 +92,12 @@ public class HomeController implements ApplicationContextAware {
     @GetMapping("/terms")
     public ModelAndView terms() {
         ModelAndView mv = new ModelAndView("terms");
+        return mv;
+    }
+    
+    @GetMapping("/error")
+    public ModelAndView error() {
+        ModelAndView mv = new ModelAndView("error");
         return mv;
     }
 }

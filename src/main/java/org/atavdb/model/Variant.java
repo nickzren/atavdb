@@ -267,7 +267,7 @@ public class Variant extends Region {
         return FormatManager.getFloat(topmed);
     }
 
-    private boolean initCarrierData(SearchFilter filter, ModelAndView mv) {
+    private boolean initCarrierData(SearchFilter filter, ModelAndView mv) throws Exception {
         if (filter.isQueryVariant()) { // variant search
             // single variant carriers data process
             carrierBlockManager.initCarrierMap(carrierMap, this, filter);

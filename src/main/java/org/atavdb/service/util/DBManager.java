@@ -37,11 +37,6 @@ public class DBManager {
         dbUrl = System.getenv("DB_URL");
         dbUser = System.getenv("DB_USER");
         dbPassword = System.getenv("DB_PASSWORD");
-
-        // local config
-//            dbUrl = "jdbc:mysql://localhost:3306/WalDB?serverTimezone=UTC";
-//            dbUser = "test";
-//            dbPassword = "test";
     }
 
     private void initDataSource() {

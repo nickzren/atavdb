@@ -17,17 +17,24 @@
             <div class="container-main">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="error-template text-center">
+                        <div class="text-center">
                             <h1>
                                 Oops!
                             </h1>
-                            <h2>
-                                404 Not Found
-                            </h2>
-                            <p>
-                                Sorry, an error has occured, Requested page not found!
+                            <p class="alert alert-warning" role="alert">
+                                <i class="fas fa-exclamation-circle"></i>&nbsp;Sorry, an error has occured, Requested page not found!
                             </p>
                         </div>
+
+                        <th:block th:if="${session.sequence_authorized} and ${session.error}">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <div class="alert alert-warning" role="alert">
+                                        <i class="fas fa-exclamation-circle"></i>&nbsp;[[${session.error}]]
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
                     </div>
                 </div>
             </div>
