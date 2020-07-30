@@ -33,19 +33,20 @@ public class DBManager {
     }
 
     private void initDataFromSystemConfig() {
-        // server config - $CATALINA_HOME/bin/setenv.sh
+        // server config from tomcat $CATALINA_HOME/bin/setenv.sh
         dbUrl = System.getenv("DB_URL");
         dbUser = System.getenv("DB_USER");
         dbPassword = System.getenv("DB_PASSWORD");
+        
+        // local config without tomcat
+//        dbUrl = "jdbc:mysql://localhost:3306/WalDB?serverTimezone=UTC";
+//        dbUser = "test";
+//        dbPassword = "test";
     }
 
-    private void initDataSource() {
+    private void initDataSource() throws Exception {
         if (dataSource == null) {
-            try {
-                Class.forName(dbDriver);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+            Class.forName(dbDriver);
 
             initDataFromSystemConfig();
 
@@ -63,12 +64,11 @@ public class DBManager {
                     poolableConnectionFactory, config);
             poolableConnectionFactory.setPool(connectionPool);
 
-            dataSource = new PoolingDataSource<>(
-                    connectionPool);
+            dataSource = new PoolingDataSource<>(connectionPool);
         }
     }
 
-    private void initConnection() throws Exception {        
+    private void initConnection() throws Exception {
         if (connection == null || connection.isClosed()) {
             connection = dataSource.getConnection();
         }
