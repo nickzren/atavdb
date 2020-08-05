@@ -107,11 +107,11 @@ public class Annotation {
             }
         }
 
-        if (score < 0.4335) { //based on Liz's comment
+        if (score < 0.4335) {
             return "benign";
         }
 
-        if (score < 0.9035) { //based on Liz's comment
+        if (score < 0.9035) {
             return "possibly";
         }
 
