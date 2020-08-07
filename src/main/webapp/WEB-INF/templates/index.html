@@ -394,7 +394,7 @@
                                         <tbody>                             
                                             <tr th:each="carrier : ${variant.getCarriers()}">
                                                 <td th:if="${session.sequence_authorized}" class="align-middle">
-                                                    <a href="https://sequence.igm.cumc.columbia.edu/search.php?action=viewSample&experiment_id=${carrier.getExperimentId()}" target="_blank">
+                                                    <a th:href="@{https://sequence.igm.cumc.columbia.edu/search.php?action=viewSample&experiment_id=}+${carrier.getExperimentId()}" target="_blank">
                                                         [[${carrier.getExperimentId()}]]
                                                     </a>
                                                 </td>
