@@ -54,7 +54,6 @@ public class Variant extends Region {
     private String HGVS_c = "";
     private String HGVS_p = "";
     private float polyphenHumdiv = Data.FLOAT_NA;
-    private float polyphenHumvar = Data.FLOAT_NA;
     private String geneName = "";
     private List<String> geneList = new ArrayList<>();
     private List<Annotation> annotationList = new ArrayList<>();
@@ -194,7 +193,6 @@ public class Variant extends Region {
             annotationList.add(annotation);
 
             polyphenHumdiv = MathManager.max(polyphenHumdiv, annotation.polyphenHumdiv);
-            polyphenHumvar = MathManager.max(polyphenHumvar, annotation.polyphenHumvar);
 
             if (!geneList.contains(annotation.geneName)) {
                 geneList.add(annotation.geneName);
@@ -381,4 +379,6 @@ public class Variant extends Region {
     public int[] getAncestryCount() {
         return ancestryCount;
     }
+    
+    // toString for json
 }
