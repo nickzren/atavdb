@@ -158,7 +158,7 @@
                                     <a class="btn btn-outline-secondary btn-sm" th:href="@{https://www.ncbi.nlm.nih.gov/snp/?term=({chr}[Chromosome] AND {pos}[Base Position Previous])(chr = ${variant.getChrStr()}, pos = ${variant.getStartPosition()})}" target="_blank">dbSNP</a>
                                 </div>
                                 <div class="col-md-auto">
-                                    <a class="btn btn-outline-secondary btn-sm" th:href="@{http://myvariant.info/v1/variant/} + ${variant.getVariantIdStr2()} + @{(assembly=hg19&format=html)}" target="_blank">MyVariant</a>
+                                    <a class="btn btn-outline-secondary btn-sm" th:href="@{http://myvariant.info/v1/variant/} + ${variant.getVariantIdStr2()} + @{?assembly=hg19&format=html}" target="_blank">MyVariant</a>
                                 </div>
                                 <div class="col-md-auto">
                                     <a class="btn btn-outline-secondary btn-sm" th:href="@{https://genome.ucsc.edu/cgi-bin/hgTracks?db=hg19&position=chr}+${variant.getChrStr()}+${variant.getStartPosition()}+@{-}+${variant.getStartPosition()}" target="_blank">UCSC</a>
