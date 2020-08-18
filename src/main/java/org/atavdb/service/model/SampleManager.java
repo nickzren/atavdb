@@ -42,12 +42,12 @@ public class SampleManager {
         if (getMap(filter).isEmpty()
                 || checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
-            
-            session.setAttribute("sampleCount", getTotalSampleNum(filter));
 
             // trigger to clear cached data when sample count mismatch
             variantManager.clearCachedData(filter);
         }
+        
+        session.setAttribute("sampleCount", getTotalSampleNum(filter));
     }
 
     private boolean checkSampleCount(SearchFilter filter) throws Exception {
