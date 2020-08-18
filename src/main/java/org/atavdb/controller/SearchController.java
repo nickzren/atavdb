@@ -112,9 +112,7 @@ public class SearchController implements ApplicationContextAware {
 
             SearchFilter filter = applicationContext.getBean(SearchFilter.class);
             filter.init(session);
-            sampleManager.init(filter);
-            session.setAttribute("sampleCount", sampleManager.getTotalSampleNum(filter));
-            session.setAttribute("error", filter.getError());
+            sampleManager.init(filter, session);
 
             if (filter.isQueryValid()) {
                 ArrayList<Variant> variantList = variantManager.getVariantList(filter, mv);

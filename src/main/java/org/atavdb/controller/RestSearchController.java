@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import org.atavdb.exception.InvalidQueryException;
 import org.atavdb.exception.NotFoundException;
+import org.atavdb.exception.UserAccessException;
 import org.atavdb.model.SearchFilter;
 import org.atavdb.model.Variant;
 import org.atavdb.service.model.SampleManager;
 import org.atavdb.service.model.VariantManager;
 import org.atavdb.service.util.DBManager;
-import org.atavdb.service.util.ErrorManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -41,9 +41,6 @@ public class RestSearchController implements ApplicationContextAware {
     @Autowired
     SampleManager sampleManager;
 
-    @Autowired
-    ErrorManager errorManager;
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
@@ -51,6 +48,10 @@ public class RestSearchController implements ApplicationContextAware {
 
     @GetMapping("/variant/{variant}")
     public ResponseEntity<Object> variant(@PathVariable String variant, String phenotype, HttpSession session) throws Exception {
+        if(session.getAttribute("sequence_authorized") == null) {
+            throw new UserAccessException();
+        }
+        
         session.setAttribute("query", variant);
         if (phenotype != null) {
             session.setAttribute("phenotype", phenotype);
@@ -60,9 +61,7 @@ public class RestSearchController implements ApplicationContextAware {
 
         SearchFilter filter = applicationContext.getBean(SearchFilter.class);
         filter.init(session);
-        sampleManager.init(filter);
-        session.setAttribute("sampleCount", sampleManager.getTotalSampleNum(filter));
-        session.setAttribute("error", filter.getError());
+        sampleManager.init(filter, session);
 
         if (filter.isQueryValid()) {
             ModelAndView mv = new ModelAndView("index");

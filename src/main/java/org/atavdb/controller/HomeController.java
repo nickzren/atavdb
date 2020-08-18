@@ -51,9 +51,8 @@ public class HomeController implements ApplicationContextAware {
             dbManager.init();
             SearchFilter filter = applicationContext.getBean(SearchFilter.class);
             filter.init(session);
-            sampleManager.init(filter);
-            session.setAttribute("sampleCount", sampleManager.getTotalSampleNum(filter));
-
+            sampleManager.init(filter, session);
+            
             if (session.getAttribute("genders") == null) {
                 session.setAttribute("genders", org.atavdb.global.Enum.Gender.values());
             }

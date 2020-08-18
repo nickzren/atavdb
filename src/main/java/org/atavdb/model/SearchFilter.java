@@ -107,6 +107,9 @@ public class SearchFilter {
         this.phenotype = phenotype == null ? "" : phenotype;
         this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equalsIgnoreCase("on");
         this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equalsIgnoreCase("on");
+        
+        // set or clear error message
+        session.setAttribute("error", error);
     }
 
     public String getPhenotype() {
