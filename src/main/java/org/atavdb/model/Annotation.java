@@ -18,45 +18,33 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @ComponentScan("org.atavdb.service.model")
 public class Annotation {
-    
+
     @Autowired
     EffectManager effectManager;
-    
+
     public String effect;
-    public int effectID;
     public String geneName;
     public int stableId;
     public String HGVS_c;
     public String HGVS_p;
     public float polyphenHumdiv = Data.FLOAT_NA;
-    public float polyphenHumvar = Data.FLOAT_NA;
-    private boolean isValid;
-    
-    public static final int TRANSCRIPT_LENGTH = 15;      
-    
-    public void init(ResultSet rset) throws Exception {        
+
+    public static final int TRANSCRIPT_LENGTH = 15;
+
+    public void init(ResultSet rset) throws Exception {
         stableId = rset.getInt("transcript_stable_id");
 
         if (stableId < 0) {
             stableId = Data.INTEGER_NA;
         }
 
-        effectID = rset.getInt("effect_id");
+        int effectID = rset.getInt("effect_id");
         effect = effectManager.getEffectById(effectID).replace("_variant", "");
         HGVS_c = FormatManager.getString(rset.getString("HGVS_c"));
         HGVS_p = FormatManager.getString(rset.getString("HGVS_p"));
         geneName = FormatManager.getString(rset.getString("gene"));
 
         polyphenHumdiv = MathManager.devide(FormatManager.getInt(rset, "polyphen_humdiv"), 1000);
-        polyphenHumvar = MathManager.devide(FormatManager.getInt(rset, "polyphen_humvar"), 1000);
-    }
-
-    public void setValid(boolean value) {
-        isValid = value;
-    }
-    
-    public boolean isValid() {
-        return isValid;
     }
 
     public String getEffect() {
@@ -74,7 +62,7 @@ public class Annotation {
     public String getGeneName() {
         return geneName;
     }
-    
+
     public String getStableId() {
         if (stableId == Data.INTEGER_NA) {
             return Data.STRING_NA;
@@ -92,11 +80,11 @@ public class Annotation {
 
         return idSB.toString();
     }
-    
+
     public String getPolyphen() {
         return getPrediction(polyphenHumdiv, effect);
     }
-    
+
     private String getPrediction(float score, String effect) {
         if (score == Data.FLOAT_NA) {
             if (effect.startsWith("missense_variant")

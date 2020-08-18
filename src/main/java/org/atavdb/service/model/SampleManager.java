@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.servlet.http.HttpSession;
 import org.atavdb.model.Sample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -37,10 +38,12 @@ public class SampleManager {
     private HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
     private HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
-    public void init(SearchFilter filter) throws Exception {
+    public void init(SearchFilter filter, HttpSession session) throws Exception {
         if (getMap(filter).isEmpty()
                 || checkSampleCount(filter)) {
             initAllSampleFromDB(filter);
+            
+            session.setAttribute("sampleCount", getTotalSampleNum(filter));
 
             // trigger to clear cached data when sample count mismatch
             variantManager.clearCachedData(filter);
