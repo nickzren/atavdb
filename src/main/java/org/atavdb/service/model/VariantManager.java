@@ -44,20 +44,23 @@ public class VariantManager implements ApplicationContextAware {
     private HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
     private HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
 
-    private HashMap<String, ArrayList<Variant>> getMap(SearchFilter filter) {
+    private HashMap<String, ArrayList<Variant>> getCachedVariantMap(SearchFilter filter) {
         return filter.isAvailableControlUseOnly() ? cachedVariant4PublicAvailableSampleMap : cachedVariant4AllSampleMap;
     }
 
     public ArrayList<Variant> getVariantList(SearchFilter filter, ModelAndView mv) throws Exception {
         ArrayList<Variant> list = new ArrayList<>();
-
-        String queryIdentifier = filter.getQueryIdentifier();
-        list = getMap(filter).getOrDefault(queryIdentifier, list);
-        if (list.isEmpty()) {
-            getMap(filter).put(queryIdentifier, list);
-        } else {
-            // return cached data , apply max af or ultra variant filter
-            return applyFilter(filter, list);
+        
+        // cache results only for gene search
+        if (filter.isQueryGene()) {
+            String queryIdentifier = filter.getQueryIdentifier();
+            list = getCachedVariantMap(filter).getOrDefault(queryIdentifier, list);
+            if (list.isEmpty()) {
+                getCachedVariantMap(filter).put(queryIdentifier, list);
+            } else {
+                // return cached data , apply max af or ultra variant filter
+                return applyFilter(filter, list);
+            }
         }
 
         String chr = "";
@@ -165,6 +168,6 @@ public class VariantManager implements ApplicationContextAware {
     }
 
     public void clearCachedData(SearchFilter filter) {
-        getMap(filter).clear();
+        getCachedVariantMap(filter).clear();
     }
 }
