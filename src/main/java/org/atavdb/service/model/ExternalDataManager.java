@@ -64,7 +64,7 @@ public class ExternalDataManager {
         }
 
         try {
-            String sql = "SELECT af FROM " + GENOMEASIA_TABLE
+            String sql = "SELECT af FROM " + GENOMEASIA_TABLE + chr
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = dbManager.getConnection();
@@ -118,7 +118,7 @@ public class ExternalDataManager {
         float af = Data.FLOAT_NA;
 
         try {
-            String sql = "SELECT global_AF FROM " + GNOMAD_GENOME_TABLE
+            String sql = "SELECT global_AF FROM " + GNOMAD_GENOME_TABLE + chr
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = dbManager.getConnection();
@@ -211,7 +211,7 @@ public class ExternalDataManager {
         }
 
         try {           
-            String sql = "SELECT af FROM " + TOPMED_TABLE
+            String sql = "SELECT af FROM " + TOPMED_TABLE + chr
                     + " WHERE chr=? AND pos=? AND ref=? AND alt=?";
 
             Connection connection = dbManager.getConnection();
