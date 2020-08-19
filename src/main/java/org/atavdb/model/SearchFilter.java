@@ -27,7 +27,7 @@ public class SearchFilter {
     // user input
     private String query;
     private String queryType;
-    private float maxAF;
+    private float maf;
     private String phenotype;
     private boolean isHighQualityVariant;
     private boolean isUltraRareVariant;
@@ -58,7 +58,7 @@ public class SearchFilter {
 
     public final static String[] QUERT_TYPE = {"Invalid", "Variant", "Gene", "Region"};
 
-    public final static String[] AF_LIST = {"", "0.01", "0.005", "0.001"};
+    public final static String[] MAF_LIST = {"", "0.01", "0.005", "0.001"};
 
     public final static String[] PHENOTYPE_LIST = {"", "amyotrophic lateral sclerosis",
         "autoimmune disease", "bone disease", "brain malformation", "cancer", "cardiovascular disease",
@@ -78,7 +78,7 @@ public class SearchFilter {
         session.setAttribute("queryType", queryType);
 
         String phenotype = (String) session.getAttribute("phenotype");
-        this.maxAF = getFloat((String) session.getAttribute("maxAF"));
+        this.maf = getFloat((String) session.getAttribute("maf"));
         String isHighQualityVariant = (String) session.getAttribute("isHighQualityVariant");
         String isUltraRareVariant = (String) session.getAttribute("isUltraRareVariant");
         String isPublicAvailable = (String) session.getAttribute("isPublicAvailable");
@@ -130,12 +130,12 @@ public class SearchFilter {
         }
     }
 
-    public String getMaxAFStr() {
-        return maxAF == Data.NO_FILTER ? null : String.valueOf(maxAF);
+    public String getMAFStr() {
+        return maf == Data.NO_FILTER ? null : String.valueOf(maf);
     }
 
-    public float getMaxAF() {
-        return maxAF;
+    public float getMAF() {
+        return maf;
     }
 
     private void appendHighQualityVariant4Identifer(StringJoiner sj) {
@@ -235,12 +235,12 @@ public class SearchFilter {
         return error;
     }
 
-    public boolean isMaxAFValid(double value) {
-        if (maxAF == Data.NO_FILTER) {
+    public boolean isMAFValid(float value) {
+        if (maf == Data.NO_FILTER) {
             return true;
         }
 
-        return value <= maxAF;
+        return value <= maf || value >= (1 - maf);
     }
 
     public boolean isFilterValid(byte value) {

@@ -47,13 +47,13 @@ public class SearchController implements ApplicationContextAware {
     }
 
     @GetMapping("/search")
-    public ModelAndView search(String query, String maxAF, String phenotype,
+    public ModelAndView search(String query, String maf, String phenotype,
             String isHighQualityVariant, String isUltraRareVariant,
             String isPublicAvailable, HttpSession session) {
         try {
             session.setAttribute("query", query);
             session.setAttribute("phenotype", phenotype);
-            session.setAttribute("maxAF", maxAF);
+            session.setAttribute("maf", maf);
             session.setAttribute("isHighQualityVariant", isHighQualityVariant);
             session.setAttribute("isUltraRareVariant", isUltraRareVariant);
             session.setAttribute("isPublicAvailable", isPublicAvailable);

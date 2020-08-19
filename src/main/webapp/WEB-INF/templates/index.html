@@ -94,11 +94,11 @@
                             </div>
 
                             <div class="col-md-auto form-group"
-                                 data-toggle="tooltip" title="Search variants when its AF is less than selected cutoff">
-                                <label for="input-select-max-af">Max AF:</label>
-                                <select id="input-select-max-af" name="maxAF" class="form-control">
-                                    <option th:each="af : ${session.af_list}" th:value="${af}" 
-                                            th:text="${af}" th:selected="${af == session.maxAF}"></option>
+                                 data-toggle="tooltip" title="Search variants when its AF <= cutoff or AF >= (1 - cutoff)">
+                                <label for="input-select-maf">MAF:</label>
+                                <select id="input-select-maf" name="maf" class="form-control">
+                                    <option th:each="maf : ${session.maf_list}" th:value="${maf}" 
+                                            th:text="${maf}" th:selected="${maf == session.maf}"></option>
                                 </select>
                             </div>
 

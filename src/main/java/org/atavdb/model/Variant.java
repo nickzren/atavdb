@@ -147,8 +147,8 @@ public class Variant extends Region {
         }
     }
 
-    public boolean isMaxAFValid(SearchFilter filter) {
-        return filter.isMaxAFValid(af);
+    public boolean isMAFValid(SearchFilter filter) {
+        return filter.isMAFValid(af);
     }
 
     public int getVariantId() {

@@ -140,7 +140,7 @@ public class VariantManager implements ApplicationContextAware {
     }
 
     private ArrayList<Variant> applyFilter(SearchFilter filter, ArrayList<Variant> list) {
-        if (!filter.isUltraRareVariant() && filter.getMaxAF() == Data.NO_FILTER) {
+        if (!filter.isUltraRareVariant() && filter.getMAF() == Data.NO_FILTER) {
             return list;
         }
 
@@ -152,8 +152,8 @@ public class VariantManager implements ApplicationContextAware {
                 }
             }
 
-            if (filter.getMaxAF() != Data.NO_FILTER) {
-                if (!variant.isMaxAFValid(filter)) {
+            if (filter.getMAF() != Data.NO_FILTER) {
+                if (!variant.isMAFValid(filter)) {
                     continue;
                 }
             }
