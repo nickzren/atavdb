@@ -82,10 +82,10 @@ public class SearchFilter {
         String isHighQualityVariant = (String) session.getAttribute("isHighQualityVariant");
         String isUltraRareVariant = (String) session.getAttribute("isUltraRareVariant");
         String isPublicAvailable = (String) session.getAttribute("isPublicAvailable");
-
-        if (session.getAttribute("username") == null && isQueryGene()) {
-            error = error != null ? error : "Permission denied for anonymous user.";
-        }
+        
+//        if (session.getAttribute("username") == null && isQueryGene()) {
+//            error = error != null ? error : "Permission denied for anonymous user.";
+//        }
 
         // default to search high quality variants only for gene or region
         if (isQueryGene() || isQueryRegion()) {
@@ -93,9 +93,9 @@ public class SearchFilter {
             session.setAttribute("isHighQualityVariant", isHighQualityVariant);
         }
 
-        // for unauthorized user & valid query, public avaiable data only
+        // for non-cumc user & valid query, public avaiable data only
         if (query != null && !query.isEmpty()
-                && session.getAttribute("sequence_authorized") == null) {
+                && session.getAttribute("username") == null) {
             isAvailableControlUseOnly = true;
             isPublicAvailable = "on";
             session.setAttribute("isPublicAvailable", isPublicAvailable);
