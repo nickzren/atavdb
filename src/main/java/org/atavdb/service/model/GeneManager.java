@@ -5,25 +5,17 @@ import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
-@Service
-@ComponentScan("org.atavdb.service")
 public class GeneManager {
 
-    @Autowired
-    DBManager dbManager;
-
-    public String getChr(String gene) throws Exception {
+    public static String getChr(String gene) throws Exception {
         String sql = "SELECT chrom FROM hgnc WHERE gene=?";
 
-        Connection connection = dbManager.getConnection();
+        Connection connection = DBManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, gene);
         ResultSet rs = preparedStatement.executeQuery();
@@ -38,7 +30,7 @@ public class GeneManager {
         return Data.STRING_NA;
     }
 
-    public boolean isValid(String gene) throws Exception {
+    public static boolean isValid(String gene) throws Exception {
         return !getChr(gene).equals(Data.STRING_NA);
     }
 }

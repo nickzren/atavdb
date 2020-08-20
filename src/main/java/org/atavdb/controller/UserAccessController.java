@@ -6,7 +6,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.service.util.LDAP;
 import org.atavdb.service.util.SessionManager;
 import org.atavdb.service.util.VerifyUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,27 +17,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @ComponentScan("org.atavdb.service.util")
 public class UserAccessController {
 
-    @Autowired
-    LDAP ldap;
-
-    @Autowired
-    VerifyUser verifyUser;
-    
-    @Autowired
-    SessionManager sessionManager;
-
     @RequestMapping("/signin")
     public ModelAndView signin(String username, String password,
             HttpSession session) {
-        sessionManager.clearSession4Search(session);
+        SessionManager.clearSession4Search(session);
         ModelAndView mv = new ModelAndView("signin");
 
         if (username != null && password != null) {
 
-            if (ldap.isMCAccountValid(username, password)) {
+            if (LDAP.isMCAccountValid(username, password)) {
                 session.setAttribute("username", username);
 
-                if (verifyUser.isAuthorizedFromSequence(username)) {
+                if (VerifyUser.isAuthorizedFromSequence(username)) {
                     session.setAttribute("sequence_authorized", true);
                 }
 

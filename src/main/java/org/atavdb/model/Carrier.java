@@ -12,7 +12,7 @@ import org.atavdb.service.util.MathManager;
  * @author nick
  */
 public class Carrier extends NonCarrier {
-
+    
     Sample sample;
     private short dp;
     private short adRef;

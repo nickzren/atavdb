@@ -3,16 +3,11 @@ package org.atavdb.model;
 import org.atavdb.global.Data;
 import org.atavdb.global.Enum.GT;
 import java.util.ArrayList;
-import org.atavdb.service.model.DPBinBlockManager;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author nick
  */
-@Component
-@Scope("prototype")
 public class NonCarrier {
 
     protected int sampleId;
@@ -21,7 +16,7 @@ public class NonCarrier {
 
     public NonCarrier() {
     }
-
+    
     public NonCarrier(int sampleId, short dpBin) {
         this.sampleId = sampleId;
         this.dpBin = dpBin;
@@ -29,12 +24,12 @@ public class NonCarrier {
         initGenotype();
     }
 
-    public NonCarrier(int sampleId, String minDPBin, int posIndex, 
-            ArrayList<SampleDPBin> currentBlockList, DPBinBlockManager dpBinBlockManager) throws Exception {
+    public NonCarrier(int sampleId, String minDPBin, int posIndex,
+            ArrayList<SampleDPBin> currentBlockList) {
         this.sampleId = sampleId;
         SampleDPBin sampleDPBin = new SampleDPBin(sampleId, minDPBin);
         currentBlockList.add(sampleDPBin);
-        dpBin = sampleDPBin.getDPBin(posIndex, dpBinBlockManager);
+        dpBin = sampleDPBin.getDPBin(posIndex);
 
         initGenotype();
     }
@@ -72,9 +67,8 @@ public class NonCarrier {
             gt = Data.BYTE_NA;
         }
     }
-    
+
     public boolean isValid() {
         return gt != GT.NA.value();
     }
 }
-

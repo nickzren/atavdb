@@ -1,15 +1,13 @@
 package org.atavdb.service.util;
 
 import javax.servlet.http.HttpSession;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
-@Service
 public class SessionManager {
-    public void clearSession4Search(HttpSession session) {
+    public static void clearSession4Search(HttpSession session) {
         session.removeAttribute("query");
         session.removeAttribute("queryType");
         session.removeAttribute("maf");

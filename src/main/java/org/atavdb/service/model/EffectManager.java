@@ -5,27 +5,19 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.HashMap;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Service;
-
 /**
  *
  * @author nick
  */
-@Service
-@ComponentScan("org.atavdb.service")
+
 public class EffectManager {
 
-    @Autowired
-    DBManager dbManager;
+    private static HashMap<Integer, String> id2EffectMap = new HashMap<>();
 
-    private HashMap<Integer, String> id2EffectMap = new HashMap<>();
-
-    private void initDefaultEffectSet() throws Exception {
+    private static void initDefaultEffectSet() throws Exception {
         String sql = "SELECT * FROM effect_ranking";
 
-        Connection connection = dbManager.getConnection();
+        Connection connection = DBManager.getConnection();
         Statement statement = connection.createStatement();
         ResultSet rs = statement.executeQuery(sql);
 
@@ -40,7 +32,7 @@ public class EffectManager {
         statement.close();
     }
 
-    public String getEffectById(int id) throws Exception {
+    public static String getEffectById(int id) throws Exception {
         if (id2EffectMap.isEmpty()) {
             initDefaultEffectSet();
         }

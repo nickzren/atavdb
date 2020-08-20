@@ -7,22 +7,13 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;
 import org.atavdb.service.model.GeneManager;
 import org.atavdb.service.model.RegionManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author nick
  */
-@Component
-@Scope("prototype")
-@ComponentScan("org.atavdb.service.model")
-public class SearchFilter {
 
-    @Autowired
-    GeneManager geneManager;
+public class SearchFilter {
 
     // user input
     private String query;
@@ -72,7 +63,10 @@ public class SearchFilter {
         "other neuropsychiatric disease", "primary immune deficiency", "pulmonary disease",
         "schizophrenia", "sudden death", "alzheimers disease", "cerebral palsy"};
 
-    public void init(HttpSession session) throws Exception {
+    public SearchFilter() {
+    }
+    
+    public SearchFilter(HttpSession session) throws Exception {
         this.query = (String) session.getAttribute("query");
         queryType = getQueryType(query);
         session.setAttribute("queryType", queryType);
@@ -202,7 +196,7 @@ public class SearchFilter {
                         }
                     }
                 }
-            } else if (geneManager.isValid(query)) {
+            } else if (GeneManager.isValid(query)) {
                 return QUERT_TYPE[2]; // Gene
             }
         }

@@ -3,16 +3,10 @@ package org.atavdb.controller;
 import javax.servlet.http.HttpSession;
 import org.atavdb.model.SearchFilter;
 import org.atavdb.service.model.SampleManager;
+import org.atavdb.service.util.ErrorManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.atavdb.service.util.DBManager;
-import org.atavdb.service.util.ErrorManager;
 import org.atavdb.service.util.SessionManager;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -20,39 +14,16 @@ import org.springframework.stereotype.Controller;
  * @author nick
  */
 @Controller
-@ComponentScan("org.atavdb.service")
-@ComponentScan("org.atavdb.model")
-public class HomeController implements ApplicationContextAware {
-
-    private ApplicationContext applicationContext;
-
-    @Autowired
-    DBManager dbManager;
-
-    @Autowired
-    SessionManager sessionManager;
-
-    @Autowired
-    SampleManager sampleManager;
-
-    @Autowired
-    ErrorManager errorManager;
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+public class HomeController {
 
     @GetMapping("/")
     public ModelAndView index(HttpSession session) {
-        sessionManager.clearSession4Search(session);
+        SessionManager.clearSession4Search(session);
         ModelAndView mv = new ModelAndView("index");
         try {
-            dbManager.init();
-            SearchFilter filter = applicationContext.getBean(SearchFilter.class);
-            filter.init(session);
-            sampleManager.init(filter, session);
-            
+            SearchFilter filter = new SearchFilter(session);
+            SampleManager.init(filter, session);
+
             if (session.getAttribute("genders") == null) {
                 session.setAttribute("genders", org.atavdb.global.Enum.Gender.values());
             }
@@ -69,7 +40,7 @@ public class HomeController implements ApplicationContextAware {
                 session.setAttribute("phenotype_list", SearchFilter.PHENOTYPE_LIST);
             }
         } catch (Exception ex) {
-            session.setAttribute("error", errorManager.convertStackTraceToString(ex));
+            session.setAttribute("error", ErrorManager.convertStackTraceToString(ex));
             return new ModelAndView("redirect:/error");
         }
 
@@ -93,7 +64,7 @@ public class HomeController implements ApplicationContextAware {
         ModelAndView mv = new ModelAndView("terms");
         return mv;
     }
-    
+
     @GetMapping("/error")
     public ModelAndView error() {
         ModelAndView mv = new ModelAndView("error");

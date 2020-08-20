@@ -10,47 +10,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.atavdb.model.Annotation;
 import org.atavdb.model.Variant;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author Nick
  */
-@Service
-@ComponentScan("org.atavdb.service")
-@ComponentScan("org.atavdb.model")
-public class VariantManager implements ApplicationContextAware {
-
-    private ApplicationContext applicationContext;
-
-    @Autowired
-    DBManager dbManager;
-
-    @Autowired
-    GeneManager geneManager;
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+public class VariantManager {
 
     // cached data when no new samples data loaded
-    private HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
-    private HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
+    private static HashMap<String, ArrayList<Variant>> cachedVariant4AllSampleMap = new HashMap<>();
+    private static HashMap<String, ArrayList<Variant>> cachedVariant4PublicAvailableSampleMap = new HashMap<>();
 
-    private HashMap<String, ArrayList<Variant>> getCachedVariantMap(SearchFilter filter) {
+    private static HashMap<String, ArrayList<Variant>> getCachedVariantMap(SearchFilter filter) {
         return filter.isAvailableControlUseOnly() ? cachedVariant4PublicAvailableSampleMap : cachedVariant4AllSampleMap;
     }
 
-    public ArrayList<Variant> getVariantList(SearchFilter filter, ModelAndView mv) throws Exception {
+    public static ArrayList<Variant> getVariantList(SearchFilter filter, ModelAndView mv) throws Exception {
         ArrayList<Variant> list = new ArrayList<>();
-        
+
         // cache results only for gene search
         if (filter.isQueryGene()) {
             String queryIdentifier = filter.getQueryIdentifier();
@@ -73,7 +51,7 @@ public class VariantManager implements ApplicationContextAware {
             chr = tmp[0];
             whereSQL = "WHERE POS=? AND REF=? AND ALT =? ";
         } else if (filter.isQueryGene()) {
-            chr = geneManager.getChr(query);
+            chr = GeneManager.getChr(query);
             // it's important to force using gene key here for better performance
             joinSQL = "FORCE INDEX (gene_idx),codingandsplice_effect e ";
             whereSQL = "WHERE gene=? AND v.effect_id=e.id ";
@@ -96,7 +74,7 @@ public class VariantManager implements ApplicationContextAware {
                 + whereSQL
                 + "ORDER BY POS,variant_id,effect_id,transcript_stable_id;";
 
-        Connection connection = dbManager.getConnection();
+        Connection connection = DBManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
         if (filter.isQueryVariant()) { // variant chr-pos-ref-alt
@@ -118,14 +96,12 @@ public class VariantManager implements ApplicationContextAware {
         Variant variant = null;
         int currentVariantId = Data.INTEGER_NA;
         while (rs.next()) {
-            Annotation annotation = applicationContext.getBean(Annotation.class);
-            annotation.init(rs);
+            Annotation annotation = new Annotation(rs);
 
             if (currentVariantId != rs.getInt("variant_id")) {
                 currentVariantId = rs.getInt("variant_id");
 
-                variant = applicationContext.getBean(Variant.class);
-                variant.init(chr, rs, filter, mv);
+                variant = new Variant(chr, rs, filter, mv);
 
                 if (variant.isValid()) {
                     list.add(variant);
@@ -142,7 +118,7 @@ public class VariantManager implements ApplicationContextAware {
         return applyFilter(filter, list);
     }
 
-    private ArrayList<Variant> applyFilter(SearchFilter filter, ArrayList<Variant> list) {
+    private static ArrayList<Variant> applyFilter(SearchFilter filter, ArrayList<Variant> list) {
         if (!filter.isUltraRareVariant() && filter.getMAF() == Data.NO_FILTER) {
             return list;
         }
@@ -167,7 +143,7 @@ public class VariantManager implements ApplicationContextAware {
         return newList;
     }
 
-    public void clearCachedData(SearchFilter filter) {
+    public static void clearCachedData(SearchFilter filter) {
         getCachedVariantMap(filter).clear();
     }
 }

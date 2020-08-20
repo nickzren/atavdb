@@ -5,22 +5,12 @@ import org.atavdb.global.Data;
 import java.sql.ResultSet;
 import org.atavdb.service.util.FormatManager;
 import org.atavdb.service.util.MathManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 /**
  *
  * @author nick
  */
-@Component
-@Scope("prototype")
-@ComponentScan("org.atavdb.service.model")
 public class Annotation {
-
-    @Autowired
-    EffectManager effectManager;
 
     public String effect;
     public String geneName;
@@ -31,7 +21,7 @@ public class Annotation {
 
     public static final int TRANSCRIPT_LENGTH = 15;
 
-    public void init(ResultSet rset) throws Exception {
+    public Annotation(ResultSet rset) throws Exception {
         stableId = rset.getInt("transcript_stable_id");
 
         if (stableId < 0) {
@@ -39,7 +29,7 @@ public class Annotation {
         }
 
         int effectID = rset.getInt("effect_id");
-        effect = effectManager.getEffectById(effectID).replace("_variant", "");
+        effect = EffectManager.getEffectById(effectID).replace("_variant", "");
         HGVS_c = FormatManager.getString(rset.getString("HGVS_c"));
         HGVS_p = FormatManager.getString(rset.getString("HGVS_p"));
         geneName = FormatManager.getString(rset.getString("gene"));

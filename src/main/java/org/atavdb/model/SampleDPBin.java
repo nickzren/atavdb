@@ -15,7 +15,7 @@ public class SampleDPBin {
     private int dpBinPos;
     private String dpBinStr;
     private short dpBin;
-
+    
     public SampleDPBin(int sampleId, String covBinStr) {
         this.sampleId = sampleId;
         dpBinCursor = 0;
@@ -28,7 +28,7 @@ public class SampleDPBin {
         return sampleId;
     }
 
-    public short getDPBin(int varPosIndex, DPBinBlockManager dpBinBlockManager) {
+    public short getDPBin(int varPosIndex) {
         if (dpBinStr != null) {
             if (endPos != 0) {
                 if (varPosIndex <= endPos) {
@@ -42,7 +42,7 @@ public class SampleDPBin {
 
             for (int pos = dpBinCursor; pos < dpBinStr.length(); pos++) {
                 char bin = dpBinStr.charAt(pos);
-                if (!dpBinBlockManager.getCoverageBin().containsKey(bin)) {
+                if (!DPBinBlockManager.getCoverageBin().containsKey(bin)) {
                     sb.append(bin);
                 } else {
                     dpBinPos = pos;           
@@ -50,7 +50,7 @@ public class SampleDPBin {
                     sb.setLength(0); // clear StringBuilder
 
                     if (varPosIndex <= endPos) {
-                        dpBin = dpBinBlockManager.getCoverageByBin(bin);
+                        dpBin = DPBinBlockManager.getCoverageByBin(bin);
                         return dpBin;
                     } else {
                         dpBinCursor = dpBinPos + 1; // move cursor for current variant

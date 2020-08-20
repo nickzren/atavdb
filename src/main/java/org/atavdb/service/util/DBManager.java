@@ -11,28 +11,22 @@ import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.atavdb.exception.DatabaseException;
-import org.springframework.stereotype.Service;
 
 /**
  *
  * @author nick
  */
-@Service
 public class DBManager {
 
-    private PoolingDataSource<PoolableConnection> dataSource;
-    private Connection connection;
+    private static PoolingDataSource<PoolableConnection> dataSource;
+    private static Connection connection;
 
-    private final String dbDriver = "com.mysql.cj.jdbc.Driver";
-    private String dbUrl;
-    private String dbUser;
-    private String dbPassword;
-    
-    public DBManager() {
-        init();
-    }
+    private static final String dbDriver = "com.mysql.cj.jdbc.Driver";
+    private static String dbUrl;
+    private static String dbUser;
+    private static String dbPassword;
 
-    public void init() {
+    static {
         try {
             initDataSource();
 
@@ -42,7 +36,7 @@ public class DBManager {
         }
     }
 
-    private void initDataFromSystemConfig() {
+    private static void initDataFromSystemConfig() {
         // server config from tomcat $CATALINA_HOME/bin/setenv.sh
         dbUrl = System.getenv("DB_URL");
         dbUser = System.getenv("DB_USER");
@@ -54,7 +48,7 @@ public class DBManager {
 //        dbPassword = "test";
     }
 
-    private void initDataSource() throws ClassNotFoundException {
+    private static void initDataSource() throws ClassNotFoundException {
         if (dataSource == null) {
             Class.forName(dbDriver);
 
@@ -78,13 +72,15 @@ public class DBManager {
         }
     }
 
-    private void initConnection() throws SQLException {
+    private static void initConnection() throws SQLException {
         if (connection == null || connection.isClosed()) {
             connection = dataSource.getConnection();
         }
     }
 
-    public Connection getConnection() {
+    public static  Connection getConnection() throws SQLException {
+        initConnection();
+
         return connection;
     }
 }
