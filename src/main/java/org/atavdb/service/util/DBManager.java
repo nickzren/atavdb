@@ -27,6 +27,10 @@ public class DBManager {
     private String dbUrl;
     private String dbUser;
     private String dbPassword;
+    
+    public DBManager() {
+        init();
+    }
 
     public void init() {
         try {

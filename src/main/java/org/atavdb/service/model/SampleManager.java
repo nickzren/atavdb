@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.http.HttpSession;
 import org.atavdb.model.Sample;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +27,7 @@ import org.springframework.stereotype.Service;
 @ComponentScan("org.atavdb.service")
 public class SampleManager {
 
-    @Autowired
-    DBManager dbManager;
+    private final DBManager dbManager;
 
     @Autowired
     VariantManager variantManager;
@@ -38,6 +40,22 @@ public class SampleManager {
     private HashMap<String, ArrayList<Sample>> allSampleMap = new HashMap<>();
     private HashMap<String, ArrayList<Sample>> publicAvailableSampleMap = new HashMap<>();
 
+    @Autowired
+    public SampleManager(DBManager dbManager) throws Exception {
+        this.dbManager = dbManager;
+
+        SearchFilter filter = new SearchFilter();
+        filter.setPhenotype("");
+
+        // init for public vailable samples
+        filter.setIsAvailableControlUseOnly(true);
+        initAllSampleFromDB(filter);
+
+        // init for all samples
+        filter.setIsAvailableControlUseOnly(false);
+        initAllSampleFromDB(filter);
+    }
+
     public void init(SearchFilter filter, HttpSession session) throws Exception {
         if (getMap(filter).isEmpty()
                 || checkSampleCount(filter)) {
@@ -46,7 +64,7 @@ public class SampleManager {
             // trigger to clear cached data when sample count mismatch
             variantManager.clearCachedData(filter);
         }
-        
+
         session.setAttribute("sampleCount", getTotalSampleNum(filter));
     }
 

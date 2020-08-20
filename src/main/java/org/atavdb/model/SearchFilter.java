@@ -32,9 +32,9 @@ public class SearchFilter {
     private boolean isHighQualityVariant;
     private boolean isUltraRareVariant;
     private boolean isAvailableControlUseOnly;
-    
+
     private String error;
-    
+
     // system default
     private final static int minVarPresent = 1;
     private final static boolean isQcMissingIncluded = true;
@@ -82,11 +82,10 @@ public class SearchFilter {
         String isHighQualityVariant = (String) session.getAttribute("isHighQualityVariant");
         String isUltraRareVariant = (String) session.getAttribute("isUltraRareVariant");
         String isPublicAvailable = (String) session.getAttribute("isPublicAvailable");
-        
+
 //        if (session.getAttribute("username") == null && isQueryGene()) {
 //            error = error != null ? error : "Permission denied for anonymous user.";
 //        }
-
         // default to search high quality variants only for gene or region
         if (isQueryGene() || isQueryRegion()) {
             isHighQualityVariant = "on";
@@ -107,17 +106,17 @@ public class SearchFilter {
         this.phenotype = phenotype == null ? "" : phenotype;
         this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equalsIgnoreCase("on");
         this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equalsIgnoreCase("on");
-        
+
         // set or clear error message
         session.setAttribute("error", error);
     }
 
-    public String getPhenotype() {
-        return phenotype;
+    public void setPhenotype(String phenotype) {
+        this.phenotype = phenotype;
     }
 
-    public String getPhenotypeStr() {
-        return phenotype.isEmpty() ? null : phenotype;
+    public String getPhenotype() {
+        return phenotype;
     }
 
     public String getPhenotypeSQL() {
@@ -128,6 +127,10 @@ public class SearchFilter {
         if (!phenotype.isEmpty()) {
             sj.add(phenotype);
         }
+    }
+
+    public void setIsAvailableControlUseOnly(boolean isAvailableControlUseOnly) {
+        this.isAvailableControlUseOnly = isAvailableControlUseOnly;
     }
 
     public String getMAFStr() {
