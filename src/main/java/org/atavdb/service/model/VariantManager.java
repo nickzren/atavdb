@@ -29,8 +29,8 @@ public class VariantManager {
     public static ArrayList<Variant> getVariantList(SearchFilter filter, ModelAndView mv) throws Exception {
         ArrayList<Variant> list = new ArrayList<>();
 
-        // cache results only for gene search
-        if (filter.isQueryGene()) {
+        // cache results for gene or region search
+        if (filter.isQueryGene() || filter.isQueryRegion()) {
             String queryIdentifier = filter.getQueryIdentifier();
             list = getCachedVariantMap(filter).getOrDefault(queryIdentifier, list);
             if (list.isEmpty()) {
