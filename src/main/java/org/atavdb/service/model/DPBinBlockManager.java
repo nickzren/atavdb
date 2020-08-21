@@ -111,6 +111,8 @@ public class DPBinBlockManager {
             Carrier carrier = carrierMap.get(noncarrier.getSampleId());
 
             if (carrier != null) {
+                carrier.applyQualityFilter(filter, var.isSnv());
+                
                 if (carrier.isValid()) {
                     carrier.setDPBin(noncarrier.getDPBin());
 
