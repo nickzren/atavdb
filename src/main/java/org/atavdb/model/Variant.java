@@ -96,13 +96,13 @@ public class Variant extends Region {
     }
 
     public boolean isExternalAFValid(SearchFilter filter) {
-        return filter.isExternalAFValid(exac)
-                && filter.isExternalAFValid(genomeAsia)
-                && filter.isExternalAFValid(gnomadExome)
-                && filter.isExternalAFValid(gnomadGenome)
-                && filter.isExternalAFValid(gme)
-                && filter.isExternalAFValid(iranome)
-                && filter.isExternalAFValid(topmed);
+        return filter.isExternalMAFValid(exac)
+                && filter.isExternalMAFValid(genomeAsia)
+                && filter.isExternalMAFValid(gnomadExome)
+                && filter.isExternalMAFValid(gnomadGenome)
+                && filter.isExternalMAFValid(gme)
+                && filter.isExternalMAFValid(iranome)
+                && filter.isExternalMAFValid(topmed);
     }
 
     // init carrier and non-carrier data, calculate af and count genotype

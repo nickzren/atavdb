@@ -414,9 +414,9 @@ public class SearchFilter {
         return isUltraRareVariant;
     }
 
-    public boolean isExternalAFValid(float af) {
+    public boolean isExternalMAFValid(float af) {
         if (isUltraRareVariant) {
-            return af == Data.FLOAT_NA || af == 0;
+            return af == Data.FLOAT_NA || af == 0 || af == 1;
         }
 
         // if not looking for ultra variant always return true
