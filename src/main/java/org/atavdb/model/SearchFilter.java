@@ -5,8 +5,6 @@ import org.atavdb.global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;
-import org.atavdb.service.model.GeneManager;
-import org.atavdb.service.model.RegionManager;
 
 /**
  *

@@ -3,13 +3,13 @@ package org.atavdb.controller;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import org.atavdb.model.SearchFilter;
-import org.atavdb.service.model.SampleManager;
+import org.atavdb.model.SampleManager;
 import org.atavdb.model.Variant;
-import org.atavdb.service.model.VariantManager;
+import org.atavdb.model.VariantManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.atavdb.service.util.ErrorManager;
+import org.atavdb.util.ErrorManager;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**

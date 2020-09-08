@@ -2,7 +2,7 @@ package org.atavdb.model;
 
 import org.atavdb.global.Enum.Ancestry;
 import org.atavdb.global.Enum.Gender;
-import org.atavdb.service.util.FormatManager;
+import org.atavdb.util.FormatManager;
 
 /**
  *

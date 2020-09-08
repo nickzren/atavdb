@@ -1,4 +1,4 @@
-package org.atavdb.service.util;
+package org.atavdb.util;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

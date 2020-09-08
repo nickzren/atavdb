@@ -1,7 +1,6 @@
-package org.atavdb.service.model;
+package org.atavdb.model;
 
-import org.atavdb.service.util.DBManager;
-import org.atavdb.model.SearchFilter;
+import org.atavdb.util.DBManager;
 import org.atavdb.global.Enum.Ancestry;
 import org.atavdb.global.Enum.Gender;
 import java.sql.Connection;
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import javax.servlet.http.HttpSession;
 import org.atavdb.exception.DatabaseException;
-import org.atavdb.model.Sample;
 
 /**
  *

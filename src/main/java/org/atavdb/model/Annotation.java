@@ -1,10 +1,9 @@
 package org.atavdb.model;
 
-import org.atavdb.service.model.EffectManager;
 import org.atavdb.global.Data;
 import java.sql.ResultSet;
-import org.atavdb.service.util.FormatManager;
-import org.atavdb.service.util.MathManager;
+import org.atavdb.util.FormatManager;
+import org.atavdb.util.MathManager;
 
 /**
  *

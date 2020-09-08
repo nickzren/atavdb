@@ -3,9 +3,9 @@ package org.atavdb.controller;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
-import org.atavdb.service.util.LDAP;
-import org.atavdb.service.util.SessionManager;
-import org.atavdb.service.util.VerifyUser;
+import org.atavdb.util.LDAP;
+import org.atavdb.util.SessionManager;
+import org.atavdb.util.VerifyUser;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.RequestMapping;
 

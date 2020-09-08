@@ -1,7 +1,7 @@
 package org.atavdb.model;
 
 import org.atavdb.global.Data;
-import org.atavdb.service.util.FormatManager;
+import org.atavdb.util.FormatManager;
 
 /**
  *

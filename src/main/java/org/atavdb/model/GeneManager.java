@@ -1,10 +1,10 @@
-package org.atavdb.service.model;
+package org.atavdb.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import org.atavdb.service.util.DBManager;
+import org.atavdb.util.DBManager;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

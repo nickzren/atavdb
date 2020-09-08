@@ -1,11 +1,7 @@
 package org.atavdb.model;
 
-import org.atavdb.service.model.SampleManager;
-import org.atavdb.service.model.ExternalDataManager;
-import org.atavdb.service.model.CarrierBlockManager;
-import org.atavdb.service.model.DPBinBlockManager;
 import org.atavdb.global.Data;
-import org.atavdb.service.util.FormatManager;
+import org.atavdb.util.FormatManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.atavdb.global.Enum.GT;
 import org.springframework.web.servlet.ModelAndView;
-import org.atavdb.service.util.MathManager;
+import org.atavdb.util.MathManager;
 
 /**
  *

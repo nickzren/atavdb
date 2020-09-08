@@ -2,11 +2,11 @@ package org.atavdb.controller;
 
 import javax.servlet.http.HttpSession;
 import org.atavdb.model.SearchFilter;
-import org.atavdb.service.model.SampleManager;
-import org.atavdb.service.util.ErrorManager;
+import org.atavdb.model.SampleManager;
+import org.atavdb.util.ErrorManager;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.atavdb.service.util.SessionManager;
+import org.atavdb.util.SessionManager;
 import org.springframework.stereotype.Controller;
 
 /**

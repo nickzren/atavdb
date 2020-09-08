@@ -1,6 +1,6 @@
-package org.atavdb.service.model;
+package org.atavdb.model;
 
-import org.atavdb.service.util.DBManager;
+import org.atavdb.util.DBManager;
 import org.atavdb.global.Data;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
