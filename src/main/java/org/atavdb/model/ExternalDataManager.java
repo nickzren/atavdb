@@ -19,6 +19,8 @@ public class ExternalDataManager {
     private static final String GNOMAD_GENOME_TABLE = "gnomad_2_1.genome_variant_chr";
     private static final String GME_TABLE = "gme.variant";
     private static final String IRANOME_TABLE = "iranome.variant";
+    private static final String IGMAF_TABLE = "igm_af.variant_091020";
+    private static final String IGMAF_SUBSET_TABLE = "igm_af.variant_subset_091020";
     private static final String TOPMED_TABLE = "topmed.variant_chr";
 
     public static float getExAC(String chr, int pos, String ref, String alt) {
@@ -193,6 +195,34 @@ public class ExternalDataManager {
         }
 
         return af;
+    }
+
+    public static void setIGMAF(Variant var, SearchFilter filter) {
+        try {
+            String table = filter.isAvailableControlUseOnly() ? IGMAF_SUBSET_TABLE : IGMAF_TABLE;
+
+            String sql = "SELECT ac,an,af,ns,nhom FROM " + table + " WHERE chr=? AND variant_id=?";
+
+            Connection connection = DBManager.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, var.chrStr);
+            preparedStatement.setInt(2, var.variantId);
+            ResultSet rs = preparedStatement.executeQuery();
+
+            if (rs.next()) {
+                var.setAC(rs.getInt("ac"));
+                var.setAN(rs.getInt("an"));
+                var.setAF(rs.getFloat("af"));
+                var.setNS(rs.getInt("ns"));
+                var.setNHOM(rs.getInt("nhom"));
+            } else {
+                var.setIsValid(false);
+            }
+
+            rs.close();
+            preparedStatement.close();
+        } catch (SQLException ex) {
+        }
     }
 
     public static float getTOPMED(String chr, int pos, String ref, String alt) {

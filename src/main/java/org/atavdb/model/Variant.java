@@ -56,8 +56,10 @@ public class Variant extends Region {
     private int ac; // allele count
     private int an; // allele number
     public float af; // allele frequency
+    private int ns;
+    private int nHom;
 
-    public boolean isValid = true;
+    private boolean isValid = true;
 
     public Variant(String chr, ResultSet rset, SearchFilter filter, ModelAndView mv) throws Exception {
         variantId = rset.getInt("variant_id");
@@ -75,7 +77,13 @@ public class Variant extends Region {
 
         initExternalAF();
 
-        initCarrier(filter, mv);
+        if ((filter.isQueryGene() || filter.isQueryRegion())
+                && filter.getPhenotype().isEmpty()) {
+            // gene/region search on all/public samples
+            ExternalDataManager.setIGMAF(this, filter);
+        } else {
+            initCarrier(filter, mv);
+        }
     }
 
     private void initExternalAF() {
@@ -319,6 +327,10 @@ public class Variant extends Region {
         an = ac + genoCount[GT.HET.value()] + 2 * genoCount[GT.REF.value()];
 
         af = MathManager.devide(ac, an);
+
+        ns = genoCount[GT.HOM.value()] + genoCount[GT.HET.value()] + genoCount[GT.REF.value()];
+
+        nHom = genoCount[GT.HOM.value()];
     }
 
     public Collection<Carrier> getCarriers() {
@@ -327,7 +339,7 @@ public class Variant extends Region {
 
     // NS = Number of Samples With Data
     public int getNS() {
-        return genoCount[GT.HOM.value()] + genoCount[GT.HET.value()] + genoCount[GT.REF.value()];
+        return ns;
     }
 
     // AC = Allele Count
@@ -345,9 +357,9 @@ public class Variant extends Region {
         return FormatManager.getFloat(af);
     }
 
-    // NH = Number of homozygotes
-    public int getNH() {
-        return genoCount[GT.HOM.value()];
+    // NHOM = Number of homozygotes
+    public int getNHOM() {
+        return nHom;
     }
 
     public int[] getGenderCount() {
@@ -358,5 +370,27 @@ public class Variant extends Region {
         return ancestryCount;
     }
 
-    // toString for json
+    public void setAC(int ac) {
+        this.ac = ac;
+    }
+
+    public void setAN(int an) {
+        this.an = an;
+    }
+
+    public void setAF(float af) {
+        this.af = af;
+    }
+
+    public void setNS(int ns) {
+        this.ns = ns;
+    }
+
+    public void setNHOM(int nHom) {
+        this.nHom = nHom;
+    }
+
+    public void setIsValid(boolean isValid) {
+        this.isValid = isValid;
+    }
 }
