@@ -5,6 +5,7 @@ import org.atavdb.exception.DatabaseException;
 import org.atavdb.exception.InvalidQueryException;
 import org.atavdb.exception.NotFoundException;
 import org.atavdb.exception.UserAccessException;
+import org.atavdb.util.ErrorManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,7 +39,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse unKnownException(Exception ex) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Unknown error");
+        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ErrorManager.convertStackTraceToString(ex));
     }
 
     @ExceptionHandler(value = {UserAccessException.class})
