@@ -143,39 +143,6 @@ public class Carrier extends NonCarrier {
         }
     }
     
-    /*
-     * Outside of pseudoautosomal regions:
-     *
-     * ChrX: females are treated normally
-     *
-     * ChrX: males have het removed
-     *
-     * ChrY: females are set to missing
-     *
-     * ChrY: males have het removed
-     *
-     * Inside of pseudoautosomal region which are treated like autosomes.
-     */
-    protected void checkValidOnXY(Region r) {
-        if (gt != GT.NA.value()) {
-            boolean isValid = true;
-
-            if (sample.isMale()) {
-                if (gt == GT.HET.value() // male het chr x or y & outside PARs
-                        && !r.isInsideAutosomalOrPseudoautosomalRegions()) {
-                    isValid = false;
-                }
-            } else if (r.getChrNum() == 24 // female chy & outside PARs
-                    && !r.isInsideYPseudoautosomalRegions()) {
-                isValid = false;
-            }
-
-            if (!isValid) {
-                gt = Data.BYTE_NA;
-            }
-        }
-    }
-    
     public String getPercAltRead() {
         return FormatManager.getFloat(MathManager.devide(adAlt, dp));
     }

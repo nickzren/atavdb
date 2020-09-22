@@ -33,13 +33,13 @@ public class DPBinBlockManager {
             HashMap<Integer, NonCarrier> noncarrierMap,
             SearchFilter filter,
             ModelAndView mv) throws Exception {
-        int posIndex = var.getStartPosition() % DP_BIN_BLOCK_SIZE;
+        int posIndex = var.pos % DP_BIN_BLOCK_SIZE;
 
         Integer currentBlockId = (Integer) mv.getModel().get("currentNonCarrierBlockId");
 
         ArrayList<SampleDPBin> currentBlockList = (ArrayList<SampleDPBin>) mv.getModel().get("currentBlockList");
 
-        int blockId = Math.floorDiv(var.getStartPosition(), DP_BIN_BLOCK_SIZE);
+        int blockId = Math.floorDiv(var.pos, DP_BIN_BLOCK_SIZE);
 
         if (currentBlockId != null && blockId == currentBlockId) {
             for (SampleDPBin sampleDPBin : currentBlockList) {
@@ -85,7 +85,7 @@ public class DPBinBlockManager {
             ArrayList<SampleDPBin> currentBlockList) throws Exception {
         StringBuilder sqlSB = new StringBuilder();
 
-        sqlSB.append("SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.getChrStr() + " d, sample s ");
+        sqlSB.append("SELECT d.sample_id, DP_string FROM DP_bins_chr" + var.chr + " d, sample s ");
         sqlSB.append("WHERE block_id=? AND d.sample_id=s.sample_id AND");
         sqlSB.append(filter.getSampleSQL());
         sqlSB.append(filter.getPhenotypeSQL());

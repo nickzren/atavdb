@@ -29,9 +29,9 @@ public class RestSearchController {
 
     @GetMapping("/variant/{variant}")
     public ResponseEntity<Object> variant(@PathVariable String variant, String phenotype, HttpSession session) throws Exception {
-        if (session.getAttribute("sequence_authorized") == null) {
-            throw new UserAccessException();
-        }
+//        if (session.getAttribute("sequence_authorized") == null) {
+//            throw new UserAccessException();
+//        }
 
         session.setAttribute("query", variant);
         if (phenotype != null) {

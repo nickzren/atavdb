@@ -17,12 +17,14 @@ import org.atavdb.util.MathManager;
  *
  * @author nick
  */
-public class Variant extends Region {
+public class Variant {
 
     public int variantId;
     public String variantIdStr;
-    public String alt;
+    public String chr;
+    public int pos;
     public String ref;
+    public String alt;
     public int rsNumber;
     //Indel attributes
     private boolean isIndel;
@@ -33,7 +35,6 @@ public class Variant extends Region {
     private String HGVS_p = "";
     private float polyphenHumdiv = Data.FLOAT_NA;
     private String geneName = "";
-    private List<String> geneList = new ArrayList<>();
     private List<Annotation> annotationList = new ArrayList<>();
 
     // external af
@@ -62,18 +63,17 @@ public class Variant extends Region {
     private boolean isValid = true;
 
     public Variant(String chr, ResultSet rset, SearchFilter filter, ModelAndView mv) throws Exception {
-        variantId = rset.getInt("variant_id");
+        this.variantId = rset.getInt("variant_id");
 
-        int pos = rset.getInt("POS");
-        ref = rset.getString("REF");
-        alt = rset.getString("ALT");
-        rsNumber = FormatManager.getInt(rset, "rs_number");
+        this.chr = chr;
+        this.pos = rset.getInt("POS");
+        this.ref = rset.getString("REF");
+        this.alt = rset.getString("ALT");
+        this.rsNumber = FormatManager.getInt(rset, "rs_number");
 
-        isIndel = ref.length() != alt.length();
+        this.isIndel = ref.length() != alt.length();
 
-        initRegion(chr, pos, pos);
-
-        variantIdStr = chrStr + "-" + pos + "-" + ref + "-" + alt;
+        this.variantIdStr = chr + "-" + pos + "-" + ref + "-" + alt;
 
         initExternalAF();
 
@@ -87,13 +87,13 @@ public class Variant extends Region {
     }
 
     private void initExternalAF() {
-        exac = ExternalDataManager.getExAC(chrStr, startPosition, ref, alt);
-        genomeAsia = ExternalDataManager.getGenomeAsia(chrStr, startPosition, ref, alt);
-        gnomadExome = ExternalDataManager.getGenoADExome(chrStr, startPosition, ref, alt);
-        gnomadGenome = ExternalDataManager.getGenoADGenome(chrStr, startPosition, ref, alt);
-        gme = ExternalDataManager.getGME(chrStr, startPosition, ref, alt);
-        iranome = ExternalDataManager.getIRANOME(chrStr, startPosition, ref, alt);
-        topmed = ExternalDataManager.getTOPMED(chrStr, startPosition, ref, alt);
+        exac = ExternalDataManager.getExAC(chr, pos, ref, alt);
+        genomeAsia = ExternalDataManager.getGenomeAsia(chr, pos, ref, alt);
+        gnomadExome = ExternalDataManager.getGenoADExome(chr, pos, ref, alt);
+        gnomadGenome = ExternalDataManager.getGenoADGenome(chr, pos, ref, alt);
+        gme = ExternalDataManager.getGME(chr, pos, ref, alt);
+        iranome = ExternalDataManager.getIRANOME(chr, pos, ref, alt);
+        topmed = ExternalDataManager.getTOPMED(chr, pos, ref, alt);
 
         maxExternalAF = Collections.max(Arrays.asList(exac, genomeAsia, gnomadExome,
                 gnomadGenome, gme, iranome, topmed));
@@ -148,7 +148,7 @@ public class Variant extends Region {
 
     // chr:g.posref>alt
     public String getVariantIdStr2() {
-        return "chr" + chrStr + ":g." + getStartPosition() + ref + ">" + alt;
+        return "chr" + chr + ":g." + pos + ref + ">" + alt;
     }
 
     public String getAlt() {
@@ -179,10 +179,6 @@ public class Variant extends Region {
             annotationList.add(annotation);
 
             polyphenHumdiv = MathManager.max(polyphenHumdiv, annotation.polyphenHumdiv);
-
-            if (!geneList.contains(annotation.geneName)) {
-                geneList.add(annotation.geneName);
-            }
         }
     }
 
@@ -208,10 +204,6 @@ public class Variant extends Region {
 
     public String getGeneName() {
         return geneName;
-    }
-
-    public List<String> getGeneList() {
-        return geneList;
     }
 
     public boolean isValid() {

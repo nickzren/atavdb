@@ -16,7 +16,7 @@ public class CarrierBlockManager {
     public final static int CARRIER_BLOCK_SIZE = 1000;
 
     public static void init(Variant var, SearchFilter filter, ModelAndView mv) throws Exception {
-        int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
+        int blockId = Math.floorDiv(var.pos, CARRIER_BLOCK_SIZE);
 
         Integer currentBlockId = (Integer) mv.getModel().get("currentCarrierBlockId");
 
@@ -40,7 +40,7 @@ public class CarrierBlockManager {
         StringBuilder sqlSB = new StringBuilder();
 
         sqlSB.append("SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 ");
-        sqlSB.append("FROM called_variant_chr").append(var.getChrStr()).append(" c,");
+        sqlSB.append("FROM called_variant_chr").append(var.chr).append(" c,");
 
         if (filter.isQueryVariant()) // variant 
         {
@@ -95,12 +95,12 @@ public class CarrierBlockManager {
     }
 
     public static void initCarrierMap(HashMap<Integer, Carrier> carrierMap, Variant var, SearchFilter filter) throws Exception {
-        int blockId = Math.floorDiv(var.getStartPosition(), CARRIER_BLOCK_SIZE);
+        int blockId = Math.floorDiv(var.pos, CARRIER_BLOCK_SIZE);
 
         StringBuilder sqlSB = new StringBuilder();
 
         sqlSB.append("SELECT c.sample_id,variant_id,block_id,GT,DP,AD_REF,AD_ALT,GQ,VQSLOD,SOR,FS,MQ,QD,QUAL,ReadPosRankSum,MQRankSum,FILTER+0 ");
-        sqlSB.append("FROM called_variant_chr").append(var.getChrStr()).append(" c,");
+        sqlSB.append("FROM called_variant_chr").append(var.chr).append(" c,");
 
         if (filter.isQueryVariant()) // variant 
         {
