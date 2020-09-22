@@ -84,6 +84,23 @@ public class Variant {
         } else {
             initCarrier(filter, mv);
         }
+
+        // if not valid
+        // if gene / region search then free non-display data
+        if (!isValid
+                || filter.isQueryGene()
+                || filter.isQueryRegion()) {
+            carrierMap = null;
+            genderCount = null;
+            ancestryCount = null;
+            annotationList = null;
+        }
+
+        // if variant search and when af > MAX AF then not display carrier data
+        if (filter.isQueryVariant()
+                && af > SearchFilter.MAX_AF_TO_DISPLAY_CARRIER) {
+            carrierMap = null;
+        }
     }
 
     private void initExternalAF() {
@@ -120,16 +137,6 @@ public class Variant {
             calculateAF();
 
             isValid = SearchFilter.isMinVarPresentValid(carrierMap.size());
-
-            // if not valid
-            // if gene / region search then free carriers
-            // if variant search and when af > MAX AF then free carriers
-            if (!isValid
-                    || filter.isQueryGene()
-                    || filter.isQueryRegion()
-                    || af > SearchFilter.MAX_AF_TO_DISPLAY_CARRIER) {
-                carrierMap = null;
-            }
         }
     }
 
@@ -176,7 +183,9 @@ public class Variant {
                 geneName = annotation.geneName;
             }
 
-            annotationList.add(annotation);
+            if (annotationList != null) {
+                annotationList.add(annotation);
+            }
 
             polyphenHumdiv = MathManager.max(polyphenHumdiv, annotation.polyphenHumdiv);
         }
