@@ -4,16 +4,16 @@ package org.atavdb.model;
  *
  * @author nick
  */
-public class ErrorResponse {
+public class MessageResponse {
 
     private int status;
     private String message;
 
-    public ErrorResponse() {
+    public MessageResponse() {
         super();
     }
 
-    public ErrorResponse(int status, String message) {
+    public MessageResponse(int status, String message) {
         super();
         this.status = status;
         this.message = message;

@@ -1,6 +1,6 @@
 package org.atavdb.controller;
 
-import org.atavdb.model.ErrorResponse;
+import org.atavdb.model.MessageResponse;
 import org.atavdb.exception.DatabaseException;
 import org.atavdb.exception.InvalidQueryException;
 import org.atavdb.exception.NotFoundException;
@@ -20,31 +20,31 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(value = {DatabaseException.class})
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse databaseException(DatabaseException ex) {
-        return new ErrorResponse(HttpStatus.CONFLICT.value(), "Database error");
+    public MessageResponse databaseException(DatabaseException ex) {
+        return new MessageResponse(HttpStatus.CONFLICT.value(), "Database error");
     }
 
     @ExceptionHandler(value = {InvalidQueryException.class})
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ErrorResponse invalidQueryException(InvalidQueryException ex) {
-        return new ErrorResponse(HttpStatus.NOT_ACCEPTABLE.value(), "Invalid input query");
+    public MessageResponse invalidQueryException(InvalidQueryException ex) {
+        return new MessageResponse(HttpStatus.NOT_ACCEPTABLE.value(), "Invalid input query");
     }
 
     @ExceptionHandler(value = {NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse notFoundException(NotFoundException ex) {
-        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), "Not found");
+    public MessageResponse notFoundException(NotFoundException ex) {
+        return new MessageResponse(HttpStatus.NOT_FOUND.value(), "Not found");
     }
 
     @ExceptionHandler(value = {Exception.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse unKnownException(Exception ex) {
-        return new ErrorResponse(HttpStatus.BAD_REQUEST.value(), ErrorManager.convertStackTraceToString(ex));
+    public MessageResponse unKnownException(Exception ex) {
+        return new MessageResponse(HttpStatus.BAD_REQUEST.value(), ErrorManager.convertStackTraceToString(ex));
     }
 
     @ExceptionHandler(value = {UserAccessException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponse userAccessException(UserAccessException ex) {
-        return new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized access");
+    public MessageResponse userAccessException(UserAccessException ex) {
+        return new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized access");
     }
 }
