@@ -1,5 +1,6 @@
 package org.atavdb.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.atavdb.global.Data;
 import org.atavdb.util.FormatManager;
 import java.sql.ResultSet;
@@ -12,20 +13,25 @@ import java.util.List;
 import org.atavdb.global.Enum.GT;
 import org.springframework.web.servlet.ModelAndView;
 import org.atavdb.util.MathManager;
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  *
  * @author nick
  */
+@JsonAutoDetect(fieldVisibility = Visibility.PUBLIC_ONLY)
+@JsonInclude(Include.NON_NULL)
 public class Variant {
 
-    public int variantId;
-    public String variantIdStr;
-    public String chr;
-    public int pos;
-    public String ref;
-    public String alt;
-    public int rsNumber;
+    private int variantId;
+    private String variantIdStr;
+    private String chr;
+    private int pos;
+    private String ref;
+    private String alt;
+    private int rsNumber;
     //Indel attributes
     private boolean isIndel;
 
@@ -56,7 +62,7 @@ public class Variant {
     private int[] ancestryCount = new int[7]; // African, Caucasian, EastAsian, Hispanic, MiddleEastern, SouthAsian, NA
     private int ac; // allele count
     private int an; // allele number
-    public float af; // allele frequency
+    private float af; // allele frequency
     private int ns;
     private int nHom;
 
@@ -144,6 +150,7 @@ public class Variant {
         return filter.isMAFValid(af);
     }
 
+    @JsonIgnore
     public int getVariantId() {
         return variantId;
     }
@@ -154,8 +161,17 @@ public class Variant {
     }
 
     // chr:g.posref>alt
+    @JsonProperty("variantIdStr2")
     public String getVariantIdStr2() {
         return "chr" + chr + ":g." + pos + ref + ">" + alt;
+    }
+
+    public String getChr() {
+        return chr;
+    }
+
+    public int getPos() {
+        return pos;
     }
 
     public String getAlt() {
@@ -166,10 +182,12 @@ public class Variant {
         return ref;
     }
 
+    @JsonIgnore
     public int getRsNumber() {
         return rsNumber;
     }
 
+    @JsonIgnore
     public boolean isSnv() {
         return !isIndel;
     }
@@ -215,6 +233,7 @@ public class Variant {
         return geneName;
     }
 
+    @JsonIgnore
     public boolean isValid() {
         return isValid;
     }

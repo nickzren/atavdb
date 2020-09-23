@@ -205,8 +205,8 @@ public class ExternalDataManager {
 
             Connection connection = DBManager.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, var.chr);
-            preparedStatement.setInt(2, var.variantId);
+            preparedStatement.setString(1, var.getChr());
+            preparedStatement.setInt(2, var.getVariantId());
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
