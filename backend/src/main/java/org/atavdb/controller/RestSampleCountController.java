@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api")
-public class RestHomeController {
+public class RestSampleCountController {
 
-    @GetMapping("/")
+    @GetMapping("/sample-count")
     public ResponseEntity<String> index(HttpSession session) throws Exception {
         SessionManager.clearSession4Search(session);
 
