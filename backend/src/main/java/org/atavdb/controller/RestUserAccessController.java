@@ -1,15 +1,12 @@
 package org.atavdb.controller;
 
 import javax.servlet.http.HttpSession;
-import org.atavdb.model.MessageResponse;
 import org.atavdb.util.LDAP;
 import org.atavdb.util.SessionManager;
 import org.atavdb.util.VerifyUser;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
