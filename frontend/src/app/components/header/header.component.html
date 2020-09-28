@@ -12,19 +12,12 @@
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <div class="navbar-nav">
-                <a class="nav-item nav-link home-link" routerLink="">Home</a>
+                <a class="nav-item nav-link home-link" routerLink="" routerLinkActive="active">Home</a>
                 <a class="nav-item nav-link home-link" routerLink="about">About</a>
                 <a class="nav-item nav-link home-link" routerLink="terms">Terms</a>
                 <a class="nav-item nav-link home-link" routerLink="contact">Contact</a>
-
-                <!-- <div th:if="${session.username}">
-                <a class="nav-item nav-link home-link" th:href="/signout"><i class="fas fa-sign-out-alt"></i>&nbsp;Sign Out</a>
-            </div> -->
-
-                <!-- <div th:unless="${session.username}"> -->
-                <a class="nav-item nav-link home-link" href="/signin"><i class="fas fa-sign-in-alt"></i>&nbsp;Sign
-                    In</a>
-                <!-- </div> -->
+                <a *ngIf="accountService.isAuthenticated()" class="nav-item nav-link home-link" href="/" (click)="accountService.signout()"><i class="fas fa-sign-out-alt"></i>&nbsp;Sign Out</a>
+                <a *ngIf="!accountService.isAuthenticated()" class="nav-item nav-link home-link" href="/signin"><i class="fas fa-sign-in-alt"></i>&nbsp;SignIn</a>
             </div>
         </div>
     </div>
