@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +13,6 @@ export class SampleCountService {
   }
 
   get(): Observable<any> {
-    return this.http.get('//localhost:8080/api/sample-count/');
+    return this.http.get(`${environment.apiUrl}/sample-count/`);
   }
 }

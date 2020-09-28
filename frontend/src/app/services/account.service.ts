@@ -3,6 +3,8 @@ import { HttpParams } from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,7 +14,7 @@ export class AccountService {
 
   // verify CUMC MC account
   authenticate(username: string, password: string) {
-    let url = 'http://localhost:8080/api/authenticate';
+    let url = `${environment.apiUrl}/authenticate`;
     let params = new HttpParams();
     params = params.append('username', username);
     params = params.append('password', password);
@@ -22,7 +24,7 @@ export class AccountService {
 
   // verify sequence account
   authorize(username: string) {
-    let url = 'http://localhost:8080/api/authorize';
+    let url = `${environment.apiUrl}/authorize`;
     let params = new HttpParams();
     params = params.append('username', username);
     this.http.get<Observable<boolean>>(url, { params: params })
@@ -47,7 +49,7 @@ export class AccountService {
 
   signout() {
     // signout from backend api
-    this.http.get('//localhost:8080/api/signout/');
+    this.http.get(`${environment.apiUrl}/signout/`);
 
     sessionStorage.clear();
   }
