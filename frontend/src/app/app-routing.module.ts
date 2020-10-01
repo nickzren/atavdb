@@ -6,6 +6,11 @@ import { TermsComponent } from './components/terms/terms.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { SigninComponent } from './components/signin/signin.component';
 
+import { VariantComponent } from './components/variant/variant.component';
+import { GeneComponent } from './components/gene/gene.component';
+import { RegionComponent } from './components/region/region.component';
+import { SearchComponent } from './components/search/search.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -27,6 +32,22 @@ const routes: Routes = [
   {
     path: 'signin',
     component: SigninComponent
+  },
+  {
+    path: 'variant/:variant',
+    component: VariantComponent
+  },
+  {
+    path: 'gene/:gene',
+    component: GeneComponent
+  },
+  {
+    path: 'region/:region',
+    component: RegionComponent
+  },
+  {
+    path: 'search/:query',
+    component: SearchComponent
   }
 ];
 

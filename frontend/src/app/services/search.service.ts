@@ -12,6 +12,14 @@ export class SearchService {
 
   constructor(private http: HttpClient) { }
 
+  querytype(query: string): Observable<any> {
+    let url = `${environment.apiUrl}/querytype`;
+    let params = new HttpParams();
+    params = params.append('query', query);
+
+    return this.http.get(url, { params: params });
+  }
+
   search(query: string): Observable<any> {
     let url = `${environment.apiUrl}/search`;
     let params = new HttpParams();
@@ -19,18 +27,4 @@ export class SearchService {
 
     return this.http.get(url, { params: params });
   }
-
-/*   searchByGene(query: string): Observable<any> {
-    let url = `${environment.apiUrl}/gene/${query}`;
-    let params = new HttpParams();
-
-    return this.http.get(url, { params: params });
-  }
-
-  searchByRegion(query: string): Observable<any> {
-    let url = `${environment.apiUrl}/gene/${query}`;
-    let params = new HttpParams();
-
-    return this.http.get(url, { params: params });
-  } */
 }

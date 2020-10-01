@@ -1,18 +1,16 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { DataTableDirective } from 'angular-datatables';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { SampleCountService } from '../../services/sample-count.service';
 import { SearchService } from '../../services/search.service';
-import { Subject } from 'rxjs';
-
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements AfterViewInit, OnDestroy, OnInit {
-  // search form
+export class SearchComponent implements OnInit {
+
   searchForm: FormGroup;
   loading = false;
   sampleCount: any;
@@ -29,20 +27,12 @@ export class SearchComponent implements AfterViewInit, OnDestroy, OnInit {
     "other neuropsychiatric disease", "primary immune deficiency", "pulmonary disease",
     "schizophrenia", "sudden death", "alzheimers disease", "cerebral palsy"];
 
-  // search result
-  variants: Array<any>;
-
-  // datatables
-  @ViewChild(DataTableDirective, {static: false})
-  dtElement: DataTableDirective;
-  isDtInitialized: boolean = false;
-  dtOptions: any = {};
-  dtTrigger: Subject<any> = new Subject();
-
   constructor(
+    private router: Router,
     private formBuilder: FormBuilder,
     private sampleCountService: SampleCountService,
     private searchService: SearchService) {
+
     this.searchForm = this.formBuilder.group({
       query: [''],
       phenotype: [''],
@@ -57,28 +47,6 @@ export class SearchComponent implements AfterViewInit, OnDestroy, OnInit {
     this.sampleCountService.get().subscribe(data => {
       this.sampleCount = data.sampleCount;
     });
-
-    this.dtOptions = {
-      pagingType: 'simple_numbers',
-      pageLength: 10,
-      processing: true,
-      dom: 'Blfrtip',
-      buttons: [
-        {
-          extend: 'csv',
-          text: '<i class="fas fa-file-csv"></i> Download',
-          className: 'btn btn-light'
-        }
-      ]
-    };
-  }
-
-  ngAfterViewInit(): void {
-    this.dtTrigger.next();
-  }
-
-  ngOnDestroy(): void {
-    this.dtTrigger.unsubscribe();
   }
 
   // convenience getter for easy access to form fields
@@ -87,15 +55,10 @@ export class SearchComponent implements AfterViewInit, OnDestroy, OnInit {
   onSubmit() {
     this.loading = true;
 
-    this.searchService.search(this.f.query.value).subscribe(
+    this.searchService.querytype(this.f.query.value).subscribe(
       data => {
-        this.variants = data;
+        this.router.navigate([data.querytype, this.f.query.value]);
         this.loading = false;
-
-        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.destroy();
-          this.dtTrigger.next();
-        });
       }
     );
   }

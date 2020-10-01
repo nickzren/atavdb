@@ -16,6 +16,8 @@ import { TermsComponent } from './components/terms/terms.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SearchComponent } from './components/search/search.component';
 import { GeneComponent } from './components/gene/gene.component';
+import { VariantComponent } from './components/variant/variant.component';
+import { RegionComponent } from './components/region/region.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { GeneComponent } from './components/gene/gene.component';
     TermsComponent,
     SigninComponent,
     SearchComponent,
-    GeneComponent
+    GeneComponent,
+    VariantComponent,
+    RegionComponent
   ],
   imports: [
     BrowserModule,

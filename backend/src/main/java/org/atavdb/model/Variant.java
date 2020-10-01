@@ -263,7 +263,7 @@ public class Variant {
         return FormatManager.getFloat(gme);
     }
 
-    public String getIranme() {
+    public String getIranome() {
         return FormatManager.getFloat(iranome);
     }
 

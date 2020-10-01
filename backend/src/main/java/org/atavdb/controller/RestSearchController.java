@@ -10,6 +10,8 @@ import org.atavdb.model.SearchFilter;
 import org.atavdb.model.Variant;
 import org.atavdb.model.SampleManager;
 import org.atavdb.model.VariantManager;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,17 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/api")
 public class RestSearchController {
+    
+    @GetMapping("/querytype")
+    public ResponseEntity<String> querytype(String query, HttpSession session) throws Exception {
+        session.setAttribute("query", query);
+
+        SearchFilter filter = new SearchFilter(session);
+        
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("{\"querytype\":\"" + filter.getQueryType().toLowerCase()+ "\"}");
+    }
 
     @GetMapping("/search")
     public Collection<Variant> search(String query, String maf, String phenotype,

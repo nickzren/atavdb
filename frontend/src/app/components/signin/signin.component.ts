@@ -21,9 +21,9 @@ export class SigninComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AccountService) {
+    private accountService: AccountService) {
     // redirect to home if already signed in
-    if (this.authenticationService.isAuthenticated()) {
+    if (this.accountService.isAuthenticated()) {
       this.router.navigate(['/']);
     }
   }
@@ -50,13 +50,13 @@ export class SigninComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService
+    this.accountService
       .authenticate(this.f.username.value, this.f.password.value)
       .subscribe(
         isValid => {
           if (isValid) {
             sessionStorage.setItem('authenticatedUser', this.f.username.value);
-            this.authenticationService.authorize(this.f.username.value);
+            this.accountService.authorize(this.f.username.value);
             this.router.navigate([this.returnUrl]);
           } else {
             this.errorMessage = "Invalid CUMC MC account username/password.";
