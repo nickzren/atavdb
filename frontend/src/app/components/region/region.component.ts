@@ -10,6 +10,9 @@ import { SearchService } from '../../services/search.service';
   styleUrls: ['./region.component.css']
 })
 export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
+  error: string;
+
+  // chr:start-end
   query: string;
 
   // search result
@@ -67,6 +70,13 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
           dtInstance.destroy();
           this.dtTrigger.next();
         });
+      },
+      error => {
+        if (error.error) {
+          this.error = error.error.message;
+        } else {
+          this.error = "Unexpected error";
+        }
       }
     );
   }

@@ -2,98 +2,112 @@
 <app-search></app-search>
 
 <div class="container">
-    <div [hidden]="!variants">
-        <div class="row">
-            <div class="col">
-                <h4><mark>Gene: {{query}}</mark></h4>
-            </div>
-
-            <div class="col-md-auto">
-                <a class="btn btn-outline-secondary btn-sm" href="https://decipher.sanger.ac.uk/gene/{{query}}"
-                    target="_blank">DECIPHER</a>
-            </div>
-            <div class="col-md-auto">
-                <a class="btn btn-outline-secondary btn-sm"
-                    href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g={{query}}" target="_blank">Ensembl</a>
-            </div>
-            <div class="col-md-auto">
-                <a class="btn btn-outline-secondary btn-sm"
-                    href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={{query}}" target="_blank">GeneCards</a>
-            </div>
-            <div class="col-md-auto">
-                <a class="btn btn-outline-secondary btn-sm"
-                    href="https://www.genenames.org/tools/search/#!/genes?query={{query}}" target="_blank">HGNC</a>
-            </div>
-            <div class="col-md-auto">
-                <a class="btn btn-outline-secondary btn-sm" href="http://igmdx.org/Search?query={{query}}"
-                    target="_blank">IGMDx</a>
-            </div>
-            <div class="col-md-auto">
-                <a class="btn btn-outline-secondary btn-sm" href="https://omim.org/search?search={{query}}"
-                    target="_blank">OMIM</a>
-            </div>
-            <div class="col-md-auto">
-                <a class="btn btn-outline-secondary btn-sm" href="http://genic-intolerance.org/Search?query={{query}}"
-                    target="_blank">RVIS</a>
-            </div>
-        </div>
-
-        <br />
-        <br />
-
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Variant</h4>
-
-                <div class='table-responsive'>
-                    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
-                        class="table table-sm table-hover text-center">
-                        <thead>
-                            <tr>
-                                <th class="align-middle" data-toggle="tooltip" title="chr-pos-ref-alt">Variant ID</th>
-                                <th class="align-middle" data-toggle="tooltip"
-                                    title="HGVS_p or HGVS_c for most damaging effect (Ensemble 87)">Consequence</th>
-                                <th class="align-middle" data-toggle="tooltip"
-                                    title="Consequence type of this variation for most damaging effect (Ensemble 87)">
-                                    Effect
-                                </th>
-                                <th class="align-middle" data-toggle="tooltip"
-                                    title="HGNC gene for most damaging effect (Ensemble 87)">Gene</th>
-                                <th class="align-middle" data-toggle="tooltip" title="Allele Acount">AC</th>
-                                <th class="align-middle" data-toggle="tooltip"
-                                    title="Allele Number (total number of alleles)">AN</th>
-                                <th class="align-middle" data-toggle="tooltip" title="Allele Frequency">AF</th>
-                                <th class="align-middle" data-toggle="tooltip" title="Number of samples having data">NS
-                                </th>
-                                <th class="align-middle" data-toggle="tooltip" title="Number of homozygotes">NHOM</th>
-                                <th class="align-middle" data-toggle="tooltip"
-                                    title="Maximum External Allele Frequency">maxEAF</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr *ngFor="let variant of variants">
-                                <td class="align-middle">
-                                    <a href="/variant/{{variant.variantIdStr}}" target='_blank'>
-                                        {{variant.variantIdStr}}
-                                    </a>
-                                </td>
-                                <td class="align-middle">{{variant.consequence}}</td>
-                                <td class="align-middle">{{variant.effect}}</td>
-                                <td class="align-middle">{{variant.geneName}}</td>
-                                <td class="align-middle">{{variant.ac}}</td>
-                                <td class="align-middle">{{variant.an}}</td>
-                                <td class="align-middle">{{variant.af}}</td>
-                                <td class="align-middle">{{variant.ns}}</td>
-                                <td class="align-middle">{{variant.nhom}}</td>
-                                <td class="align-middle">{{variant.maxEAF}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+    <div *ngIf="error; else elseBlock" class="row">
+        <div class="col-auto">
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-circle"></i>&nbsp;{{error}}
             </div>
         </div>
     </div>
+    <ng-template #elseBlock>
+        <div [hidden]="!variants">
+            <div class="row">
+                <div class="col">
+                    <h4><mark>Gene: {{query}}</mark></h4>
+                </div>
+
+                <div class="col-md-auto">
+                    <a class="btn btn-outline-secondary btn-sm" href="https://decipher.sanger.ac.uk/gene/{{query}}"
+                        target="_blank">DECIPHER</a>
+                </div>
+                <div class="col-md-auto">
+                    <a class="btn btn-outline-secondary btn-sm"
+                        href="https://grch37.ensembl.org/Homo_sapiens/Gene/Summary?g={{query}}"
+                        target="_blank">Ensembl</a>
+                </div>
+                <div class="col-md-auto">
+                    <a class="btn btn-outline-secondary btn-sm"
+                        href="https://www.genecards.org/cgi-bin/carddisp.pl?gene={{query}}"
+                        target="_blank">GeneCards</a>
+                </div>
+                <div class="col-md-auto">
+                    <a class="btn btn-outline-secondary btn-sm"
+                        href="https://www.genenames.org/tools/search/#!/genes?query={{query}}" target="_blank">HGNC</a>
+                </div>
+                <div class="col-md-auto">
+                    <a class="btn btn-outline-secondary btn-sm" href="http://igmdx.org/Search?query={{query}}"
+                        target="_blank">IGMDx</a>
+                </div>
+                <div class="col-md-auto">
+                    <a class="btn btn-outline-secondary btn-sm" href="https://omim.org/search?search={{query}}"
+                        target="_blank">OMIM</a>
+                </div>
+                <div class="col-md-auto">
+                    <a class="btn btn-outline-secondary btn-sm"
+                        href="http://genic-intolerance.org/Search?query={{query}}" target="_blank">RVIS</a>
+                </div>
+            </div>
+
+            <br />
+            <br />
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Variant</h4>
+
+                    <div class='table-responsive'>
+                        <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                            class="table table-sm table-hover text-center">
+                            <thead>
+                                <tr>
+                                    <th class="align-middle" data-toggle="tooltip" title="chr-pos-ref-alt">Variant ID
+                                    </th>
+                                    <th class="align-middle" data-toggle="tooltip"
+                                        title="HGVS_p or HGVS_c for most damaging effect (Ensemble 87)">Consequence</th>
+                                    <th class="align-middle" data-toggle="tooltip"
+                                        title="Consequence type of this variation for most damaging effect (Ensemble 87)">
+                                        Effect
+                                    </th>
+                                    <th class="align-middle" data-toggle="tooltip"
+                                        title="HGNC gene for most damaging effect (Ensemble 87)">Gene</th>
+                                    <th class="align-middle" data-toggle="tooltip" title="Allele Acount">AC</th>
+                                    <th class="align-middle" data-toggle="tooltip"
+                                        title="Allele Number (total number of alleles)">AN</th>
+                                    <th class="align-middle" data-toggle="tooltip" title="Allele Frequency">AF</th>
+                                    <th class="align-middle" data-toggle="tooltip"
+                                        title="Number of samples having data">NS
+                                    </th>
+                                    <th class="align-middle" data-toggle="tooltip" title="Number of homozygotes">NHOM
+                                    </th>
+                                    <th class="align-middle" data-toggle="tooltip"
+                                        title="Maximum External Allele Frequency">maxEAF</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let variant of variants">
+                                    <td class="align-middle">
+                                        <a href="/variant/{{variant.variantIdStr}}" target='_blank'>
+                                            {{variant.variantIdStr}}
+                                        </a>
+                                    </td>
+                                    <td class="align-middle">{{variant.consequence}}</td>
+                                    <td class="align-middle">{{variant.effect}}</td>
+                                    <td class="align-middle">{{variant.geneName}}</td>
+                                    <td class="align-middle">{{variant.ac}}</td>
+                                    <td class="align-middle">{{variant.an}}</td>
+                                    <td class="align-middle">{{variant.af}}</td>
+                                    <td class="align-middle">{{variant.ns}}</td>
+                                    <td class="align-middle">{{variant.nhom}}</td>
+                                    <td class="align-middle">{{variant.maxEAF}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
 </div>
 
 <br />

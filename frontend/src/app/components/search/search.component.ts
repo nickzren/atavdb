@@ -10,6 +10,7 @@ import { SearchService } from '../../services/search.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+  error: string;
 
   searchForm: FormGroup;
   loading = false;
@@ -59,6 +60,17 @@ export class SearchComponent implements OnInit {
       data => {
         this.router.navigate([data.querytype, this.f.query.value]);
         this.loading = false;
+      },
+      error => {
+        if(error.error) {
+          this.error = error.error.message;
+        } else {
+          this.error = "Unexpected error";
+        }
+
+        this.loading = false;
+
+        this.router.navigate(['/'], {queryParams: {error: this.error}});
       }
     );
   }

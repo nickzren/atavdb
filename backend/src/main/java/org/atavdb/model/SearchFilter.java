@@ -5,6 +5,7 @@ import org.atavdb.global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpSession;
+import org.atavdb.exception.RegionMaxLimitException;
 
 /**
  *
@@ -21,8 +22,6 @@ public class SearchFilter {
     private boolean isHighQualityVariant;
     private boolean isUltraRareVariant;
     private boolean isAvailableControlUseOnly;
-
-    private String error;
 
     // system default
     private final static int minVarPresent = 1;
@@ -98,9 +97,6 @@ public class SearchFilter {
         this.phenotype = phenotype == null ? "" : phenotype;
         this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equalsIgnoreCase("on");
         this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equalsIgnoreCase("on");
-
-        // set or clear error message
-        session.setAttribute("error", error);
     }
 
     public void setPhenotype(String phenotype) {
@@ -189,8 +185,7 @@ public class SearchFilter {
                                 && (end - start) <= RegionManager.MAX_SEARCH_LIMIT) {
                             return QUERT_TYPE[3]; // Region
                         } else {
-                            error = "Invalid region or exceeds maximum limit " + RegionManager.MAX_SEARCH_LIMIT + " base pair.";
-                            return QUERT_TYPE[0]; // Invalid
+                            throw new RegionMaxLimitException();
                         }
                     }
                 }
@@ -211,7 +206,7 @@ public class SearchFilter {
     }
 
     public boolean isQueryValid() {
-        return !queryType.equals(QUERT_TYPE[0]) && error == null;
+        return !queryType.equals(QUERT_TYPE[0]);
     }
 
     public boolean isQueryVariant() {
@@ -224,10 +219,6 @@ public class SearchFilter {
 
     public boolean isQueryRegion() {
         return queryType.equals(QUERT_TYPE[3]);
-    }
-
-    public String getError() {
-        return error;
     }
 
     public boolean isMAFValid(float value) {

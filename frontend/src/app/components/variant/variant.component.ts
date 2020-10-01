@@ -11,6 +11,9 @@ import { SearchService } from '../../services/search.service';
   styleUrls: ['./variant.component.css']
 })
 export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
+  error: string;
+  flankingRegion: string;
+
   // variant id (chr-pos-ref-alt)
   query: string;
 
@@ -69,12 +72,29 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
     this.searchService.search(query).subscribe(
       data => {
         this.variant = Object.values(data)[0];
-        console.log(this.variant);
 
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.destroy();
           this.dtTrigger.next();
         });
+      },
+      error => {
+        if (error.error) {
+          this.error = error.error.message;
+        } else {
+          this.error = "Unexpected error";
+        }
+
+        // no results found --> show search flanking region
+        var tmp = this.query.split('-');
+        if (tmp.length == 4) {
+          const regex = '^[atcgxymtATCGXYMT0-9-]+$';
+          if (this.query.match(regex)) {
+            var start = Number(tmp[1]) - 10;
+            var end = Number(tmp[1]) + 10;
+            this.flankingRegion = tmp[0] + ":" + start + "-" + end;
+          }
+        }
       }
     );
   }

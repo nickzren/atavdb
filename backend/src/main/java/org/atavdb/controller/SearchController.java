@@ -39,7 +39,7 @@ public class SearchController {
             } else if (filter.isQueryRegion()) {
                 return new ModelAndView("redirect:/region/" + query);
             } else {
-                session.setAttribute("error", filter.getError());
+//                session.setAttribute("error", filter.getError());
             }
         } catch (Exception ex) {
             session.setAttribute("error", ErrorManager.convertStackTraceToString(ex));

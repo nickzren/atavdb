@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.atavdb.exception.InvalidQueryException;
+import org.atavdb.exception.InvalidSearchException;
 import org.atavdb.exception.NotFoundException;
 import org.atavdb.model.SearchFilter;
 import org.atavdb.model.Variant;
@@ -32,9 +32,14 @@ public class RestSearchController {
 
         SearchFilter filter = new SearchFilter(session);
         
-        return ResponseEntity.ok()
+        if(filter.isQueryValid()) {
+            return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("{\"querytype\":\"" + filter.getQueryType().toLowerCase()+ "\"}");
+            
+        }
+        
+        throw new InvalidSearchException();
     }
 
     @GetMapping("/search")
@@ -58,7 +63,7 @@ public class RestSearchController {
             return region(query, phenotype, session);
         }
         
-        throw new InvalidQueryException();
+        throw new InvalidSearchException();
     }
 
     @GetMapping("/variant/{variant}")
@@ -117,7 +122,7 @@ public class RestSearchController {
                 return variantList;
             }
         } else {
-            throw new InvalidQueryException();
+            throw new InvalidSearchException();
         }
     }
 }

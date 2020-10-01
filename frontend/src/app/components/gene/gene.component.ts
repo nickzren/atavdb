@@ -10,6 +10,9 @@ import { SearchService } from '../../services/search.service';
   styleUrls: ['./gene.component.css']
 })
 export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
+  error: string;
+
+  // hgnc gene name
   query: string;
 
   // search result
@@ -62,11 +65,18 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
     this.searchService.search(query).subscribe(
       data => {
         this.variants = data;
-
+        
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           dtInstance.destroy();
           this.dtTrigger.next();
         });
+      },
+      error => {
+        if(error.error) {
+          this.error = error.error.message;
+        } else {
+          this.error = "Unexpected error";
+        }
       }
     );
   }
