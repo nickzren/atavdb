@@ -6,12 +6,12 @@
                     <span class="badge badge-pill badge-secondary">hg19</span>
                 </small>
             </h2>
-
             <div class="row">
                 <div class="col-md-9 form-group">
                     <div class="input-group">
-                        <input [attr.disabled]="loading ? true : null" id="query" formControlName="query"
-                            class="form-control" type="text" placeholder="Search by variant, gene or region">
+                        <input [(ngModel)]="query" [attr.disabled]="loading ? true : null" id="query"
+                            formControlName="query" class="form-control" type="text"
+                            placeholder="Search by variant, gene or region">
                         <div class="input-group-append">
                             <button [disabled]="loading" class="btn btn-primary" type="submit">
                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
@@ -39,15 +39,17 @@
             <div class="form-row align-items-center">
                 <div class="col-md-auto form-group" data-toggle="tooltip" title="Search variants by selected phenotype">
                     <label>Phenotype:</label>
-                    <select [attr.disabled]="loading ? true : null" formControlName="phenotype" class="form-control">
-                        <option *ngFor="let phenotype of PHENOTYPE_LIST" [value]="phenotype">{{phenotype}}</option>
+                    <select [attr.disabled]="loading ? true : null" [(ngModel)]="phenotype" formControlName="phenotype"
+                        class="form-control">
+                        <option *ngFor="let phenotype of PHENOTYPE_LIST" [ngValue]="phenotype">{{phenotype}}</option>
                     </select>
                 </div>
 
                 <div class="col-md-auto form-group" data-toggle="tooltip"
                     title="Search variants when its AF <= cutoff or AF >= (1 - cutoff)">
                     <label>MAF:</label>
-                    <select [attr.disabled]="loading ? true : null" formControlName="maf" class="form-control">
+                    <select [attr.disabled]="loading ? true : null" [(ngModel)]="maf" formControlName="maf"
+                        class="form-control">
                         <option *ngFor="let maf of MAF_LIST" [value]="maf">{{maf}}</option>
                     </select>
                 </div>
@@ -56,27 +58,27 @@
                     <div class="custom-control custom-switch" data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
                              SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
                              MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
-                        <input [attr.disabled]="loading ? true : null" type="checkbox" class="custom-control-input"
-                            formControlName="isHighQualityVariant">
-                        <label class="custom-control-label">High Quality Variant</label>
+                        <input [attr.disabled]="loading ? true : null" formControlName="isHighQualityVariant" [ngModel]="isHighQualityVariant"
+                            type="checkbox" class="custom-control-input" id="check-high-quality-variant">
+                        <label class="custom-control-label" for="check-high-quality-variant">High Quality Variant</label>
                     </div>
-                </div>
+                </div>                
 
                 <div class="col-md-auto form-group">
                     <div class="custom-control custom-switch" data-toggle="tooltip"
                         title="All External AF are 0, 1 or NA">
-                        <input [attr.disabled]="loading ? true : null" type="checkbox" class="custom-control-input"
-                            formControlName="isUltraRareVariant">
-                        <label class="custom-control-label">Ultra Rare Variant</label>
+                        <input [attr.disabled]="loading ? true : null" formControlName="isUltraRareVariant"
+                            type="checkbox" class="custom-control-input" id="check-ultra-rare-variant" [ngModel]="isUltraRareVariant">
+                        <label class="custom-control-label" for="check-ultra-rare-variant">Ultra Rare Variant</label>
                     </div>
                 </div>
 
                 <div class="col-md-auto form-group">
                     <div class="custom-control custom-switch" data-toggle="tooltip"
                         title="Available as control used samples in sequenceDB">
-                        <input [attr.disabled]="loading ? true : null" type="checkbox" class="custom-control-input"
-                            formControlName="isPublicAvailable">
-                        <label class="custom-control-label">Public Available Sample</label>
+                        <input [attr.disabled]="loading ? true : null" formControlName="isPublicAvailable"
+                            type="checkbox" class="custom-control-input" id="check-public-available" [ngModel]="isPublicAvailable">
+                        <label class="custom-control-label" for="check-public-available">Public Available Sample</label>
                     </div>
                 </div>
             </div>

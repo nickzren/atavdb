@@ -25,27 +25,30 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/api")
 public class RestSearchController {
-    
+
     @GetMapping("/querytype")
     public ResponseEntity<String> querytype(String query, HttpSession session) throws Exception {
         session.setAttribute("query", query);
 
         SearchFilter filter = new SearchFilter(session);
-        
-        if(filter.isQueryValid()) {
+
+        if (filter.isQueryValid()) {
             return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body("{\"querytype\":\"" + filter.getQueryType().toLowerCase()+ "\"}");
-            
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("{\"querytype\":\"" + filter.getQueryType().toLowerCase() + "\"}");
+
         }
-        
+
         throw new InvalidSearchException();
     }
 
     @GetMapping("/search")
-    public Collection<Variant> search(String query, String maf, String phenotype,
+    public Collection<Variant> search(String query, String phenotype, String maf,
             String isHighQualityVariant, String isUltraRareVariant,
-            String isPublicAvailable, HttpSession session, HttpServletResponse response) throws Exception {
+            String isPublicAvailable, HttpSession session) throws Exception {
+        //        if (session.getAttribute("sequence_authorized") == null) {
+//            throw new UserAccessException();
+//        }
 
         session.setAttribute("query", query);
         session.setAttribute("phenotype", phenotype);
@@ -54,61 +57,6 @@ public class RestSearchController {
         session.setAttribute("isUltraRareVariant", isUltraRareVariant);
         session.setAttribute("isPublicAvailable", isPublicAvailable);
 
-        SearchFilter filter = new SearchFilter(session);
-        if (filter.isQueryVariant()) {
-            return variant(query, phenotype, session);
-        } else if (filter.isQueryGene()) {
-            return gene(query, phenotype, session);
-        } else if (filter.isQueryRegion()) {
-            return region(query, phenotype, session);
-        }
-        
-        throw new InvalidSearchException();
-    }
-
-    @GetMapping("/variant/{variant}")
-    public Collection<Variant> variant(@PathVariable String variant, String phenotype, HttpSession session) throws Exception {
-//        if (session.getAttribute("sequence_authorized") == null) {
-//            throw new UserAccessException();
-//        }
-
-        session.setAttribute("query", variant);
-        if (phenotype != null) {
-            session.setAttribute("phenotype", phenotype);
-        }
-
-        return doSearch(session);
-    }
-
-    @GetMapping("/gene/{gene}")
-    public Collection<Variant> gene(@PathVariable String gene, String phenotype, HttpSession session) throws Exception {
-//        if (session.getAttribute("sequence_authorized") == null) {
-//            throw new UserAccessException();
-//        }
-
-        session.setAttribute("query", gene);
-        if (phenotype != null) {
-            session.setAttribute("phenotype", phenotype);
-        }
-
-        return doSearch(session);
-    }
-
-    @GetMapping("/region/{region}")
-    public Collection<Variant> region(@PathVariable String region, String phenotype, HttpSession session) throws Exception {
-//        if (session.getAttribute("sequence_authorized") == null) {
-//            throw new UserAccessException();
-//        }
-
-        session.setAttribute("query", region);
-        if (phenotype != null) {
-            session.setAttribute("phenotype", phenotype);
-        }
-
-        return doSearch(session);
-    }
-
-    public Collection<Variant> doSearch(HttpSession session) throws Exception {
         SearchFilter filter = new SearchFilter(session);
         SampleManager.init(filter, session);
 
@@ -124,5 +72,26 @@ public class RestSearchController {
         } else {
             throw new InvalidSearchException();
         }
+    }
+
+    @GetMapping("/variant/{variant}")
+    public Collection<Variant> variant(@PathVariable String variant, String phenotype, String maf,
+            String isHighQualityVariant, String isUltraRareVariant,
+            String isPublicAvailable, HttpSession session) throws Exception {
+        return search(variant, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable, session);
+    }
+
+    @GetMapping("/gene/{gene}")
+    public Collection<Variant> gene(@PathVariable String gene, String phenotype, String maf,
+            String isHighQualityVariant, String isUltraRareVariant,
+            String isPublicAvailable, HttpSession session) throws Exception {
+        return search(gene, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable, session);
+    }
+
+    @GetMapping("/region/{region}")
+    public Collection<Variant> region(@PathVariable String region, String phenotype, String maf,
+            String isHighQualityVariant, String isUltraRareVariant,
+            String isPublicAvailable, HttpSession session) throws Exception {
+        return search(region, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable, session);
     }
 }

@@ -34,15 +34,15 @@ const routes: Routes = [
     component: SigninComponent
   },
   {
-    path: 'variant/:variant',
+    path: 'variant/:query',
     component: VariantComponent
   },
   {
-    path: 'gene/:gene',
+    path: 'gene/:query',
     component: GeneComponent
   },
   {
-    path: 'region/:region',
+    path: 'region/:query',
     component: RegionComponent
   },
   {
@@ -52,7 +52,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {
+    onSameUrlNavigation: 'reload'
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

@@ -27,4 +27,34 @@ export class SearchService {
 
     return this.http.get(url, { params: params });
   }
+
+  searchByGene(
+    gene: string,
+    phenotype: string,
+    maf: string,
+    isHighQualityVariant: string,
+    isUltraRareVariant: string,
+    isPublicAvailable: string
+  ): Observable<any> {
+    let url = `${environment.apiUrl}/gene/${gene}`;
+    let params = new HttpParams();
+
+    if (phenotype) {
+      params = params.append('phenotype', phenotype);
+    }
+    if (maf) {
+      params = params.append('maf', maf);
+    }
+    if (isHighQualityVariant) {
+      params = params.append('isHighQualityVariant', isHighQualityVariant);
+    }
+    if (isUltraRareVariant) {
+      params = params.append('isUltraRareVariant', isUltraRareVariant);
+    }
+    if (phenotype) {
+      params = params.append('isPublicAvailable', isPublicAvailable);
+    }
+
+    return this.http.get(url, { params: params });
+  }
 }

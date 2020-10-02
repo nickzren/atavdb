@@ -31,12 +31,13 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
-      this.query = params.get('gene');
-      if (this.query) {
-        this.onSearch(this.query);
-      }
-    });
+    this.route.paramMap.subscribe(
+      params => {
+        this.query = params.get('query');
+        if (this.query) {
+          this.onSearch();
+        }
+      });
 
     this.dtOptions = {
       pagingType: 'simple_numbers',
@@ -61,23 +62,29 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  onSearch(query: string) {
-    this.searchService.search(query).subscribe(
-      data => {
-        this.variants = data;
-        
-        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.destroy();
-          this.dtTrigger.next();
-        });
-      },
-      error => {
-        if(error.error) {
-          this.error = error.error.message;
-        } else {
-          this.error = "Unexpected error";
+  onSearch() {
+    this.searchService.searchByGene(
+      this.query,
+      this.route.snapshot.queryParams['phenotype'],
+      this.route.snapshot.queryParams['maf'],
+      this.route.snapshot.queryParams['isHighQualityVariant'],
+      this.route.snapshot.queryParams['isUltraRareVariant'],
+      this.route.snapshot.queryParams['isPublicAvailable']).subscribe(
+        data => {
+          this.variants = data;
+
+          this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.destroy();
+            this.dtTrigger.next();
+          });
+        },
+        error => {
+          if (error.error) {
+            this.error = error.error.message;
+          } else {
+            this.error = "Unexpected error";
+          }
         }
-      }
-    );
+      );
   }
 }

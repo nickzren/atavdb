@@ -32,7 +32,7 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.query = params.get('region');
+      this.query = params.get('query');
       if (this.query) {
         this.onSearch(this.query);
       }
