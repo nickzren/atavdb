@@ -45,20 +45,6 @@ public class SearchFilter {
 
     public final static String[] QUERT_TYPE = {"Invalid", "Variant", "Gene", "Region"};
 
-    public final static String[] MAF_LIST = {"", "0.01", "0.005", "0.001"};
-
-    public final static String[] PHENOTYPE_LIST = {"", "amyotrophic lateral sclerosis",
-        "autoimmune disease", "bone disease", "brain malformation", "cancer", "cardiovascular disease",
-        "congenital disorder", "control", "control mild neuropsychiatric disease", "covid-19",
-        "dementia", "dermatological disease", "diseases that affect the ear",
-        "endocrine disorder", "epilepsy", "febrile seizures", "fetal ultrasound anomaly",
-        "gastrointestinal disease", "healthy family member", "hematological disease",
-        "infectious disease", "intellectual disability", "kidney and urological disease",
-        "liver disease", "metabolic disease", "neurodegenerative", "nonhuman", "obsessive compulsive disorder",
-        "ophthalmic disease", "other", "other neurodevelopmental disease", "other neurological disease",
-        "other neuropsychiatric disease", "primary immune deficiency", "pulmonary disease",
-        "schizophrenia", "sudden death", "alzheimers disease", "cerebral palsy"};
-
     public SearchFilter() {}
     
     public SearchFilter(
