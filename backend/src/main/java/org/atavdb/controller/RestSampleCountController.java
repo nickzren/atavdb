@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author nick
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class RestSampleCountController {
 
     @GetMapping("/sample-count")

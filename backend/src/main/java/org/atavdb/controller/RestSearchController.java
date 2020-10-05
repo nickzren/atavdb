@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author nick
  */
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 public class RestSearchController {
 
     @GetMapping("/querytype")

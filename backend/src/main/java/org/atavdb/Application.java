@@ -2,9 +2,7 @@ package org.atavdb;
 
 import java.util.Collections;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
@@ -17,7 +15,6 @@ import org.springframework.web.filter.CorsFilter;
  * @author nick
  */
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class})
 public class Application {
    public static void main(String[] args) {SpringApplication.run(Application.class, args);}
    
