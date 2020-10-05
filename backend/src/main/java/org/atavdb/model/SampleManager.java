@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.servlet.http.HttpSession;
 import org.atavdb.exception.DatabaseException;
 
 /**
@@ -37,18 +36,6 @@ public class SampleManager {
         // init for all samples
         filter.setIsAvailableControlUseOnly(false);
         initAllSampleFromDB(filter);
-    }
-
-    public static void init(SearchFilter filter, HttpSession session) throws Exception {
-        if (getMap(filter).isEmpty()
-                || checkSampleCount(filter)) {
-            initAllSampleFromDB(filter);
-
-            // trigger to clear cached data when sample count mismatch
-            VariantManager.clearCachedData(filter);
-        }
-
-        session.setAttribute("sampleCount", getTotalSampleNum(filter));
     }
     
     public static void init(SearchFilter filter) throws Exception {

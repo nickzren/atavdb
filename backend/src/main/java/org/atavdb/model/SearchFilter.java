@@ -4,7 +4,6 @@ import org.atavdb.global.Enum;
 import org.atavdb.global.Data;
 import java.util.StringJoiner;
 import java.util.regex.Pattern;
-import javax.servlet.http.HttpSession;
 import org.atavdb.exception.RegionMaxLimitException;
 
 /**
@@ -60,41 +59,7 @@ public class SearchFilter {
         "other neuropsychiatric disease", "primary immune deficiency", "pulmonary disease",
         "schizophrenia", "sudden death", "alzheimers disease", "cerebral palsy"};
 
-    public SearchFilter() {
-    }
-    
-    public SearchFilter(HttpSession session) throws Exception {
-        this.query = (String) session.getAttribute("query");
-        queryType = getQueryType(query);
-        session.setAttribute("queryType", queryType);
-
-        String phenotype = (String) session.getAttribute("phenotype");
-        this.maf = getFloat((String) session.getAttribute("maf"));
-        String isHighQualityVariant = (String) session.getAttribute("isHighQualityVariant");
-        String isUltraRareVariant = (String) session.getAttribute("isUltraRareVariant");
-        String isPublicAvailable = (String) session.getAttribute("isPublicAvailable");
-
-        // default to search high quality variants only for gene or region
-        if (isQueryGene() || isQueryRegion()) {
-            isHighQualityVariant = "true";
-            session.setAttribute("isHighQualityVariant", isHighQualityVariant);
-        }
-
-        // for non-cumc user & valid query, public avaiable data only
-        if (query != null && !query.isEmpty()
-                && session.getAttribute("username") == null) {
-            isAvailableControlUseOnly = true;
-            isPublicAvailable = "true";
-            session.setAttribute("isPublicAvailable", isPublicAvailable);
-        } else {
-            // for ahthorized user, use Public Only checkbox as filter
-            isAvailableControlUseOnly = isPublicAvailable != null;
-        }
-
-        this.phenotype = phenotype == null ? "" : phenotype;
-        this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equalsIgnoreCase("true");
-        this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equalsIgnoreCase("true");
-    }
+    public SearchFilter() {}
     
     public SearchFilter(
             String query, 
