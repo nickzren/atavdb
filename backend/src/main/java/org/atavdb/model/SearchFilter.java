@@ -74,12 +74,9 @@ public class SearchFilter {
         String isUltraRareVariant = (String) session.getAttribute("isUltraRareVariant");
         String isPublicAvailable = (String) session.getAttribute("isPublicAvailable");
 
-//        if (session.getAttribute("username") == null && isQueryGene()) {
-//            error = error != null ? error : "Permission denied for anonymous user.";
-//        }
         // default to search high quality variants only for gene or region
         if (isQueryGene() || isQueryRegion()) {
-            isHighQualityVariant = "on";
+            isHighQualityVariant = "true";
             session.setAttribute("isHighQualityVariant", isHighQualityVariant);
         }
 
@@ -87,7 +84,7 @@ public class SearchFilter {
         if (query != null && !query.isEmpty()
                 && session.getAttribute("username") == null) {
             isAvailableControlUseOnly = true;
-            isPublicAvailable = "on";
+            isPublicAvailable = "true";
             session.setAttribute("isPublicAvailable", isPublicAvailable);
         } else {
             // for ahthorized user, use Public Only checkbox as filter
@@ -95,8 +92,24 @@ public class SearchFilter {
         }
 
         this.phenotype = phenotype == null ? "" : phenotype;
-        this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equalsIgnoreCase("on");
-        this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equalsIgnoreCase("on");
+        this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equalsIgnoreCase("true");
+        this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equalsIgnoreCase("true");
+    }
+    
+    public SearchFilter(
+            String query, 
+            String phenotype, 
+            String maf, 
+            String isHighQualityVariant, 
+            String isUltraRareVariant, 
+            String isPublicAvailable) throws Exception {
+        this.query = query;
+        queryType = getQueryType(query);
+        this.phenotype = phenotype == null ? "" : phenotype;
+        this.maf = getFloat(maf);
+        this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equals("true");
+        this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equals("true");
+        this.isAvailableControlUseOnly = isPublicAvailable != null && isPublicAvailable.equals("true");
     }
 
     public void setPhenotype(String phenotype) {

@@ -34,7 +34,7 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
     this.route.paramMap.subscribe(params => {
       this.query = params.get('query');
       if (this.query) {
-        this.onSearch(this.query);
+        this.onSearch();
       }
     });
 
@@ -61,8 +61,15 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
     this.dtTrigger.unsubscribe();
   }
 
-  onSearch(query: string) {
-    this.searchService.search(query).subscribe(
+  onSearch() {
+    this.searchService.search(
+      'region',
+      this.query,
+      this.route.snapshot.queryParams['phenotype'],
+      this.route.snapshot.queryParams['maf'],
+      this.route.snapshot.queryParams['isHighQualityVariant'],
+      this.route.snapshot.queryParams['isUltraRareVariant'],
+      this.route.snapshot.queryParams['isPublicAvailable']).subscribe(
       data => {
         this.variants = data;
 

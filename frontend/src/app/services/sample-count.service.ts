@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
@@ -9,10 +9,21 @@ import { environment } from '../../environments/environment';
 })
 export class SampleCountService {
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient) {
   }
 
-  get(): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/sample-count/`);
+  get(phenotype: string, isPublicAvailable: string): Observable<any> {
+    let url = `${environment.apiUrl}/sample-count/`;
+    let params = new HttpParams();
+
+    if (phenotype) {
+      params = params.append('phenotype', phenotype);
+    }
+    if (isPublicAvailable) {
+      params = params.append('isPublicAvailable', isPublicAvailable);
+    }
+
+    return this.http.get(url, { params: params });
   }
 }

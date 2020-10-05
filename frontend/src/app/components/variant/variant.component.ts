@@ -69,7 +69,14 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   onSearch(query: string) {
-    this.searchService.search(query).subscribe(
+    this.searchService.search(
+      'variant',
+      this.query,
+      this.route.snapshot.queryParams['phenotype'],
+      this.route.snapshot.queryParams['maf'],
+      this.route.snapshot.queryParams['isHighQualityVariant'],
+      this.route.snapshot.queryParams['isUltraRareVariant'],
+      this.route.snapshot.queryParams['isPublicAvailable']).subscribe(
       data => {
         this.variant = Object.values(data)[0];
 

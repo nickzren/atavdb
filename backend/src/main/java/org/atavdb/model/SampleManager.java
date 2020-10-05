@@ -50,6 +50,16 @@ public class SampleManager {
 
         session.setAttribute("sampleCount", getTotalSampleNum(filter));
     }
+    
+    public static void init(SearchFilter filter) throws Exception {
+        if (getMap(filter).isEmpty()
+                || checkSampleCount(filter)) {
+            initAllSampleFromDB(filter);
+
+            // trigger to clear cached data when sample count mismatch
+            VariantManager.clearCachedData(filter);
+        }
+    }
 
     private static boolean checkSampleCount(SearchFilter filter) throws Exception {
         // reset sample data & clear cached data once a day
@@ -139,6 +149,10 @@ public class SampleManager {
 
     public static HashMap<String, ArrayList<Sample>> getMap(SearchFilter filter) {
         return filter.isAvailableControlUseOnly() ? publicAvailableSampleMap : allSampleMap;
+    }
+    
+    public static HashMap<String, ArrayList<Sample>> getMap(boolean isPublicAvailable) {
+        return isPublicAvailable ? publicAvailableSampleMap : allSampleMap;
     }
 
     private static LocalDate getCurrentDate(SearchFilter filter) {

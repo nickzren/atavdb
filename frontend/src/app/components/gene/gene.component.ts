@@ -63,7 +63,8 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   onSearch() {
-    this.searchService.searchByGene(
+    this.searchService.search(
+      'gene',
       this.query,
       this.route.snapshot.queryParams['phenotype'],
       this.route.snapshot.queryParams['maf'],

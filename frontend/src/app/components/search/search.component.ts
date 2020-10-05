@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AccountService } from '../../services/account.service';
 import { SampleCountService } from '../../services/sample-count.service';
 import { SearchService } from '../../services/search.service';
 
@@ -13,6 +14,7 @@ export class SearchComponent implements OnInit {
   error: string;
 
   // search form
+  querytype: string;
   query: string;
   phenotype: string;
   maf: string;
@@ -44,6 +46,7 @@ export class SearchComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
+    private accountService: AccountService,
     private sampleCountService: SampleCountService,
     private searchService: SearchService) {
 
@@ -58,10 +61,6 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sampleCountService.get().subscribe(data => {
-      this.sampleCount = data.sampleCount;
-    });
-
     this.route.paramMap.subscribe(
       params => {
         this.query = params.get('query');
@@ -72,6 +71,28 @@ export class SearchComponent implements OnInit {
     this.isHighQualityVariant = this.route.snapshot.queryParams['isHighQualityVariant'] == 'true' ? 'true' : '';
     this.isUltraRareVariant = this.route.snapshot.queryParams['isUltraRareVariant'] == 'true' ? 'true' : '';
     this.isPublicAvailable = this.route.snapshot.queryParams['isPublicAvailable'] == 'true' ? 'true' : '';
+
+    // gene or region search high quality variants only
+    if (this.query) {
+      this.searchService.querytype(this.query).subscribe(
+        data => {
+          if (data.querytype == 'gene' || data.querytype == 'region') {
+            this.isHighQualityVariant = 'true';
+          }
+        }
+      )
+    }
+
+    // unauthenticated user only allow search public avaiable data
+    if (this.query && !this.accountService.isAuthenticated()) {
+      this.isPublicAvailable = 'true';
+    }
+
+    // init sample count
+    this.sampleCountService.get(this.phenotype, this.isPublicAvailable).subscribe(
+      data => {
+        this.sampleCount = data.sampleCount;
+      });
   }
 
   // convenience getter for easy access to form fields
@@ -81,24 +102,24 @@ export class SearchComponent implements OnInit {
     if (this.f.query.value) {
       this.loading = true;
 
-      console.log(this.f.isHighQualityVariant.value)
-
       this.searchService.querytype(this.f.query.value).subscribe(
         data => {
           // Hack: reload component on same URL navigation
           // this.router.navigateByUrl('/', {skipLocationChange: true}).then(()=>this.router.navigate([<route>]));
-          this.router.navigateByUrl('/', { skipLocationChange: true})
-            .then(() => this.router.navigate([`${data.querytype}/${this.f.query.value}`], 
-            { queryParams: 
-              { 
-                phenotype: this.f.phenotype.value,
-                maf: this.f.maf.value,
-                isHighQualityVariant: this.f.isHighQualityVariant.value,
-                isUltraRareVariant: this.f.isUltraRareVariant.value,
-                isPublicAvailable: this.f.isPublicAvailable.value
-              }
-            }));
+          this.router.navigateByUrl('/', { skipLocationChange: true })
+            .then(() => this.router.navigate([`${data.querytype}/${this.f.query.value}`],
+              {
+                queryParams:
+                {
+                  phenotype: this.f.phenotype.value,
+                  maf: this.f.maf.value,
+                  isHighQualityVariant: this.f.isHighQualityVariant.value,
+                  isUltraRareVariant: this.f.isUltraRareVariant.value,
+                  isPublicAvailable: this.f.isPublicAvailable.value
+                }
+              }));
 
+          this.querytype = data.querytype;
           this.loading = false;
         },
         error => {
