@@ -37,7 +37,7 @@ export class SearchService {
     if (phenotype) {
       params = params.append('phenotype', phenotype);
     }
-    
+
     if (maf) {
       params = params.append('maf', maf);
     }
@@ -48,12 +48,12 @@ export class SearchService {
     if (isHighQualityVariant) {
       params = params.append('isHighQualityVariant', isHighQualityVariant);
     }
-    
+
     if (isUltraRareVariant) {
       params = params.append('isUltraRareVariant', isUltraRareVariant);
     }
 
-    if(!this.accountService.isAuthenticated()) {
+    if (!this.accountService.isAuthenticated()) {
       isPublicAvailable = 'true';
     }
     if (isPublicAvailable) {

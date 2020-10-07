@@ -68,9 +68,9 @@ export class SearchComponent implements OnInit {
 
     this.phenotype = this.route.snapshot.queryParams['phenotype'];
     this.maf = this.route.snapshot.queryParams['maf'];
-    this.isHighQualityVariant = this.route.snapshot.queryParams['isHighQualityVariant'] == 'true' ? 'true' : '';
-    this.isUltraRareVariant = this.route.snapshot.queryParams['isUltraRareVariant'] == 'true' ? 'true' : '';
-    this.isPublicAvailable = this.route.snapshot.queryParams['isPublicAvailable'] == 'true' ? 'true' : '';
+    this.isHighQualityVariant = this.route.snapshot.queryParams['isHighQualityVariant'] == 'true' ? 'true' : null;
+    this.isUltraRareVariant = this.route.snapshot.queryParams['isUltraRareVariant'] == 'true' ? 'true' : null;
+    this.isPublicAvailable = this.route.snapshot.queryParams['isPublicAvailable'] == 'true' ? 'true' : null;
 
     // gene or region search high quality variants only
     if (this.query) {
@@ -113,9 +113,9 @@ export class SearchComponent implements OnInit {
                 {
                   phenotype: this.f.phenotype.value,
                   maf: this.f.maf.value,
-                  isHighQualityVariant: this.f.isHighQualityVariant.value,
-                  isUltraRareVariant: this.f.isUltraRareVariant.value,
-                  isPublicAvailable: this.f.isPublicAvailable.value
+                  isHighQualityVariant: this.f.isHighQualityVariant.value ? true : null,
+                  isUltraRareVariant: this.f.isUltraRareVariant.value ? true : null,
+                  isPublicAvailable: this.f.isPublicAvailable.value ? true : null
                 }
               }));
 
