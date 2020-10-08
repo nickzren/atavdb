@@ -12,6 +12,28 @@ export class AccountService {
 
   constructor(private http: HttpClient) { }
 
+  init() {
+    this.http.get(`${environment.apiUrl}/authenticated`).toPromise().then(
+      authenticated => {
+        if (authenticated) {
+          sessionStorage.setItem('authenticated', 'true');
+        } else{
+          sessionStorage.removeItem('authenticated');
+        }
+      }
+    );
+
+    this.http.get(`${environment.apiUrl}/authorized`).toPromise().then(
+      authorized => {
+        if (authorized) {
+          sessionStorage.setItem('authorized', 'true');
+        } else{
+          sessionStorage.removeItem('authorized');
+        }
+      }
+    );
+  }
+
   // verify CUMC MC account
   authenticate(username: string, password: string) {
     let url = `${environment.apiUrl}/authenticate`;
@@ -30,26 +52,22 @@ export class AccountService {
     this.http.get<Observable<boolean>>(url, { params: params })
       .subscribe(isValid => {
         if (isValid) {
-          sessionStorage.setItem('authorizedUser', username)
+          sessionStorage.setItem('authorized', 'true')
         }
       });
   }
 
   isAuthenticated() {
-    let user = sessionStorage.getItem('authenticatedUser')
-    if (user === null) return false
-    return true
+    return sessionStorage.getItem('authenticated') != null;
   }
 
   isAuthorized() {
-    let user = sessionStorage.getItem('authorizedUser')
-    if (user === null) return false
-    return true
+    return sessionStorage.getItem('authorized') != null;
   }
 
   signout() {
     // signout from backend api
-    this.http.get(`${environment.apiUrl}/signout/`);
+    this.http.get(`${environment.apiUrl}/signout`).toPromise();
 
     sessionStorage.clear();
   }

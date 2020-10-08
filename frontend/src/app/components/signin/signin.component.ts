@@ -55,7 +55,7 @@ export class SigninComponent implements OnInit {
       .subscribe(
         isValid => {
           if (isValid) {
-            sessionStorage.setItem('authenticatedUser', this.f.username.value);
+            sessionStorage.setItem('authenticated', 'true');
             this.accountService.authorize(this.f.username.value);
             this.router.navigate([this.returnUrl]);
           } else {

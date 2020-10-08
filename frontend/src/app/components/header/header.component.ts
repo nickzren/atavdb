@@ -11,5 +11,6 @@ export class HeaderComponent implements OnInit {
   constructor(public accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.accountService.init();
   }
 }

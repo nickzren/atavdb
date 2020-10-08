@@ -2,6 +2,7 @@ package org.atavdb.controller;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.servlet.http.HttpSession;
 import org.atavdb.exception.InvalidSearchException;
 import org.atavdb.exception.NotFoundException;
 import org.atavdb.model.SearchFilter;
@@ -40,18 +41,26 @@ public class RestSearchController {
 
     @GetMapping("/search")
     public Collection<Variant> search(
-            String query, 
-            String phenotype, 
+            String query,
+            String phenotype,
             String maf,
-            String isHighQualityVariant, 
+            String isHighQualityVariant,
             String isUltraRareVariant,
-            String isPublicAvailable) throws Exception {
-        //        if (session.getAttribute("sequence_authorized") == null) {
-//            throw new UserAccessException();
-//        }
-
-        SearchFilter filter = new SearchFilter(query, phenotype, maf, 
+            String isPublicAvailable,
+            HttpSession session) throws Exception {
+        SearchFilter filter = new SearchFilter(query, phenotype, maf,
                 isHighQualityVariant, isUltraRareVariant, isPublicAvailable);
+
+        // authorized users can view expriment id
+        if(session.getAttribute("authorizedUser") != null) {
+            filter.setIsAuthorized(true);
+        }
+        
+        // anonymous/unauthenticated users restricted to public only data 
+        if (session.getAttribute("authenticatedUser") == null) {
+            filter.setIsAvailableControlUseOnly(true);
+        }
+
         SampleManager.init(filter);
 
         if (filter.isQueryValid()) {
@@ -70,19 +79,19 @@ public class RestSearchController {
 
     @GetMapping("/variant/{variant}")
     public Collection<Variant> variant(@PathVariable String variant, String phenotype, String maf,
-            String isHighQualityVariant, String isUltraRareVariant, String isPublicAvailable) throws Exception {
-        return search(variant, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable);
+            String isHighQualityVariant, String isUltraRareVariant, String isPublicAvailable, HttpSession session) throws Exception {
+        return search(variant, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable, session);
     }
 
     @GetMapping("/gene/{gene}")
     public Collection<Variant> gene(@PathVariable String gene, String phenotype, String maf,
-            String isHighQualityVariant, String isUltraRareVariant, String isPublicAvailable) throws Exception {
-        return search(gene, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable);
+            String isHighQualityVariant, String isUltraRareVariant, String isPublicAvailable, HttpSession session) throws Exception {
+        return search(gene, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable, session);
     }
 
     @GetMapping("/region/{region}")
     public Collection<Variant> region(@PathVariable String region, String phenotype, String maf,
-            String isHighQualityVariant, String isUltraRareVariant, String isPublicAvailable) throws Exception {
-        return search(region, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable);
+            String isHighQualityVariant, String isUltraRareVariant, String isPublicAvailable, HttpSession session) throws Exception {
+        return search(region, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPublicAvailable, session);
     }
 }

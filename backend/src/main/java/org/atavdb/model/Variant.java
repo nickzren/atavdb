@@ -313,6 +313,12 @@ public class Variant {
                 } else {
                     countGeno(carrier.getGT());
                     countGenderAncestry(carrier.getGT(), sample);
+                    
+                    // hack here - require code refactoring
+                    if(!filter.isIsAuthorized() && filter.isQueryVariant()) {
+                        sample.setExperimentId(Data.INTEGER_NA);
+                    }
+                    
                     carrier.setSample(sample);
                 }
             } else if (noncarrier != null) {

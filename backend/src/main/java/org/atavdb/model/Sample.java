@@ -48,6 +48,10 @@ public class Sample {
         return experimentId;
     }
 
+    public void setExperimentId(int experimentId) {
+        this.experimentId = experimentId;
+    }
+
     public Gender getGender() {
         return gender;
     }

@@ -10,7 +10,6 @@ import org.atavdb.exception.RegionMaxLimitException;
  *
  * @author nick
  */
-
 public class SearchFilter {
 
     // user input
@@ -21,6 +20,7 @@ public class SearchFilter {
     private boolean isHighQualityVariant;
     private boolean isUltraRareVariant;
     private boolean isAvailableControlUseOnly;
+    private boolean isAuthorized = false;
 
     // system default
     private final static int minVarPresent = 1;
@@ -45,14 +45,15 @@ public class SearchFilter {
 
     public final static String[] QUERT_TYPE = {"Invalid", "Variant", "Gene", "Region"};
 
-    public SearchFilter() {}
-    
+    public SearchFilter() {
+    }
+
     public SearchFilter(
-            String query, 
-            String phenotype, 
-            String maf, 
-            String isHighQualityVariant, 
-            String isUltraRareVariant, 
+            String query,
+            String phenotype,
+            String maf,
+            String isHighQualityVariant,
+            String isUltraRareVariant,
             String isPublicAvailable) throws Exception {
         this.query = query;
         queryType = getQueryType(query);
@@ -61,6 +62,14 @@ public class SearchFilter {
         this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equals("true");
         this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equals("true");
         this.isAvailableControlUseOnly = isPublicAvailable != null && isPublicAvailable.equals("true");
+    }
+
+    public boolean isIsAuthorized() {
+        return isAuthorized;
+    }
+    
+    public void setIsAuthorized(boolean isAuthorized) {
+        this.isAuthorized = isAuthorized;
     }
 
     public void setPhenotype(String phenotype) {
