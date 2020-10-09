@@ -14,7 +14,7 @@
     <groupId>org.atavdb</groupId>
     <artifactId>atavdb</artifactId>
     <version>1.0</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>atavdb</name>
     
