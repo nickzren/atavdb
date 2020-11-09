@@ -46,8 +46,6 @@ public class DPBinBlockManager {
                 Carrier carrier = carrierMap.get(sampleDPBin.getSampleId());
 
                 if (carrier != null) {
-                    carrier.applyQualityFilter(filter, var.isSnv());
-
                     if (carrier.isValid()) {
                         carrier.setDPBin(sampleDPBin.getDPBin(posIndex));
 
@@ -105,9 +103,7 @@ public class DPBinBlockManager {
 
             Carrier carrier = carrierMap.get(noncarrier.getSampleId());
 
-            if (carrier != null) {
-                carrier.applyQualityFilter(filter, var.isSnv());
-                
+            if (carrier != null) {                
                 if (carrier.isValid()) {
                     carrier.setDPBin(noncarrier.getDPBin());
 

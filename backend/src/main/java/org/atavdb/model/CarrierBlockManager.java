@@ -12,7 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author nick
  */
 public class CarrierBlockManager {
-  
+
     public final static int CARRIER_BLOCK_SIZE = 1000;
 
     public static void init(Variant var, SearchFilter filter, ModelAndView mv) throws Exception {
@@ -77,6 +77,8 @@ public class CarrierBlockManager {
 
                 validVariantCarrierCount.put(variantId, 0);
             }
+
+            carrier.applyQualityFilter(filter, var.isSnv());
 
             if (carrier.isValid()) {
                 validVariantCarrierCount.computeIfPresent(variantId, (k, v) -> v + 1);
