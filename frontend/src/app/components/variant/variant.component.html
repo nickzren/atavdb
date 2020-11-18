@@ -290,18 +290,7 @@
             <br />
 
             <!-- franklin api -->
-            <!--  <gnx-summary></gnx-summary> -->
-            <!--  <script src="https://s3.amazonaws.com/resources.genoox.com/assets/1.0/gnx-elements.js"></script>
-            <script type="text/javascript">
-                let elem = document.querySelector('gnx-summary');
-                elem.variantId = {
-                    ref: '{{variant.ref}}',
-                    alt: '{{variant.alt}}',
-                    chr: '{{variant.chr}}',
-                    pos: '{{variant.pos}}',
-                };
-            </script> -->
-
+            <gnx-summary [variantId]="variantId" ></gnx-summary>
         </div>
 
     </ng-template>

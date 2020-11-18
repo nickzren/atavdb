@@ -24,12 +24,13 @@
     "datatables.net-buttons-dt": "^1.6.4",
     "datatables.net-dt": "^1.10.20",
     "jquery": "^3.4.1",
+    "npm-check-updates": "^10.2.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.7",
+    "@angular-devkit/build-angular": "^0.900.7",
     "@angular/cli": "~9.0.7",
     "@angular/compiler-cli": "~9.0.7",
     "@angular/language-service": "~9.0.7",
