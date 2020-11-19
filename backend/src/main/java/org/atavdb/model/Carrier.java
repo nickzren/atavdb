@@ -1,5 +1,6 @@
 package org.atavdb.model;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.atavdb.global.Data;
 import org.atavdb.global.Enum.FILTER;
 import org.atavdb.global.Enum.GT;
@@ -11,6 +12,8 @@ import org.atavdb.util.MathManager;
  *
  * @author nick
  */
+@JsonPropertyOrder({"experimentId", "availableControlUse", "gender", "phenotype", "ancestry", 
+    "gtstr", "dp", "dpbin", "percAltRead", "gq", "filter"})
 public class Carrier extends NonCarrier {
     
     Sample sample;

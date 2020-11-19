@@ -35,6 +35,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 });
     }
 
+    // for frontend local testing
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")

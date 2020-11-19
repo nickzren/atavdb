@@ -1,5 +1,6 @@
 package org.atavdb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.atavdb.global.Data;
 import org.atavdb.global.Enum.GT;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class NonCarrier {
         }
     }
 
+    @JsonIgnore
     public int getSampleId() {
         return sampleId;
     }
@@ -68,6 +70,7 @@ public class NonCarrier {
         }
     }
 
+    @JsonIgnore
     public boolean isValid() {
         return gt != GT.NA.value();
     }

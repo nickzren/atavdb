@@ -1,5 +1,6 @@
 package org.atavdb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.atavdb.global.Data;
 import java.sql.ResultSet;
 import org.atavdb.util.FormatManager;
@@ -11,12 +12,12 @@ import org.atavdb.util.MathManager;
  */
 public class Annotation {
 
-    public String effect;
-    public String geneName;
-    public int stableId;
-    public String HGVS_c;
-    public String HGVS_p;
-    public float polyphenHumdiv = Data.FLOAT_NA;
+    private String effect;
+    private String geneName;
+    private int stableId;
+    private String HGVS_c;
+    private String HGVS_p;
+    private float polyphenHumdiv = Data.FLOAT_NA;
 
     public static final int TRANSCRIPT_LENGTH = 15;
 
@@ -72,6 +73,11 @@ public class Annotation {
 
     public String getPolyphen() {
         return getPrediction(polyphenHumdiv, effect);
+    }
+    
+    @JsonIgnore
+    public float getPolyphenHumdiv() {
+        return polyphenHumdiv;
     }
 
     private String getPrediction(float score, String effect) {

@@ -23,6 +23,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 @JsonAutoDetect(fieldVisibility = Visibility.PUBLIC_ONLY)
 @JsonInclude(Include.NON_NULL)
+@JsonPropertyOrder({"variantIdStr", "variantIdStr2", "chr", "pos", "ref", "alt",
+    "consequence", "effect", "geneName", "ac", "an", "af", "ns", "nhom", "maxEAF",
+    "allAnnotation",
+    "exAC", "genomeAsia", "gnomADExome", "gnomADGenome", "gme", "iranome", "topMed",
+    "genderCount", "ancestryCount", "carriers"})
 public class Variant {
 
     private int variantId;
@@ -195,17 +200,17 @@ public class Variant {
     public void update(Annotation annotation) {
         if (isValid) {
             if (effect.isEmpty()) { // init most damaging effect annotations
-                effect = annotation.effect;
-                HGVS_c = annotation.HGVS_c;
-                HGVS_p = annotation.HGVS_p;
-                geneName = annotation.geneName;
+                effect = annotation.getEffect();
+                HGVS_c = annotation.getHGVS_c();
+                HGVS_p = annotation.getHGVS_p();
+                geneName = annotation.getGeneName();
             }
 
             if (annotationList != null) {
                 annotationList.add(annotation);
             }
 
-            polyphenHumdiv = MathManager.max(polyphenHumdiv, annotation.polyphenHumdiv);
+            polyphenHumdiv = MathManager.max(polyphenHumdiv, annotation.getPolyphenHumdiv());
         }
     }
 
@@ -219,14 +224,6 @@ public class Variant {
 
     public String getConsequence() {
         return HGVS_p.equals(Data.STRING_NA) ? HGVS_c : HGVS_p;
-    }
-
-    public String getHGVS_c() {
-        return HGVS_c;
-    }
-
-    public String getHGVS_p() {
-        return HGVS_p;
     }
 
     public String getGeneName() {
@@ -313,12 +310,12 @@ public class Variant {
                 } else {
                     countGeno(carrier.getGT());
                     countGenderAncestry(carrier.getGT(), sample);
-                    
+
                     // hack here - require code refactoring
-                    if(!filter.isIsAuthorized() && filter.isQueryVariant()) {
+                    if (!filter.isIsAuthorized() && filter.isQueryVariant()) {
                         sample.setExperimentId(Data.INTEGER_NA);
                     }
-                    
+
                     carrier.setSample(sample);
                 }
             } else if (noncarrier != null) {
