@@ -19,7 +19,7 @@ public class ExternalDataManager {
     private static final String GNOMAD_GENOME_TABLE = "gnomad_2_1.genome_variant_chr";
     private static final String GME_TABLE = "gme.variant";
     private static final String IRANOME_TABLE = "iranome.variant";
-    private static final String IGMAF_TABLE = "igm_af.variant_111320";
+    private static final String IGMAF_TABLE = "igm_af.variant_112320";
     private static final String IGMAF_SUBSET_TABLE = "igm_af.variant_subset_111320";
     private static final String TOPMED_TABLE = "topmed.variant_chr";
 
