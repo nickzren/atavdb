@@ -29,7 +29,7 @@ public class SampleManager {
         SearchFilter filter = new SearchFilter();
         filter.setPhenotype("");
 
-        // init for public vailable samples
+        // init for public available samples
         filter.setIsAvailableControlUseOnly(true);
         initAllSampleFromDB(filter);
 
@@ -44,6 +44,8 @@ public class SampleManager {
             initAllSampleFromDB(filter);
 
             // trigger to clear cached data when sample count mismatch
+            System.out.println(getCurrentDate(filter) + " Clear cached data"
+                    + ", is available control: " + filter.isAvailableControlUseOnly());
             VariantManager.clearCachedData(filter);
         }
     }
