@@ -1,0 +1,31 @@
+a.brand-link {
+    font-weight: bold; 
+    font-size: 25px; 
+    color: black;
+    text-decoration: none;
+    cursor: pointer
+}
+
+a.home-link {
+    font-size: 15px; 
+    color: #337ab7;
+    cursor: pointer
+}
+
+a.home-link:hover {
+    text-decoration: none;
+    background-color: #eee;
+}
+
+.page-header {
+    float: left;
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    font-size: 200%;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+}
