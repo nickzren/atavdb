@@ -43,9 +43,9 @@ public class DBManager {
         dbPassword = System.getenv("DB_PASSWORD");
 
         // local config without tomcat
-//        dbUrl = "jdbc:mysql://localhost:3306/WalDB?serverTimezone=UTC";
-//        dbUser = "test";
-//        dbPassword = "test";
+//        dbUrl = "jdbc:mysql://127.0.0.1:3306/atavdb?serverTimezone=UTC";
+//        dbUser = "atavdb";
+//        dbPassword = "atavdb";
     }
 
     private static void initDataSource() throws ClassNotFoundException {
