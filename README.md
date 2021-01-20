@@ -4,6 +4,12 @@ The ATAV data browser is a web user interface that allows everyone within the ne
 
 If you would like to use the ATAV data browser, it hosted at http://atavdb.org/
 
+#### ATAV Components:
+* [ATAV Command Line Tool](https://github.com/nickzren/atav)
+* [ATAV Data Broswer](https://github.com/nickzren/atavdb)
+* [ATAV Database](https://github.com/nickzren/atav-database)
+* [ATAV Paper](https://www.biorxiv.org/content/10.1101/2020.06.08.136507v3)
+
 Demo
 ------------
 ![Alt Text](https://i.gyazo.com/ac8a251f36f42b4f0fe9d3b0d917eb7c.gif)
