@@ -8,10 +8,12 @@ ATAV data browser API (backend/server-side).
 cd backend
 mvn clean install
 
-# copy compiled jar file to production server
+# export environment variables to set database connection
 export DB_URL="jdbc:mysql://URL:PORT/atavdb?serverTimezone=UTC"
 export DB_USER="atavdb"
 export DB_PASSWORD="atavdb"
+
+# run
 java -jar target/atavdb-1.0.jar
 ```
 
