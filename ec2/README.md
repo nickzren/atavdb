@@ -1,4 +1,4 @@
-# ATAV Database AWS EC2
+# ATAV Data Browser AWS EC2
 
 The instruction of AWS EC2 setup for ATAV data browser.
 
