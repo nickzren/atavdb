@@ -35,7 +35,7 @@ sudo yum install java-1.8.0-openjdk-devel -y
 export JAVA_HOME=/usr
 ```
 
-## Install NPM (Node Package Manager)  
+#### Install NPM (Node Package Manager)  
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
 . ~/.nvm/nvm.sh
