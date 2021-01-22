@@ -1,0 +1,29 @@
+<div class="container">
+    <h3 class="page-header">REST API</h3>
+
+    <p class="lead">
+        ATAVDB provides a REST API that users can programmatically query for variant information using variant, gene, or region search options. The API returns results in JSON format.
+    </p>
+
+    <br />
+
+    <h4><i class="fas fa-cog"></i> API Examples</h4>
+    
+    <br />
+    
+    <p class="font-weight-bold">Query by variant:</p>
+    <p><span class="text-success">GET</span> /api/variant/<var>chr-pos-ref-alt</var></p>
+    <p><code><a href="http://atavdb.org/api/variant/21-33040861-G-C" target="_blank">http://atavdb.org/api/variant/21-33040861-G-C</a></code></p>
+    
+    <br />
+    
+    <p class="font-weight-bold">Query by gene:</p>
+    <p><span class="text-success">GET</span> /api/gene/<var>hgnc_gene_name</var></p>
+    <p><code><a href="http://atavdb.org/api/gene/TBK1" target="_blank">http://atavdb.org/api/gene/TBK1</a></code></p>
+
+    <br />
+
+    <p class="font-weight-bold">Query by region:</p>
+    <p><span class="text-success">GET</span> /api/region/<var>chr:start-end</var></p>
+    <p><code><a href="http://atavdb.org/api/region/2:166892071-166893071" target="_blank">http://atavdb.org/api/region/2:166892071-166893071</a></code></p>
+</div>
