@@ -11,6 +11,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { RestAPIComponent } from './components/restapi/restapi.component';
+import { FAQComponent } from './components/faq/faq.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { AboutComponent } from './components/about/about.component';
 import { TermsComponent } from './components/terms/terms.component';
@@ -27,6 +28,7 @@ import { RegionComponent } from './components/region/region.component';
     FooterComponent,
     HomeComponent,
     RestAPIComponent,
+    FAQComponent,
     ContactComponent,
     AboutComponent,
     TermsComponent,

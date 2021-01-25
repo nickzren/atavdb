@@ -13,15 +13,15 @@ export class SampleCountService {
     private http: HttpClient) {
   }
 
-  get(phenotype: string, isPublicAvailable: string): Observable<any> {
+  get(phenotype: string, isPubliclyAvailable: string): Observable<any> {
     let url = `${environment.apiUrl}/sample-count/`;
     let params = new HttpParams();
 
     if (phenotype) {
       params = params.append('phenotype', phenotype);
     }
-    if (isPublicAvailable) {
-      params = params.append('isPublicAvailable', isPublicAvailable);
+    if (isPubliclyAvailable) {
+      params = params.append('isPubliclyAvailable', isPubliclyAvailable);
     }
 
     return this.http.get(url, { params: params });

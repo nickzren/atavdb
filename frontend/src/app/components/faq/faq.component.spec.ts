@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RestAPIComponent } from './restapi.component';
+import { FAQComponent } from './faq.component';
 
-describe('RestAPIComponent', () => {
-  let component: RestAPIComponent;
-  let fixture: ComponentFixture<RestAPIComponent>;
+describe('FaqComponent', () => {
+  let component: FAQComponent;
+  let fixture: ComponentFixture<FAQComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RestAPIComponent ]
+      declarations: [ FAQComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RestAPIComponent);
+    fixture = TestBed.createComponent(FAQComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

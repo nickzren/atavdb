@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestSampleCountController {
 
     @GetMapping("/sample-count")
-    public ResponseEntity<String> index(String phenotype,String isPublicAvailable) throws Exception {
-        SearchFilter filter = new SearchFilter(null, phenotype, null, null, null, isPublicAvailable);
+    public ResponseEntity<String> index(String phenotype,String isPubliclyAvailable) throws Exception {
+        SearchFilter filter = new SearchFilter(null, phenotype, null, null, null, isPubliclyAvailable);
         SampleManager.init(filter);
         int sampleCount = SampleManager.getTotalSampleNum(filter);
         

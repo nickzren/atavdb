@@ -83,7 +83,7 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
       this.route.snapshot.queryParams['maf'],
       this.route.snapshot.queryParams['isHighQualityVariant'],
       this.route.snapshot.queryParams['isUltraRareVariant'],
-      this.route.snapshot.queryParams['isPublicAvailable']).subscribe(
+      this.route.snapshot.queryParams['isPubliclyAvailable']).subscribe(
       data => {
         this.variant = Object.values(data)[0];
 

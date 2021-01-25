@@ -75,10 +75,10 @@
 
                 <div class="col-md-auto form-group">
                     <div class="custom-control custom-switch" data-toggle="tooltip"
-                        title="Available as control used samples in sequenceDB">
-                        <input [attr.disabled]="loading ? true : null" formControlName="isPublicAvailable"
-                            type="checkbox" class="custom-control-input" id="check-public-available" [ngModel]="isPublicAvailable">
-                        <label class="custom-control-label" for="check-public-available">Public Available Sample</label>
+                        title="These are samples that due to their consent can be used as controls for other studies at the IGM. Selecting this option (default for anonymous/public users) will limit all displayed data to these samples only">
+                        <input [attr.disabled]="loading ? true : null" formControlName="isPubliclyAvailable"
+                            type="checkbox" class="custom-control-input" id="check-publicly-available" [ngModel]="isPubliclyAvailable">
+                        <label class="custom-control-label" for="check-publicly-available">Publicly Available Sample</label>
                     </div>
                 </div>
             </div>

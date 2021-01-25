@@ -1,0 +1,210 @@
+<div class="container">
+    <h3 class="page-header">Frequently Asked Questions</h3>
+
+    <br />
+
+    <p class="font-weight-bold">
+        What does signing in do?
+    </p>
+    <p>
+        Employees at Columbia University Irving Medical Center can log in using their MC account to get access to data for all (public and non-public) samples. 
+        Approved IGM affiliates can view the anonymized IGM IDs for samples and, if they are within the secured network, access additional information about the samples.
+    </p>
+
+    <br />
+
+    <p class="font-weight-bold">
+        What are “Publicly Available Samples”? 
+    </p>
+    <p>
+        These are samples whose consent agreement allowed them to be used as controls for other studies at the IGM. 
+        Signed-in users can turn off this option to view data from all samples. Anonymous/public users are restricted to data from these samples. 
+    </p>
+
+    <br />
+
+    <p class="font-weight-bold">
+        What does the “High Quality Variant” filter do? 
+    </p>
+    <p>
+        This restricts results to variants that pass the following filters: coverage >= 10x, 
+        genotype quality (GQ) score >= 20, 
+        strand odds ratio (SOR) score for SNVs <= 3, 
+        strand odds ratio (SOR) score for Indels <= 10, 
+        fisher strand (FS) score for SNVs of <= 60, 
+        fisher strand (FS) score for Indels <= 200, 
+        RMS mapping quality (MQ) score >=  40, 
+        quality by depth (QD) score >=  2, 
+        quality score (QUAL) of >=  50, 
+        read position rank sum (RPRS) score <= -3, 
+        mapping quality rank sum (MQRS) score of >= -10, 
+        and GATK Variant Quality Score Recalibration filter (Filter) “PASS”, 
+        “VQSRTrancheSNP90.00to99.00” (likely), 
+        or “VQSRTrancheSNP99.00to99.90” (intermediate). 
+        Searches for genes or genomic regions have these filters applied by default.
+    </p>
+
+    <br />
+
+    <p class="font-weight-bold">
+        What does the “Ultra Rare Variant” filter do? 
+    </p>
+    <p>
+        This restricts results to variants that are absent in all queried external databases. 
+        Specifically, the variants’ allele frequencies (AFs) must be 0, 1 (if the reference allele is actually the minor allele), 
+        or NA. ATAVDB currently queries the following databases: ExAC, gnomAD Exome, gnomAD Genome, Genome Asia, GME Variome, Iranome, and TOPMED.
+    </p>
+
+    <br />
+
+    <p class="font-weight-bold">
+        Which version of the human reference genome is ATAVDB data based on?
+    </p>
+    <p>
+        ATAVDB currently supports hg19. Future updates will include a version for GRCh38.
+    </p>
+
+    <br />
+
+    <p class="font-weight-bold">
+        What do the columns in the output mean? 
+    </p>
+
+    <table class="table table-sm table-hover">
+        <thead>
+            <tr class="d-flex">
+                <th class="col-3">Column Names</th>
+                <th class="col-9">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="d-flex">
+                <td class="col-sm-3">Variant ID</td>
+                <td class="col-sm-9">chr-pos-ref-alt</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">AC</td>
+                <td class="col-sm-9">Allele Acount</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">AN</td>
+                <td class="col-sm-9">Allele Number (total number of alleles)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">AF</td>
+                <td class="col-sm-9">Allele Frequency</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">NS</td>
+                <td class="col-sm-9">Number of samples having data</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">maxEAF</td>
+                <td class="col-sm-9">Maximum external allele frequency (ExAC, Genome Asia, gnomAD Exome, gnomAD Genome, GME Variome, Iranome, TOPMED)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Consequence</td>
+                <td class="col-sm-9">HGVS_p or HGVS_c</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Effect</td>
+                <td class="col-sm-9">Consequence type of this variation</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Gene</td>
+                <td class="col-sm-9">HGNC gene</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Transcript</td>
+                <td class="col-sm-9">Ensemble transcript stable id</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">HGVS_c</td>
+                <td class="col-sm-9">HGVS coding sequence name</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">HGVS_p</td>
+                <td class="col-sm-9">HGVS protein sequence name</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">PolyPhen</td>
+                <td class="col-sm-9">PolyPhen-2 HumDiv Classification for missense variants</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">ExAC</td>
+                <td class="col-sm-9">ExAC global allele frequency (version 0.3)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Genome Asia</td>
+                <td class="col-sm-9">Genome Asia allele frequency (version 2020-02-19)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">gnomAD Exome</td>
+                <td class="col-sm-9">gnomAD Exome global allele frequency (version 2.1)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">gnomAD Genome</td>
+                <td class="col-sm-9">gnomAD Genome global allele frequency (version 2.1)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">GME Variome</td>
+                <td class="col-sm-9">GME Variome allele frequency (version 2016-09-18)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Iranome</td>
+                <td class="col-sm-9">Iranome allele frequency (version 2020-02-24)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">TOPMED</td>
+                <td class="col-sm-9">TOPMED allele frequency (version Freeze3a hg19)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Publicly Available</td>
+                <td class="col-sm-9">The sample can be used as a control sample at the IGM (see details above)</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Gender</td>
+                <td class="col-sm-9">Male, female, ambiguous or NA. Determined from the X:Y sequencing coverage ratio.</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Phenotype</td>
+                <td class="col-sm-9">Phenotype selected from a curated set of options: 
+                    amyotrophic lateral sclerosis, autoimmune disease, bone disease, 
+                    brain malformation, cancer, cardiovascular disease, congenital disorder, 
+                    control, control mild neuropsychiatric disease, covid-19, dementia, 
+                    dermatological disease, diseases that affect the ear, endocrine disorder, 
+                    epilepsy, febrile seizures, fetal ultrasound anomaly, gastrointestinal disease, 
+                    healthy family member, hematological disease, infectious disease, intellectual disability, 
+                    kidney and urological disease, liver disease, metabolic disease, neurodegenerative, nonhuman, 
+                    obsessive compulsive disorder, ophthalmic disease, other, other neurodevelopmental disease, 
+                    other neurological disease, other neuropsychiatric disease, primary immune deficiency, 
+                    pulmonary disease, schizophrenia, sudden death, alzheimers disease, cerebral palsy</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Ancestry</td>
+                <td class="col-sm-9">Predicted Ancestry (>= 0.5) based on IGM bioinformatics pipeline</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">GT</td>
+                <td class="col-sm-9">Genotype. Either heterozygous or homozygous</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">DP</td>
+                <td class="col-sm-9">Coverage</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">Percent Alt Read</td>
+                <td class="col-sm-9">Percentage of all the reads at the site that support the alternative allele</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">GQ</td>
+                <td class="col-sm-9">Genotype Quality</td>
+            </tr>
+            <tr class="d-flex">
+                <td class="col-sm-3">FILTER</td>
+                <td class="col-sm-9">GATK Variant Quality Score Recalibration filter: 
+                    PASS->PASS, VQSRTrancheSNP90.00to99.00->LIKELY, VQSRTrancheSNP99.00to99.90->INTERMEDIATE, VQSRTrancheSNP99.90to100.00->FAIL</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -29,7 +29,7 @@ public class SampleManager {
         SearchFilter filter = new SearchFilter();
         filter.setPhenotype("");
 
-        // init for public available samples
+        // init for publicly available samples
         filter.setIsAvailableControlUseOnly(true);
         initAllSampleFromDB(filter);
 
@@ -140,8 +140,8 @@ public class SampleManager {
         return filter.isAvailableControlUseOnly() ? publicAvailableSampleMap : allSampleMap;
     }
     
-    public static HashMap<String, ArrayList<Sample>> getMap(boolean isPublicAvailable) {
-        return isPublicAvailable ? publicAvailableSampleMap : allSampleMap;
+    public static HashMap<String, ArrayList<Sample>> getMap(boolean isPubliclyAvailable) {
+        return isPubliclyAvailable ? publicAvailableSampleMap : allSampleMap;
     }
 
     private static LocalDate getCurrentDate(SearchFilter filter) {

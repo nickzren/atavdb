@@ -29,7 +29,7 @@ export class SearchService {
     maf: string,
     isHighQualityVariant: string,
     isUltraRareVariant: string,
-    isPublicAvailable: string
+    isPubliclyAvailable: string
   ): Observable<any> {
     let url = `${environment.apiUrl}/${queryType}/${query}`;
     let params = new HttpParams();
@@ -54,10 +54,10 @@ export class SearchService {
     }
 
     if (!this.accountService.isAuthenticated()) {
-      isPublicAvailable = 'true';
+      isPubliclyAvailable = 'true';
     }
-    if (isPublicAvailable) {
-      params = params.append('isPublicAvailable', isPublicAvailable);
+    if (isPubliclyAvailable) {
+      params = params.append('isPubliclyAvailable', isPubliclyAvailable);
     }
 
     return this.http.get(url, { params: params });

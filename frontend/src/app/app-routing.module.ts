@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { AboutComponent } from './components/about/about.component';
 import { TermsComponent } from './components/terms/terms.component';
 import { RestAPIComponent } from './components/restapi/restapi.component';
+import { FAQComponent } from './components/faq/faq.component';
 import { ContactComponent } from './components/contact/contact.component';
 import { SigninComponent } from './components/signin/signin.component';
 
@@ -29,6 +30,10 @@ const routes: Routes = [
   {
     path: 'restapi',
     component: RestAPIComponent
+  },
+  {
+    path: 'faq',
+    component: FAQComponent
   },
   {
     path: 'contact',

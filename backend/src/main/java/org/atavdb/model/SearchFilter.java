@@ -54,14 +54,14 @@ public class SearchFilter {
             String maf,
             String isHighQualityVariant,
             String isUltraRareVariant,
-            String isPublicAvailable) throws Exception {
+            String isPubliclyAvailable) throws Exception {
         this.query = query;
         queryType = getQueryType(query);
         this.phenotype = phenotype == null ? "" : phenotype;
         this.maf = getFloat(maf);
         this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equals("true");
         this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equals("true");
-        this.isAvailableControlUseOnly = isPublicAvailable != null && isPublicAvailable.equals("true");
+        this.isAvailableControlUseOnly = isPubliclyAvailable != null && isPubliclyAvailable.equals("true");
     }
 
     public boolean isIsAuthorized() {
@@ -405,7 +405,7 @@ public class SearchFilter {
         return isUltraRareVariant ? "on" : null;
     }
 
-    public String getIsPublicAvailableStr() {
+    public String getisPubliclyAvailableStr() {
         return isAvailableControlUseOnly ? "on" : null;
     }
 

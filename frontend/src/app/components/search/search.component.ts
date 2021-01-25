@@ -20,7 +20,7 @@ export class SearchComponent implements OnInit {
   maf: string;
   isHighQualityVariant: string;
   isUltraRareVariant: string;
-  isPublicAvailable: string;
+  isPubliclyAvailable: string;
 
   searchForm: FormGroup;
   loading = false;
@@ -56,7 +56,7 @@ export class SearchComponent implements OnInit {
       maf: [''],
       isHighQualityVariant: [false],
       isUltraRareVariant: [false],
-      isPublicAvailable: [false]
+      isPubliclyAvailable: [false]
     });
   }
 
@@ -70,7 +70,7 @@ export class SearchComponent implements OnInit {
     this.maf = this.route.snapshot.queryParams['maf'];
     this.isHighQualityVariant = this.route.snapshot.queryParams['isHighQualityVariant'] == 'true' ? 'true' : null;
     this.isUltraRareVariant = this.route.snapshot.queryParams['isUltraRareVariant'] == 'true' ? 'true' : null;
-    this.isPublicAvailable = this.route.snapshot.queryParams['isPublicAvailable'] == 'true' ? 'true' : null;
+    this.isPubliclyAvailable = this.route.snapshot.queryParams['isPubliclyAvailable'] == 'true' ? 'true' : null;
 
     // gene or region search high quality variants only
     if (this.query) {
@@ -85,11 +85,11 @@ export class SearchComponent implements OnInit {
 
     // unauthenticated user only allow search public avaiable data
     if (this.query && !this.accountService.isAuthenticated()) {
-      this.isPublicAvailable = 'true';
+      this.isPubliclyAvailable = 'true';
     }
 
     // init sample count
-    this.sampleCountService.get(this.phenotype, this.isPublicAvailable).subscribe(
+    this.sampleCountService.get(this.phenotype, this.isPubliclyAvailable).subscribe(
       data => {
         this.sampleCount = data.sampleCount;
       });
@@ -115,7 +115,7 @@ export class SearchComponent implements OnInit {
                   maf: this.f.maf.value,
                   isHighQualityVariant: this.f.isHighQualityVariant.value ? true : null,
                   isUltraRareVariant: this.f.isUltraRareVariant.value ? true : null,
-                  isPublicAvailable: this.f.isPublicAvailable.value ? true : null
+                  isPubliclyAvailable: this.f.isPubliclyAvailable.value ? true : null
                 }
               }));
 
