@@ -73,7 +73,7 @@ export DB_PASSWORD="atavdb"
 java -jar $ATAVDB/backend/target/atavdb-1.0.jar
 ```
 
-#### Access in web broswer
+#### Access in web browser
 Add a new rule in your security group to make sure it's accessible.
 Then type in your browser:
 http://ec2-1-1-1-1.compute-1.amazonaws.com:8080/ (fake)
