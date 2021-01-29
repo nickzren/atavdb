@@ -31,8 +31,12 @@ export class SearchService {
     isUltraRareVariant: string,
     isPubliclyAvailable: string
   ): Observable<any> {
-    let url = `${environment.apiUrl}/${queryType}/${query}`;
+    let url = `${environment.apiUrl}/search`;
     let params = new HttpParams();
+
+    if (query) {
+      params = params.append('query', query);
+    }
 
     if (phenotype) {
       params = params.append('phenotype', phenotype);

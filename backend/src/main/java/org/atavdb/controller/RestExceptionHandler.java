@@ -5,6 +5,7 @@ import org.atavdb.exception.DatabaseException;
 import org.atavdb.exception.InvalidSearchException;
 import org.atavdb.exception.NotFoundException;
 import org.atavdb.exception.RegionMaxLimitException;
+import org.atavdb.exception.TooManyRequestException;
 import org.atavdb.exception.UserAccessException;
 import org.atavdb.model.RegionManager;
 import org.atavdb.util.ErrorManager;
@@ -55,5 +56,11 @@ public class RestExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public MessageResponse userAccessException(UserAccessException ex) {
         return new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized access");
+    }
+    
+    @ExceptionHandler(value = {TooManyRequestException.class})
+    @ResponseStatus(HttpStatus.TOO_MANY_REQUESTS)
+    public MessageResponse tooManyRequestException(TooManyRequestException ex) {
+        return new MessageResponse(HttpStatus.TOO_MANY_REQUESTS.value(), HttpStatus.TOO_MANY_REQUESTS.getReasonPhrase());
     }
 }
