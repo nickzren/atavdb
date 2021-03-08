@@ -89,7 +89,8 @@ public class Variant {
         initExternalAF();
 
         if ((filter.isQueryGene() || filter.isQueryRegion())
-                && filter.getPhenotype().isEmpty()) {
+                && filter.getPhenotype().isEmpty()
+                && !ExternalDataManager.isIGMAFEmpty(filter)) {
             // gene/region search on all/public samples
             ExternalDataManager.setIGMAF(this, filter);
         } else {

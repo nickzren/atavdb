@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  *
@@ -19,8 +20,8 @@ public class ExternalDataManager {
     private static final String GNOMAD_GENOME_TABLE = "gnomad_2_1.genome_variant_chr";
     private static final String GME_TABLE = "gme.variant";
     private static final String IRANOME_TABLE = "iranome.variant";
-    private static final String IGMAF_TABLE = "igm_af.variant_112320";
-    private static final String IGMAF_SUBSET_TABLE = "igm_af.variant_subset_111320";
+    private static final String IGMAF_TABLE = "igm_af.variant_030421";
+    private static final String IGMAF_SUBSET_TABLE = "igm_af.variant_subset_030421";
     private static final String TOPMED_TABLE = "topmed.variant_chr";
 
     public static float getExAC(String chr, int pos, String ref, String alt) {
@@ -223,6 +224,29 @@ public class ExternalDataManager {
             preparedStatement.close();
         } catch (SQLException ex) {
         }
+    }
+
+    /*
+        check if IGM AF table has been populated or not
+    */
+    public static boolean isIGMAFEmpty(SearchFilter filter) {
+        try {
+            String table = filter.isAvailableControlUseOnly() ? IGMAF_SUBSET_TABLE : IGMAF_TABLE;
+            String sql = "SELECT * from " + table + " limit 1";
+            Connection connection = DBManager.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            if (rs.next()) {
+                return false;
+            }
+
+            rs.close();
+            statement.close();
+        } catch (SQLException ex) {
+        }
+
+        return true;
     }
 
     public static float getTOPMED(String chr, int pos, String ref, String alt) {
