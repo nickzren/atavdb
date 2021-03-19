@@ -394,7 +394,7 @@ public class SearchFilter {
     }
 
     public String getSampleSQL() {
-        return " sample_finished=1 AND sample_failure=0 AND sample_type!='custom_capture'";
+        return " sample_finished=1 AND sample_failure=0 AND sample_type!='custom_capture' AND low_quality!=1";
     }
 
     public String getIsHighQualityVariantStr() {
