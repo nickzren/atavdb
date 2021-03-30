@@ -14,6 +14,7 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
 
   // hgnc gene name
   query: string;
+  experimentId: string;
 
   // search result
   variants: Array<any>;
@@ -48,7 +49,8 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
         {
           extend: 'csv',
           text: '<i class="fas fa-file-csv"></i> Download',
-          className: 'btn btn-light'
+          className: 'btn btn-light',
+          filename: "gene"
         }
       ]
     };
@@ -63,6 +65,8 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   onSearch() {
+    this.experimentId = this.route.snapshot.queryParams['experimentId'];
+
     this.searchService.search(
       'gene',
       this.query,
@@ -70,7 +74,8 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
       this.route.snapshot.queryParams['maf'],
       this.route.snapshot.queryParams['isHighQualityVariant'],
       this.route.snapshot.queryParams['isUltraRareVariant'],
-      this.route.snapshot.queryParams['isPubliclyAvailable']).subscribe(
+      this.route.snapshot.queryParams['isPubliclyAvailable'],
+      this.experimentId).subscribe(
         data => {
           this.variants = data;
 

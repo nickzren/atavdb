@@ -37,7 +37,7 @@ public class SampleManager {
         filter.setIsAvailableControlUseOnly(false);
         initAllSampleFromDB(filter);
     }
-    
+
     public static void init(SearchFilter filter) throws Exception {
         if (getMap(filter).isEmpty()
                 || checkSampleCount(filter)) {
@@ -138,10 +138,6 @@ public class SampleManager {
 
     public static HashMap<String, ArrayList<Sample>> getMap(SearchFilter filter) {
         return filter.isAvailableControlUseOnly() ? publicAvailableSampleMap : allSampleMap;
-    }
-    
-    public static HashMap<String, ArrayList<Sample>> getMap(boolean isPubliclyAvailable) {
-        return isPubliclyAvailable ? publicAvailableSampleMap : allSampleMap;
     }
 
     private static LocalDate getCurrentDate(SearchFilter filter) {

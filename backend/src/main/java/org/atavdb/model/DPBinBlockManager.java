@@ -88,6 +88,7 @@ public class DPBinBlockManager {
         sqlSB.append(filter.getSampleSQL());
         sqlSB.append(filter.getPhenotypeSQL());
         sqlSB.append(filter.getAvailableControlUseSQL());
+        sqlSB.append(filter.getExperimentIdSQL());
 
         Connection connection = DBManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());

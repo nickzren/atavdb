@@ -21,6 +21,7 @@ export class SearchComponent implements OnInit {
   isHighQualityVariant: string;
   isUltraRareVariant: string;
   isPubliclyAvailable: string;
+  experimentId: string;
 
   searchForm: FormGroup;
   loading = false;
@@ -46,7 +47,7 @@ export class SearchComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private formBuilder: FormBuilder,
-    private accountService: AccountService,
+    public accountService: AccountService,
     private sampleCountService: SampleCountService,
     private searchService: SearchService) {
 
@@ -56,7 +57,8 @@ export class SearchComponent implements OnInit {
       maf: [''],
       isHighQualityVariant: [false],
       isUltraRareVariant: [false],
-      isPubliclyAvailable: [false]
+      isPubliclyAvailable: [false],
+      experimentId: ['']
     });
   }
 
@@ -71,6 +73,7 @@ export class SearchComponent implements OnInit {
     this.isHighQualityVariant = this.route.snapshot.queryParams['isHighQualityVariant'] == 'true' ? 'true' : null;
     this.isUltraRareVariant = this.route.snapshot.queryParams['isUltraRareVariant'] == 'true' ? 'true' : null;
     this.isPubliclyAvailable = this.route.snapshot.queryParams['isPubliclyAvailable'] == 'true' ? 'true' : null;
+    this.experimentId = this.route.snapshot.queryParams['experimentId'];
 
     // gene or region search high quality variants only
     if (this.query) {
@@ -115,7 +118,8 @@ export class SearchComponent implements OnInit {
                   maf: this.f.maf.value,
                   isHighQualityVariant: this.f.isHighQualityVariant.value ? true : null,
                   isUltraRareVariant: this.f.isUltraRareVariant.value ? true : null,
-                  isPubliclyAvailable: this.f.isPubliclyAvailable.value ? true : null
+                  isPubliclyAvailable: this.f.isPubliclyAvailable.value ? true : null,
+                  experimentId: this.f.experimentId.value
                 }
               }));
 

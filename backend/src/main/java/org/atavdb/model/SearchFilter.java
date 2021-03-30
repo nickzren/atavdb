@@ -21,6 +21,7 @@ public class SearchFilter {
     private boolean isUltraRareVariant;
     private boolean isAvailableControlUseOnly;
     private boolean isAuthorized = false;
+    private int experimentId;
 
     // system default
     private final static int minVarPresent = 1;
@@ -54,7 +55,8 @@ public class SearchFilter {
             String maf,
             String isHighQualityVariant,
             String isUltraRareVariant,
-            String isPubliclyAvailable) throws Exception {
+            String isPubliclyAvailable,
+            String experimentId) throws Exception {
         this.query = query;
         queryType = getQueryType(query);
         this.phenotype = phenotype == null ? "" : phenotype;
@@ -62,12 +64,13 @@ public class SearchFilter {
         this.isHighQualityVariant = isHighQualityVariant != null && isHighQualityVariant.equals("true");
         this.isUltraRareVariant = isUltraRareVariant != null && isUltraRareVariant.equals("true");
         this.isAvailableControlUseOnly = isPubliclyAvailable != null && isPubliclyAvailable.equals("true");
+        this.experimentId = getInt(experimentId);
     }
 
     public boolean isIsAuthorized() {
         return isAuthorized;
     }
-    
+
     public void setIsAuthorized(boolean isAuthorized) {
         this.isAuthorized = isAuthorized;
     }
@@ -88,6 +91,22 @@ public class SearchFilter {
         if (!phenotype.isEmpty()) {
             sj.add(phenotype);
         }
+    }
+
+    public int getExperimentId() {
+        return experimentId;
+    }
+
+    public String getExperimentIdSQL() {
+        return experimentId == Data.NO_FILTER ? "" : " AND experiment_id =" + experimentId;
+    }
+
+    public boolean isExperimentIdValid(int value) {
+        if (experimentId == Data.NO_FILTER) {
+            return true;
+        }
+
+        return experimentId == value;
     }
 
     public void setIsAvailableControlUseOnly(boolean isAvailableControlUseOnly) {
@@ -120,6 +139,14 @@ public class SearchFilter {
     private static float getFloat(String value) {
         try {
             return Float.parseFloat(value);
+        } catch (Exception e) {
+            return Data.NO_FILTER;
+        }
+    }
+
+    private static int getInt(String value) {
+        try {
+            return Integer.parseInt(value);
         } catch (Exception e) {
             return Data.NO_FILTER;
         }
@@ -194,6 +221,10 @@ public class SearchFilter {
         return queryType.equals(QUERT_TYPE[3]);
     }
 
+    public boolean isQueryByExperimentId() {
+        return experimentId != Data.NO_FILTER;
+    }
+    
     public boolean isMAFValid(float value) {
         if (maf == Data.NO_FILTER) {
             return true;

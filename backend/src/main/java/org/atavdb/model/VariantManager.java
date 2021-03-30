@@ -26,8 +26,8 @@ public class VariantManager {
     public static ArrayList<Variant> getVariantList(SearchFilter filter, ModelAndView mv) throws Exception {
         ArrayList<Variant> list = new ArrayList<>();
 
-        // cache results for gene or region search
-        if (filter.isQueryGene() || filter.isQueryRegion()) {
+        // cache results for gene or region search and not search by experiment id
+        if ((filter.isQueryGene() || filter.isQueryRegion()) && !filter.isQueryByExperimentId()) {
             String queryIdentifier = filter.getQueryIdentifier();
             list = getCachedVariantMap(filter).getOrDefault(queryIdentifier, list);
             if (list.isEmpty()) {
@@ -110,7 +110,7 @@ public class VariantManager {
 
         rs.close();
         preparedStatement.close();
-
+        
         // cached data does not apply max af and ultra filters
         return applyFilter(filter, list);
     }

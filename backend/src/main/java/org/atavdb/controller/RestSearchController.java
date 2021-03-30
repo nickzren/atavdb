@@ -44,7 +44,7 @@ public class RestSearchController {
 
     @GetMapping("/querytype")
     public ResponseEntity<String> querytype(String query) throws Exception {
-        SearchFilter filter = new SearchFilter(query, null, null, null, null, null);
+        SearchFilter filter = new SearchFilter(query, null, null, null, null, null, null);
 
         if (filter.isQueryValid()) {
             return ResponseEntity.ok()
@@ -63,9 +63,17 @@ public class RestSearchController {
             String isHighQualityVariant,
             String isUltraRareVariant,
             String isPubliclyAvailable,
+            String experimentId,
             HttpSession session) throws Exception {
-        SearchFilter filter = new SearchFilter(query, phenotype, maf,
-                isHighQualityVariant, isUltraRareVariant, isPubliclyAvailable);
+        
+        SearchFilter filter = new SearchFilter(
+                query, 
+                phenotype, 
+                maf,
+                isHighQualityVariant, 
+                isUltraRareVariant, 
+                isPubliclyAvailable,
+                experimentId);
 
         // authorized users can view expriment id
         if (session.getAttribute("authorizedUser") != null) {
@@ -94,39 +102,84 @@ public class RestSearchController {
     }
 
     @GetMapping("/variant/{variant}")
-    public Collection<Variant> variant(@PathVariable String variant, String phenotype, String maf,
-            String isHighQualityVariant, String isUltraRareVariant, String isPubliclyAvailable,
-            HttpSession session, HttpServletRequest request) throws Exception {
+    public Collection<Variant> variant(
+            @PathVariable String variant,
+            String phenotype,
+            String maf,
+            String isHighQualityVariant,
+            String isUltraRareVariant,
+            String isPubliclyAvailable,
+            String experimentId,
+            HttpSession session,
+            HttpServletRequest request) throws Exception {
         String id = "variant" + request.getRemoteAddr();
 
         if (checkLimit(id, VARIANT_API_CAPACITY)) {
-            return search(variant, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPubliclyAvailable, session);
+            return search(
+                    variant,
+                    phenotype,
+                    maf,
+                    isHighQualityVariant,
+                    isUltraRareVariant,
+                    isPubliclyAvailable,
+                    experimentId,
+                    session);
         } else {
             throw new TooManyRequestException();
         }
     }
 
     @GetMapping("/gene/{gene}")
-    public Collection<Variant> gene(@PathVariable String gene, String phenotype, String maf,
-            String isHighQualityVariant, String isUltraRareVariant, String isPubliclyAvailable,
-            HttpSession session, HttpServletRequest request) throws Exception {
+    public Collection<Variant> gene(
+            @PathVariable String gene,
+            String phenotype,
+            String maf,
+            String isHighQualityVariant,
+            String isUltraRareVariant,
+            String isPubliclyAvailable,
+            String experimentId,
+            HttpSession session,
+            HttpServletRequest request) throws Exception {
         String id = "gene" + request.getRemoteAddr();
 
         if (checkLimit(id, GENE_API_CAPACITY)) {
-            return search(gene, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPubliclyAvailable, session);
+            return search(
+                    gene,
+                    phenotype,
+                    maf,
+                    isHighQualityVariant,
+                    isUltraRareVariant,
+                    isPubliclyAvailable,
+                    experimentId,
+                    session);
         } else {
             throw new TooManyRequestException();
         }
     }
 
     @GetMapping("/region/{region}")
-    public Collection<Variant> region(@PathVariable String region, String phenotype, String maf,
-            String isHighQualityVariant, String isUltraRareVariant, String isPubliclyAvailable,
-            HttpSession session, HttpServletRequest request) throws Exception {
+    public Collection<Variant> region(
+            @PathVariable String region,
+            String phenotype,
+            String maf,
+            String isHighQualityVariant,
+            String isUltraRareVariant,
+            String isPubliclyAvailable,
+            String experimentId,
+            HttpSession session,
+            HttpServletRequest request) throws Exception {
         String id = "region" + request.getRemoteAddr();
 
         if (checkLimit(id, REGION_API_CAPACITY)) {
-            return search(region, phenotype, maf, isHighQualityVariant, isUltraRareVariant, isPubliclyAvailable, session);
+            return search(
+                    region,
+                    phenotype,
+                    maf,
+                    isHighQualityVariant,
+                    isUltraRareVariant,
+                    isPubliclyAvailable,
+                    experimentId,
+                    session);
         } else {
             throw new TooManyRequestException();
         }

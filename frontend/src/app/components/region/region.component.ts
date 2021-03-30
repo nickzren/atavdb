@@ -14,6 +14,7 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
 
   // chr:start-end
   query: string;
+  experimentId: string;
 
   // search result
   variants: Array<any>;
@@ -47,7 +48,8 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
         {
           extend: 'csv',
           text: '<i class="fas fa-file-csv"></i> Download',
-          className: 'btn btn-light'
+          className: 'btn btn-light',
+          filename: "region"
         }
       ]
     };
@@ -62,6 +64,8 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   onSearch() {
+    this.experimentId = this.route.snapshot.queryParams['experimentId'];
+
     this.searchService.search(
       'region',
       this.query,
@@ -69,7 +73,8 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
       this.route.snapshot.queryParams['maf'],
       this.route.snapshot.queryParams['isHighQualityVariant'],
       this.route.snapshot.queryParams['isUltraRareVariant'],
-      this.route.snapshot.queryParams['isPubliclyAvailable']).subscribe(
+      this.route.snapshot.queryParams['isPubliclyAvailable'],
+      this.route.snapshot.queryParams['experimentId']).subscribe(
       data => {
         this.variants = data;
 

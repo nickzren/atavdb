@@ -58,11 +58,11 @@
                     <div class="custom-control custom-switch" data-toggle="tooltip" title="DP_bin >= 10; GQ >= 20; SNV-SOR <= 3; INDEL-SOR <= 10; 
                              SNV-FS <= 60; INDEL-FS <= 200; MQ >= 40; QD >= 5; Qual >= 50; RPRS >= -3; 
                              MQRS >= -10; FILTER = PASS or LIKELY or INTERMEDIATE">
-                        <input [attr.disabled]="loading ? true : null" formControlName="isHighQualityVariant" [ngModel]="isHighQualityVariant"
-                            type="checkbox" class="custom-control-input" id="check-high-quality-variant">
+                        <input [attr.disabled]="loading ? true : null" formControlName="isHighQualityVariant"
+                            [ngModel]="isHighQualityVariant" type="checkbox" class="custom-control-input" id="check-high-quality-variant">
                         <label class="custom-control-label" for="check-high-quality-variant">High Quality Variant</label>
                     </div>
-                </div>                
+                </div>
 
                 <div class="col-md-auto form-group">
                     <div class="custom-control custom-switch" data-toggle="tooltip"
@@ -79,6 +79,14 @@
                         <input [attr.disabled]="loading ? true : null" formControlName="isPubliclyAvailable"
                             type="checkbox" class="custom-control-input" id="check-publicly-available" [ngModel]="isPubliclyAvailable">
                         <label class="custom-control-label" for="check-publicly-available">Publicly Available Sample</label>
+                    </div>
+                </div>
+
+                <div *ngIf="accountService.isAuthorized()" class="col-md-auto form-group">
+                    <div data-toggle="tooltip" title="Search variants by Experiment ID">
+                        <label>Experiment ID:</label>
+                        <input [(ngModel)]="experimentId" [attr.disabled]="loading ? true : null" id="experimentId"
+                            formControlName="experimentId" class="form-control" type="text">
                     </div>
                 </div>
             </div>

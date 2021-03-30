@@ -56,6 +56,7 @@ public class CarrierBlockManager {
         sqlSB.append("AND").append(filter.getSampleSQL());
         sqlSB.append(filter.getPhenotypeSQL());
         sqlSB.append(filter.getAvailableControlUseSQL());
+        sqlSB.append(filter.getExperimentIdSQL());
 
         HashMap<Integer, Integer> validVariantCarrierCount = new HashMap<>();
 
@@ -77,7 +78,7 @@ public class CarrierBlockManager {
 
                 validVariantCarrierCount.put(variantId, 0);
             }
-            
+
             carrier.applyQualityFilter(filter, var.isSnv());
 
             carrier.applyQualityFilter(filter, var.isSnv());
@@ -121,6 +122,7 @@ public class CarrierBlockManager {
         sqlSB.append(" AND").append(filter.getSampleSQL());
         sqlSB.append(filter.getPhenotypeSQL());
         sqlSB.append(filter.getAvailableControlUseSQL());
+        sqlSB.append(filter.getExperimentIdSQL());
 
         Connection connection = DBManager.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sqlSB.toString());

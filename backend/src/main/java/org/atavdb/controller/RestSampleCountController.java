@@ -18,7 +18,7 @@ public class RestSampleCountController {
 
     @GetMapping("/sample-count")
     public ResponseEntity<String> index(String phenotype,String isPubliclyAvailable) throws Exception {
-        SearchFilter filter = new SearchFilter(null, phenotype, null, null, null, isPubliclyAvailable);
+        SearchFilter filter = new SearchFilter(null, phenotype, null, null, null, isPubliclyAvailable, null);
         SampleManager.init(filter);
         int sampleCount = SampleManager.getTotalSampleNum(filter);
         

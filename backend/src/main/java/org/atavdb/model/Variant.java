@@ -90,7 +90,8 @@ public class Variant {
 
         if ((filter.isQueryGene() || filter.isQueryRegion())
                 && filter.getPhenotype().isEmpty()
-                && !ExternalDataManager.isIGMAFEmpty(filter)) {
+                && !ExternalDataManager.isIGMAFEmpty(filter)
+                && !filter.isQueryByExperimentId()) {
             // gene/region search on all/public samples
             ExternalDataManager.setIGMAF(this, filter);
         } else {
@@ -98,19 +99,19 @@ public class Variant {
         }
 
         // if not valid
-        // if gene / region search then free non-display data
+        // if gene or region search and not query by experiment id then free non-display data
         if (!isValid
-                || filter.isQueryGene()
-                || filter.isQueryRegion()) {
+                || ((filter.isQueryGene() || filter.isQueryRegion()) && !filter.isQueryByExperimentId())) {
             carrierMap = null;
             genderCount = null;
             ancestryCount = null;
             annotationList = null;
         }
 
-        // if variant search and when af > MAX AF then not display carrier data
+        // if variant search and when af > MAX AF & not query by experiment id then not display carrier data
         if (filter.isQueryVariant()
-                && af > SearchFilter.MAX_AF_TO_DISPLAY_CARRIER) {
+                && af > SearchFilter.MAX_AF_TO_DISPLAY_CARRIER
+                && !filter.isQueryByExperimentId()) {
             carrierMap = null;
         }
     }
@@ -282,7 +283,7 @@ public class Variant {
             CarrierBlockManager.init(this, filter, mv);
 
             carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, mv);
-
+            
             if (carrierMap == null) {
                 carrierMap = new HashMap<>();
                 isValid = false;
@@ -296,36 +297,37 @@ public class Variant {
 
     private void initGTCount(SearchFilter filter) {
         SampleManager.getList(filter).forEach((sample) -> {
-            Carrier carrier = carrierMap.get(sample.getId());
-            NonCarrier noncarrier = noncarrierMap.get(sample.getId());
+            if (filter.isExperimentIdValid(sample.getExperimentId())) {
+                Carrier carrier = carrierMap.get(sample.getId());
+                NonCarrier noncarrier = noncarrierMap.get(sample.getId());
 
-            if (carrier != null) {
-                if (!filter.isMinDpBinValid(carrier.getDPBin())) {
-                    carrier.setGT(GT.NA.value());
-                    carrier.setDPBin(Data.SHORT_NA);
-                }
-
-                if (carrier.getGT() == GT.NA.value()) {
-                    // have to remove it for init Non-carrier map
-                    carrierMap.remove(sample.getId());
-                } else {
-                    countGeno(carrier.getGT());
-                    countGenderAncestry(carrier.getGT(), sample);
-
-                    // hack here - require code refactoring
-                    if (!filter.isIsAuthorized() && filter.isQueryVariant()) {
-                        sample.setExperimentId(Data.INTEGER_NA);
+                if (carrier != null) {
+                    if (!filter.isMinDpBinValid(carrier.getDPBin())) {
+                        carrier.setGT(GT.NA.value());
+                        carrier.setDPBin(Data.SHORT_NA);
                     }
 
-                    carrier.setSample(sample);
-                }
-            } else if (noncarrier != null) {
-                if (!filter.isMinDpBinValid(noncarrier.getDPBin())) {
-                    noncarrier.setGT(GT.NA.value());
-                    noncarrier.setDPBin(Data.SHORT_NA);
-                }
+                    if (carrier.getGT() == GT.NA.value()) {
+                        // have to remove it for init Non-carrier map
+                        carrierMap.remove(sample.getId());
+                    } else {
+                        countGeno(carrier.getGT());
+                        countGenderAncestry(carrier.getGT(), sample);
 
-                countGeno(noncarrier.getGT());
+                        // hack here - require code refactoring
+                        if (!filter.isIsAuthorized()) {
+                            sample.setExperimentId(Data.INTEGER_NA);
+                        }
+                        carrier.setSample(sample);
+                    }
+                } else if (noncarrier != null) {
+                    if (!filter.isMinDpBinValid(noncarrier.getDPBin())) {
+                        noncarrier.setGT(GT.NA.value());
+                        noncarrier.setDPBin(Data.SHORT_NA);
+                    }
+
+                    countGeno(noncarrier.getGT());
+                }
             }
         });
 

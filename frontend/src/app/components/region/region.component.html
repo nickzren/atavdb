@@ -24,6 +24,36 @@
             </div>
 
             <br />
+
+            <div *ngIf="experimentId" class="row">
+                <div class="col">
+                    <h5>Experiment ID: 
+                        <a href="https://sequence.igm.cumc.columbia.edu/search.php?action=viewSample&experiment_id={{experimentId}}"
+                            target="_blank">{{experimentId}}</a>
+                    </h5>
+                </div>
+            </div>
+            <div *ngIf="experimentId" class="row">
+                <div class="col">
+                    <h5>Publicly Available: {{variants[0].carriers[0].availableControlUse}}</h5>
+                </div>
+            </div>
+            <div *ngIf="experimentId" class="row">
+                <div class="col">
+                    <h5>Gender: {{variants[0].carriers[0].gender}}</h5>
+                </div>
+            </div>
+            <div *ngIf="experimentId" class="row">
+                <div class="col">
+                    <h5>Phenotype: {{variants[0].carriers[0].phenotype}}</h5>
+                </div>
+            </div>
+            <div *ngIf="experimentId" class="row">
+                <div class="col">
+                    <h5>Ancestry: {{variants[0].carriers[0].ancestry}}</h5>
+                </div>
+            </div>
+
             <br />
 
             <div class="card">
@@ -45,17 +75,25 @@
                                     </th>
                                     <th class="align-middle" data-toggle="tooltip"
                                         title="HGNC gene for most damaging effect (Ensemble 87)">Gene</th>
-                                    <th class="align-middle" data-toggle="tooltip" title="Allele Acount">AC</th>
-                                    <th class="align-middle" data-toggle="tooltip"
+                                    <th *ngIf="!experimentId" class="align-middle" data-toggle="tooltip" title="Allele Acount">AC</th>
+                                    <th *ngIf="!experimentId" class="align-middle" data-toggle="tooltip"
                                         title="Allele Number (total number of alleles)">AN</th>
-                                    <th class="align-middle" data-toggle="tooltip" title="Allele Frequency">AF</th>
-                                    <th class="align-middle" data-toggle="tooltip"
+                                    <th *ngIf="!experimentId" class="align-middle" data-toggle="tooltip" title="Allele Frequency">AF</th>
+                                    <th *ngIf="!experimentId" class="align-middle" data-toggle="tooltip"
                                         title="Number of samples having data">NS
                                     </th>
-                                    <th class="align-middle" data-toggle="tooltip" title="Number of homozygotes">NHOM
+                                    <th *ngIf="!experimentId" class="align-middle" data-toggle="tooltip" title="Number of homozygotes">NHOM
                                     </th>
                                     <th class="align-middle" data-toggle="tooltip"
                                         title="Maximum External Allele Frequency">maxEAF</th>
+                                    <th *ngIf="experimentId" class="align-middle" data-toggle="tooltip" title="Genotype">GT</th>
+                                    <th *ngIf="experimentId" class="align-middle" data-toggle="tooltip" title="Read Depth">DP</th>
+                                    <th *ngIf="experimentId" class="align-middle" data-toggle="tooltip"
+                                        title="Percentage of all the reads at the site that support the alternative allele">
+                                        Percent Alt Read</th>
+                                    <th *ngIf="experimentId" class="align-middle" data-toggle="tooltip"
+                                        title="GATK Variant Quality Score Recalibration filter: PASS->PASS, VQSRTrancheSNP90.00to99.00->LIKELY, VQSRTrancheSNP99.00to99.90->INTERMEDIATE, VQSRTrancheSNP99.90to100.00->FAIL">
+                                        FILTER</th>
                                 </tr>
                             </thead>
 
@@ -69,12 +107,16 @@
                                     <td class="align-middle">{{variant.consequence}}</td>
                                     <td class="align-middle">{{variant.effect}}</td>
                                     <td class="align-middle">{{variant.geneName}}</td>
-                                    <td class="align-middle">{{variant.ac}}</td>
-                                    <td class="align-middle">{{variant.an}}</td>
-                                    <td class="align-middle">{{variant.af}}</td>
-                                    <td class="align-middle">{{variant.ns}}</td>
-                                    <td class="align-middle">{{variant.nhom}}</td>
+                                    <td *ngIf="!experimentId" class="align-middle">{{variant.ac}}</td>
+                                    <td *ngIf="!experimentId" class="align-middle">{{variant.an}}</td>
+                                    <td *ngIf="!experimentId" class="align-middle">{{variant.af}}</td>
+                                    <td *ngIf="!experimentId" class="align-middle">{{variant.ns}}</td>
+                                    <td *ngIf="!experimentId" class="align-middle">{{variant.nhom}}</td>
                                     <td class="align-middle">{{variant.maxEAF}}</td>
+                                    <td *ngIf="experimentId" class="align-middle">{{variant.carriers[0].gtstr}}</td>
+                                    <td *ngIf="experimentId" class="align-middle">{{variant.carriers[0].dp}}</td>
+                                    <td *ngIf="experimentId" class="align-middle">{{variant.carriers[0].percAltRead}}</td>
+                                    <td *ngIf="experimentId" class="align-middle">{{variant.carriers[0].filter}}</td>
                                 </tr>
                             </tbody>
                         </table>

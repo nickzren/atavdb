@@ -29,7 +29,8 @@ export class SearchService {
     maf: string,
     isHighQualityVariant: string,
     isUltraRareVariant: string,
-    isPubliclyAvailable: string
+    isPubliclyAvailable: string,
+    experimentId: string
   ): Observable<any> {
     let url = `${environment.apiUrl}/search`;
     let params = new HttpParams();
@@ -62,6 +63,10 @@ export class SearchService {
     }
     if (isPubliclyAvailable) {
       params = params.append('isPubliclyAvailable', isPubliclyAvailable);
+    }
+
+    if (experimentId) {
+      params = params.append('experimentId', experimentId);
     }
 
     return this.http.get(url, { params: params });
