@@ -84,11 +84,11 @@ export class SearchComponent implements OnInit {
           }
         }
       )
-    }
 
-    // unauthenticated user only allow search public avaiable data
-    if (this.query && !this.accountService.isAuthenticated()) {
-      this.isPubliclyAvailable = 'true';
+      // unauthenticated user only allow search public avaiable data
+      if (!this.accountService.isAuthenticated()) {
+        this.isPubliclyAvailable = 'true';
+      }
     }
 
     // init sample count

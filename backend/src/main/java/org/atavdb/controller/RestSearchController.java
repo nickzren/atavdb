@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.atavdb.exception.InvalidSearchException;
 import org.atavdb.exception.NotFoundException;
 import org.atavdb.exception.TooManyRequestException;
+import org.atavdb.exception.UnauthorizedException;
 import org.atavdb.model.SearchFilter;
 import org.atavdb.model.Variant;
 import org.atavdb.model.SampleManager;
@@ -78,6 +79,10 @@ public class RestSearchController {
         // authorized users can view expriment id
         if (session.getAttribute("authorizedUser") != null) {
             filter.setIsAuthorized(true);
+        } else {
+            if(filter.isQueryByExperimentId()) {
+                throw new UnauthorizedException();
+            }
         }
 
         // anonymous/unauthenticated users restricted to public only data 

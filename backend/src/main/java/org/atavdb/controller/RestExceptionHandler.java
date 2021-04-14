@@ -6,6 +6,7 @@ import org.atavdb.exception.InvalidSearchException;
 import org.atavdb.exception.NotFoundException;
 import org.atavdb.exception.RegionMaxLimitException;
 import org.atavdb.exception.TooManyRequestException;
+import org.atavdb.exception.UnauthorizedException;
 import org.atavdb.exception.UserAccessException;
 import org.atavdb.model.RegionManager;
 import org.atavdb.util.ErrorManager;
@@ -50,6 +51,12 @@ public class RestExceptionHandler {
     public MessageResponse regionMaxLimitException(RegionMaxLimitException ex) {
         return new MessageResponse(HttpStatus.NOT_ACCEPTABLE.value(), 
                 "Invalid region or exceeds maximum limit " + RegionManager.MAX_SEARCH_LIMIT + " base pair.");
+    }
+    
+    @ExceptionHandler(value = {UnauthorizedException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public MessageResponse UnauthorizedException(UnauthorizedException ex) {
+        return new MessageResponse(HttpStatus.UNAUTHORIZED.value(), "Unauthorized access, login required.");
     }
 
     @ExceptionHandler(value = {UserAccessException.class})

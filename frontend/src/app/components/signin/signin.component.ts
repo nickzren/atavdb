@@ -41,7 +41,7 @@ export class SigninComponent implements OnInit {
   // convenience getter for easy access to form fields
   get f() { return this.signinForm.controls; }
 
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
 
     // stop here if form is invalid
@@ -50,18 +50,14 @@ export class SigninComponent implements OnInit {
     }
 
     this.loading = true;
-    this.accountService
-      .authenticate(this.f.username.value, this.f.password.value)
-      .subscribe(
-        isValid => {
-          if (isValid) {
-            sessionStorage.setItem('authenticated', 'true');
-            this.accountService.authorize(this.f.username.value);
-            this.router.navigate([this.returnUrl]);
-          } else {
-            this.errorMessage = "Invalid CUMC MC account username/password.";
-            this.loading = false;
-          }
-        });
+
+    const isAuthenticated = await this.accountService.authenticate(this.f.username.value, this.f.password.value);
+    if (isAuthenticated) {
+      this.accountService.authorize(this.f.username.value);
+      this.router.navigate([this.returnUrl]);
+    } else {
+      this.errorMessage = "Invalid CUMC MC account username/password.";
+      this.loading = false;
+    }
   }
 }

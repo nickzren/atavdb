@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpParams } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
 
@@ -12,63 +11,55 @@ export class AccountService {
 
   constructor(private http: HttpClient) { }
 
-  init() {
-    this.http.get(`${environment.apiUrl}/authenticated`).toPromise().then(
-      authenticated => {
-        if (authenticated) {
-          sessionStorage.setItem('authenticated', 'true');
-        } else{
-          sessionStorage.removeItem('authenticated');
-        }
-      }
-    );
-
-    this.http.get(`${environment.apiUrl}/authorized`).toPromise().then(
-      authorized => {
-        if (authorized) {
-          sessionStorage.setItem('authorized', 'true');
-        } else{
-          sessionStorage.removeItem('authorized');
-        }
-      }
-    );
+  async reset() {
+    const authenticated = await this.http.get(`${environment.apiUrl}/authenticated`).toPromise();
+    if (!authenticated) {
+      localStorage.clear();
+    }
   }
 
   // verify CUMC MC account
-  authenticate(username: string, password: string) {
+  async authenticate(username: string, password: string) {
     let url = `${environment.apiUrl}/authenticate`;
     let params = new HttpParams();
     params = params.append('username', username);
     params = params.append('password', password);
 
-    return this.http.get<Observable<boolean>>(url, { params: params });
+    const authenticate = await this.http.get<boolean>(url, { params: params }).toPromise();
+
+    if (authenticate) {
+      localStorage.setItem('authenticated', 'true');
+      return true;
+    }
+
+    return false;
   }
 
   // verify sequence account
-  authorize(username: string) {
+  async authorize(username: string) {
     let url = `${environment.apiUrl}/authorize`;
     let params = new HttpParams();
     params = params.append('username', username);
-    this.http.get<Observable<boolean>>(url, { params: params })
-      .subscribe(isValid => {
-        if (isValid) {
-          sessionStorage.setItem('authorized', 'true')
-        }
-      });
+
+    const authorize = await this.http.get<boolean>(url, { params: params }).toPromise();
+
+    if (authorize) {
+      localStorage.setItem('authorized', 'true');
+    }
   }
 
-  isAuthenticated() {
-    return sessionStorage.getItem('authenticated') != null;
+  isAuthenticated(): boolean {
+    return localStorage.getItem('authenticated') != null;
   }
 
-  isAuthorized() {
-    return sessionStorage.getItem('authorized') != null;
+  isAuthorized(): boolean {
+    return localStorage.getItem('authorized') != null;
   }
 
-  signout() {
+  async signout() {
     // signout from backend api
-    this.http.get(`${environment.apiUrl}/signout`).toPromise();
+    await this.http.get(`${environment.apiUrl}/signout`).toPromise();
 
-    sessionStorage.clear();
+    localStorage.clear();
   }
 }
