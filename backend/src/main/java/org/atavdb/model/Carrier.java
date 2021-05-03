@@ -12,10 +12,10 @@ import org.atavdb.util.MathManager;
  *
  * @author nick
  */
-@JsonPropertyOrder({"experimentId", "availableControlUse", "gender", "phenotype", "ancestry", 
+@JsonPropertyOrder({"experimentId", "availableControlUse", "gender", "phenotype", "ancestry",
     "gtstr", "dp", "dpbin", "percAltRead", "gq", "filter"})
 public class Carrier extends NonCarrier {
-    
+
     Sample sample;
     private short dp;
     private short adRef;
@@ -49,7 +49,7 @@ public class Carrier extends NonCarrier {
         mqRankSum = FormatManager.getFloat(rs, "MQRankSum");
         filterValue = FormatManager.getByte(rs, "FILTER+0");
     }
-    
+
     public void setSample(Sample sample) {
         this.sample = sample;
     }
@@ -107,7 +107,7 @@ public class Carrier extends NonCarrier {
     }
 
     public String getGTStr() {
-        return GT.valueOf(gt);        
+        return GT.valueOf(gt);
     }
 
     public int getExperimentId() {
@@ -121,21 +121,19 @@ public class Carrier extends NonCarrier {
     public String getPhenotype() {
         return sample.getBroadPhenotype();
     }
-    
+
     public String getAncestry() {
         return sample.getAncestry().name();
     }
-    
+
     public String getAvailableControlUse() {
         return sample.getAvailableControlUse();
     }
 
-    public void applyQualityFilter(SearchFilter filter, boolean isSnv) {
+    public void applyQualityFilter(SearchFilter filter) {
         if (gt != GT.NA.value()) {
             if (!filter.isFilterValid(filterValue)
                     || !filter.isMinGqValid(gq)
-                    || !filter.isMaxSorValid(sor, isSnv)
-                    || !filter.isMaxFsValid(fs, isSnv)
                     || !filter.isMinMqValid(mq)
                     || !filter.isMinQdValid(qd)
                     || !filter.isMinQualValid(qual)
@@ -145,7 +143,16 @@ public class Carrier extends NonCarrier {
             }
         }
     }
-    
+
+    public void applyQualityFilter(SearchFilter filter, boolean isSnv) {
+        if (gt != GT.NA.value()) {
+            if (!filter.isMaxSorValid(sor, isSnv)
+                    || !filter.isMaxFsValid(fs, isSnv)) {
+                gt = GT.NA.value();
+            }
+        }
+    }
+
     public String getPercAltRead() {
         return FormatManager.getFloat(MathManager.devide(adAlt, dp));
     }

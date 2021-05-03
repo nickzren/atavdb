@@ -81,8 +81,6 @@ public class CarrierBlockManager {
 
             carrier.applyQualityFilter(filter, var.isSnv());
 
-            carrier.applyQualityFilter(filter, var.isSnv());
-
             if (carrier.isValid()) {
                 validVariantCarrierCount.computeIfPresent(variantId, (k, v) -> v + 1);
             }

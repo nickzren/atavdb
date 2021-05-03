@@ -48,8 +48,8 @@ public class DPBinBlockManager {
                 if (carrier != null) {
                     if (carrier.isValid()) {
                         carrier.setDPBin(sampleDPBin.getDPBin(posIndex));
-
                         carrier.applyCoverageFilter(filter);
+                        carrier.applyQualityFilter(filter, var.isSnv());
                     }
                 } else {
                     NonCarrier noncarrier = new NonCarrier(sampleDPBin.getSampleId(), sampleDPBin.getDPBin(posIndex));
@@ -107,8 +107,8 @@ public class DPBinBlockManager {
             if (carrier != null) {                
                 if (carrier.isValid()) {
                     carrier.setDPBin(noncarrier.getDPBin());
-
                     carrier.applyCoverageFilter(filter);
+                    carrier.applyQualityFilter(filter, var.isSnv());
                 }
             } else {
                 noncarrier.applyCoverageFilter(filter);
