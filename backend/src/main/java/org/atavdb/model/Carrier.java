@@ -119,7 +119,7 @@ public class Carrier extends NonCarrier {
     }
 
     public String getPhenotype() {
-        return sample.getBroadPhenotype();
+        return sample.getPhenotype().getName();
     }
 
     public String getAncestry() {

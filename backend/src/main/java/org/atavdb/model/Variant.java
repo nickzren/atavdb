@@ -27,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
     "consequence", "effect", "geneName", "ac", "an", "af", "ns", "nhom", "maxEAF",
     "allAnnotation",
     "exAC", "genomeAsia", "gnomADExome", "gnomADGenome", "gme", "iranome", "topMed",
-    "genderCount", "ancestryCount", "carriers"})
+    "genderCount", "ancestryCount", "phenotypeCount", "carriers"})
 public class Variant {
 
     private int variantId;
@@ -65,6 +65,7 @@ public class Variant {
     private int[] genoCount = new int[3]; // REF, HET, HOM
     private int[] genderCount = new int[4]; // Male, Female, Ambiguous, NA
     private int[] ancestryCount = new int[7]; // African, Caucasian, EastAsian, Hispanic, MiddleEastern, SouthAsian, NA
+    private int[] phenotypeCount = new int[40];  
     private int ac; // allele count
     private int an; // allele number
     private float af; // allele frequency
@@ -344,6 +345,7 @@ public class Variant {
         if (geno == GT.HOM.value() || geno == GT.HET.value()) {
             genderCount[sample.getGender().getIndex()]++;
             ancestryCount[sample.getAncestry().getIndex()]++;
+            phenotypeCount[sample.getPhenotype().getIndex()]++;
         }
     }
 
@@ -396,6 +398,10 @@ public class Variant {
         return ancestryCount;
     }
 
+    public int[] getPhenotypeCount() {
+        return phenotypeCount;
+    }
+    
     public void setAC(int ac) {
         this.ac = ac;
     }

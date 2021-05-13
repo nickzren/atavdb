@@ -3,6 +3,7 @@ package org.atavdb.model;
 import org.atavdb.util.DBManager;
 import org.atavdb.global.Enum.Ancestry;
 import org.atavdb.global.Enum.Gender;
+import org.atavdb.global.Enum.Phenotype;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -100,18 +101,20 @@ public class SampleManager {
                 String genderStr = rs.getString("seq_gender");
                 Gender gender = genderStr == null ? Gender.NA : Gender.valueOf(genderStr);
                 int experimentId = rs.getInt("experiment_id");
-                String broadPhenotype = rs.getString("broad_phenotype");
                 String ancestryStr = rs.getString("ancestry");
                 Ancestry ancestry = ancestryStr == null ? Ancestry.NA : Ancestry.valueOf(ancestryStr);
                 byte availableControlUse = rs.getByte("available_control_use");
+                String phenotypeStr = rs.getString("broad_phenotype");
+                Phenotype phenotype = phenotypeStr == null ? Phenotype.NA : 
+                        Phenotype.valueOf(phenotypeStr.toUpperCase().replaceAll(" ", "_").replace("-", ""));
+                
+                Sample sample = new Sample(sampleId, gender, experimentId, ancestry, availableControlUse, phenotype);
 
-                Sample sample = new Sample(sampleId, gender, experimentId, broadPhenotype, ancestry, availableControlUse);
-
-                if (broadPhenotype != null && !broadPhenotype.isEmpty()) {
-                    ArrayList<Sample> list = getMap(filter).get(broadPhenotype);
+                if (phenotypeStr != null && !phenotypeStr.isEmpty()) {
+                    ArrayList<Sample> list = getMap(filter).get(phenotypeStr);
                     if (list == null) {
                         list = new ArrayList<>();
-                        getMap(filter).put(broadPhenotype, list);
+                        getMap(filter).put(phenotypeStr, list);
                     }
 
                     list.add(sample);

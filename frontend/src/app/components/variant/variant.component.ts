@@ -26,6 +26,7 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
   // predefined list
   GENDER_LIST = ["Male", "Female", "Ambiguous", "NA"];
   ANCESTRY_LIST = ["African", "Caucasian", "EastAsian", "Hispanic", "MiddleEastern", "SouthAsian", "NA"];
+  PHENOTYPE_LIST = ["amyotrophic lateral sclerosis","autoimmune disease","bone disease","brain malformation","cancer","cardiovascular disease","congenital disorder","control","control mild neuropsychiatric disease","covid-19","dementia","dermatological disease","diseases that affect the ear","endocrine disorder","epilepsy","febrile seizures","fetal ultrasound anomaly","gastrointestinal disease","healthy family member","hematological disease","infectious disease","intellectual disability","kidney and urological disease","liver disease","metabolic disease","neurodegenerative","nonhuman","obsessive compulsive disorder","ophthalmic disease","other","other neurodevelopmental disease","other neurological disease","other neuropsychiatric disease","primary immune deficiency","pulmonary disease","schizophrenia","sudden death","alzheimers disease","cerebral palsy","NA"];
 
   // carrier datatable
   @ViewChild(DataTableDirective, { static: false })

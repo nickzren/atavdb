@@ -207,16 +207,29 @@
 
                     <div class="row mt-2">
                         <div class="col-md-auto lead"><span class="badge badge-light">Gender count:</span></div>
-                        <div class="col-md-auto lead" *ngFor="let gender of GENDER_LIST; let i = index">
-                            <span class="badge badge-light">{{variant.genderCount[i]}} {{gender}}</span>
-                        </div>
+                        <ng-container *ngFor="let gender of GENDER_LIST; let i = index">
+                            <div *ngIf="variant.genderCount[i] != 0" class="col-md-auto lead" >
+                                <span  class="badge badge-light">{{variant.genderCount[i]}} {{gender}}</span>
+                            </div>
+                        </ng-container>
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-md-auto lead"><span class="badge badge-light">Ancestry count:</span></div>
-                        <div class="col-md-auto lead" *ngFor="let ancestry of ANCESTRY_LIST; let i = index">
-                            <span class="badge badge-light">{{variant.ancestryCount[i]}} {{ancestry}}</span>
-                        </div>
+                        <ng-container *ngFor="let ancestry of ANCESTRY_LIST; let i = index">
+                            <div *ngIf="variant.ancestryCount[i] != 0" class="col-md-auto lead">
+                                <span class="badge badge-light">{{variant.ancestryCount[i]}} {{ancestry}}</span>
+                            </div>
+                        </ng-container>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-auto lead"><span class="badge badge-light">Phenotype count:</span></div>
+                        <ng-container *ngFor="let phenotype of PHENOTYPE_LIST; let i = index">
+                            <div *ngIf="variant.phenotypeCount[i] != 0" class="col-md-auto lead">
+                                <span class="badge badge-light">{{variant.phenotypeCount[i]}} {{phenotype}}</span>
+                            </div>
+                        </ng-container>
                     </div>
 
                     <br />
