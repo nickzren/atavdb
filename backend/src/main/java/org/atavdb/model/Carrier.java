@@ -17,6 +17,7 @@ import org.atavdb.util.MathManager;
 public class Carrier extends NonCarrier {
 
     Sample sample;
+    
     private short dp;
     private short adRef;
     private short adAlt;
@@ -30,6 +31,8 @@ public class Carrier extends NonCarrier {
     private float readPosRankSum;
     private float mqRankSum;
     private byte filterValue;
+    
+    private int experimentID;
 
     public Carrier(ResultSet rs) throws Exception {
         sampleId = rs.getInt("sample_id");
@@ -52,6 +55,10 @@ public class Carrier extends NonCarrier {
 
     public void setSample(Sample sample) {
         this.sample = sample;
+    }
+    
+    public void setExperimentID(int experimentID) {
+        this.experimentID = experimentID;
     }
 
     public short getDP() {
@@ -111,7 +118,7 @@ public class Carrier extends NonCarrier {
     }
 
     public int getExperimentId() {
-        return sample.getExperimentId();
+        return experimentID;
     }
 
     public String getGender() {

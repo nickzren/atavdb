@@ -317,8 +317,11 @@ public class Variant {
 
                         // hack here - require code refactoring
                         if (!filter.isIsAuthorized()) {
-                            sample.setExperimentId(Data.INTEGER_NA);
+                            carrier.setExperimentID(Data.INTEGER_NA);
+                        } else {
+                            carrier.setExperimentID(sample.getExperimentId());
                         }
+                            
                         carrier.setSample(sample);
                     }
                 } else if (noncarrier != null) {
