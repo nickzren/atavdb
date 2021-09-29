@@ -12,6 +12,7 @@ import org.atavdb.util.MathManager;
  */
 public class Annotation {
 
+    private String impact;
     private String effect;
     private String geneName;
     private int stableId;
@@ -29,6 +30,7 @@ public class Annotation {
         }
 
         int effectID = rset.getInt("effect_id");
+        impact = EffectManager.getImpactById(effectID);
         effect = EffectManager.getEffectById(effectID).replace("_variant", "");
         HGVS_c = FormatManager.getString(rset.getString("HGVS_c"));
         HGVS_p = FormatManager.getString(rset.getString("HGVS_p"));
@@ -39,6 +41,10 @@ public class Annotation {
 
     public String getEffect() {
         return effect;
+    }
+    
+    public String getImpact() {
+        return impact;
     }
 
     public String getHGVS_c() {

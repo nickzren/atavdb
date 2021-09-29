@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonAutoDetect(fieldVisibility = Visibility.PUBLIC_ONLY)
 @JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder({"variantIdStr", "variantIdStr2", "chr", "pos", "ref", "alt",
-    "consequence", "effect", "geneName", "ac", "an", "af", "ns", "nhom", "maxEAF",
+    "consequence", "impact", "effect", "geneName", "ac", "an", "af", "ns", "nhom", "maxEAF",
     "allAnnotation",
     "exAC", "genomeAsia", "gnomADExome", "gnomADGenome", "gme", "iranome", "topMed",
     "genderCount", "ancestryCount", "phenotypeCount", "carriers"})
@@ -41,6 +41,7 @@ public class Variant {
     private boolean isIndel;
 
     // annotation
+    private String impact = "";
     private String effect = "";
     private String HGVS_c = "";
     private String HGVS_p = "";
@@ -65,7 +66,7 @@ public class Variant {
     private int[] genoCount = new int[3]; // REF, HET, HOM
     private int[] genderCount = new int[4]; // Male, Female, Ambiguous, NA
     private int[] ancestryCount = new int[7]; // African, Caucasian, EastAsian, Hispanic, MiddleEastern, SouthAsian, NA
-    private int[] phenotypeCount = new int[40];  
+    private int[] phenotypeCount = new int[40];
     private int ac; // allele count
     private int an; // allele number
     private float af; // allele frequency
@@ -203,6 +204,7 @@ public class Variant {
     public void update(Annotation annotation) {
         if (isValid) {
             if (effect.isEmpty()) { // init most damaging effect annotations
+                impact = annotation.getImpact();
                 effect = annotation.getEffect();
                 HGVS_c = annotation.getHGVS_c();
                 HGVS_p = annotation.getHGVS_p();
@@ -219,6 +221,10 @@ public class Variant {
 
     public List<Annotation> getAllAnnotation() {
         return annotationList;
+    }
+
+    public String getImpact() {
+        return impact;
     }
 
     public String getEffect() {
@@ -284,7 +290,7 @@ public class Variant {
             CarrierBlockManager.init(this, filter, mv);
 
             carrierMap = CarrierBlockManager.getVarCarrierMap(variantId, mv);
-            
+
             if (carrierMap == null) {
                 carrierMap = new HashMap<>();
                 isValid = false;
@@ -321,7 +327,7 @@ public class Variant {
                         } else {
                             carrier.setExperimentID(sample.getExperimentId());
                         }
-                            
+
                         carrier.setSample(sample);
                     }
                 } else if (noncarrier != null) {
@@ -404,7 +410,7 @@ public class Variant {
     public int[] getPhenotypeCount() {
         return phenotypeCount;
     }
-    
+
     public void setAC(int ac) {
         this.ac = ac;
     }

@@ -13,7 +13,8 @@ import java.util.HashMap;
 public class EffectManager {
 
     private static HashMap<Integer, String> id2EffectMap = new HashMap<>();
-
+    private static HashMap<Integer, String> id2ImpactMap = new HashMap<>();
+    
     private static void initDefaultEffectSet() throws Exception {
         String sql = "SELECT * FROM effect_ranking";
 
@@ -24,8 +25,10 @@ public class EffectManager {
         while (rs.next()) {
             int id = rs.getInt("id");
             String effect = rs.getString("effect");
+            String impact = rs.getString("impact");
 
             id2EffectMap.put(id, effect);
+            id2ImpactMap.put(id, impact);
         }
 
         rs.close();
@@ -38,5 +41,9 @@ public class EffectManager {
         }
 
         return id2EffectMap.get(id);
+    }
+    
+    public static String getImpactById(int id) {
+        return id2ImpactMap.get(id);
     }
 }
