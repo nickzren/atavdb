@@ -33,7 +33,6 @@ public class SearchFilter {
     private final static float maxSnvFS = 60;
     private final static float maxIndelFS = 200;
     private final static int minMQ = 40;
-    private final static int minQD = 5;
     private final static int minQual = 50;
     private final static float minRPRS = -3;
     private final static float minMQRS = -10;
@@ -321,22 +320,6 @@ public class SearchFilter {
                 return true;
             }
         } else if (value >= minMQ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public boolean isMinQdValid(byte value) {
-        if (!isHighQualityVariant) {
-            return true;
-        }
-
-        if (value == Data.BYTE_NA) {
-            if (isQcMissingIncluded) {
-                return true;
-            }
-        } else if (value >= minQD) {
             return true;
         }
 

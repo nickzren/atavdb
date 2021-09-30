@@ -142,7 +142,6 @@ public class Carrier extends NonCarrier {
             if (!filter.isFilterValid(filterValue)
                     || !filter.isMinGqValid(gq)
                     || !filter.isMinMqValid(mq)
-                    || !filter.isMinQdValid(qd)
                     || !filter.isMinQualValid(qual)
                     || !filter.isMinRprsValid(readPosRankSum)
                     || !filter.isMinMqrsValid(mqRankSum)) {
