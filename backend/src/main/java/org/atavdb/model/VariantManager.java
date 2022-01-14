@@ -80,7 +80,7 @@ public class VariantManager {
             preparedStatement.setString(2, tmp[2]);
             preparedStatement.setString(3, tmp[3]);
         } else if (filter.isQueryGene()) { // gene
-            preparedStatement.setString(1, GeneManager.getNameByAlternativeName(query));
+            preparedStatement.setString(1, query);
         } else if (filter.isQueryRegion()) { // region chr:start-end
             String[] tmp = query.split(":");
             tmp = tmp[1].split("-");
