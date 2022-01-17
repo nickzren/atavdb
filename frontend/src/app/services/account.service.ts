@@ -23,7 +23,7 @@ export class AccountService {
     let url = `${environment.apiUrl}/authenticate`;
     let params = new HttpParams();
     params = params.append('username', username);
-    params = params.append('password', password);
+    params = params.append('password', encodeURIComponent(password));
 
     const authenticate = await this.http.get<boolean>(url, { params: params }).toPromise();
 

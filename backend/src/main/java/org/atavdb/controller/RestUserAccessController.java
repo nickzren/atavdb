@@ -1,5 +1,7 @@
 package org.atavdb.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import javax.servlet.http.HttpSession;
 import org.atavdb.util.LDAP;
 import org.atavdb.util.VerifyUser;
@@ -17,10 +19,15 @@ public class RestUserAccessController {
 
     @GetMapping("/authenticate")
     public boolean signin(String username, String password, HttpSession session) {
-        if (username != null && password != null
-                && LDAP.isMCAccountValid(username, password)) {
-            session.setAttribute("authenticatedUser", true);
-            return true;
+        try {
+            password = URLDecoder.decode(password, "UTF-8");
+            if (username != null && password != null
+                    && LDAP.isMCAccountValid(username, password)) {
+                session.setAttribute("authenticatedUser", true);
+                return true;
+            }
+        } catch (UnsupportedEncodingException e) {
+            return false;
         }
 
         return false;
