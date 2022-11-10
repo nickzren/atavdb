@@ -34,12 +34,14 @@ public class DPBinBlockManager {
             SearchFilter filter,
             ModelAndView mv) throws Exception {
         int posIndex = var.getPos() % DP_BIN_BLOCK_SIZE;
+        if (posIndex == 0) {
+            posIndex = DP_BIN_BLOCK_SIZE;
+        }
+        int blockId = Math.floorDiv(var.getPos() - 1, DP_BIN_BLOCK_SIZE);
 
         Integer currentBlockId = (Integer) mv.getModel().get("currentNonCarrierBlockId");
 
         ArrayList<SampleDPBin> currentBlockList = (ArrayList<SampleDPBin>) mv.getModel().get("currentBlockList");
-
-        int blockId = Math.floorDiv(var.getPos(), DP_BIN_BLOCK_SIZE);
 
         if (currentBlockId != null && blockId == currentBlockId) {
             for (SampleDPBin sampleDPBin : currentBlockList) {
