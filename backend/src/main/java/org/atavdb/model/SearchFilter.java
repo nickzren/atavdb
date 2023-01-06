@@ -41,7 +41,7 @@ public class SearchFilter {
         Enum.FILTER.LIKELY.getValue(),
         Enum.FILTER.INTERMEDIATE.getValue()};
 
-    public final static float MAX_AF_TO_DISPLAY_CARRIER = 0.01f;
+    public final static float MAX_AF_TO_DISPLAY_CARRIER = 1f;
 
     public final static String[] QUERT_TYPE = {"Invalid", "Variant", "Gene", "Region"};
 
