@@ -80,7 +80,7 @@ export class SearchComponent implements OnInit {
       this.searchService.querytype(this.query).subscribe(
         data => {
           if (data.querytype == 'gene' || data.querytype == 'region') {
-            this.isHighQualityVariant = 'true';
+            // this.isHighQualityVariant = 'true';
           }
         }
       )

@@ -375,11 +375,11 @@ public class SearchFilter {
     }
 
     public boolean isMinDpBinValid(short value) {
-        if (!isHighQualityVariant) {
+//        if (!isHighQualityVariant) {
             return true;
-        }
+//        }
 
-        return value >= minDpBin;
+//        return value >= minDpBin;
     }
 
     public boolean isHighQualityVariant() {
