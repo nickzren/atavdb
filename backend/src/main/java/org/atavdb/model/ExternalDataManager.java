@@ -21,7 +21,7 @@ public class ExternalDataManager {
     private static final String GME_TABLE = "gme.variant";
     private static final String IRANOME_TABLE = "iranome.variant";
     private static final String IGMAF_TABLE = "igm_af.variant_101122";
-    private static final String IGMAF_SUBSET_TABLE = "igm_af.variant_subset_101122";
+    private static final String IGMAF_SUBSET_TABLE = "igm_af.variant_subset_010623";
     private static final String TOPMED_TABLE = "topmed.variant_chr";
 
     public static float getExAC(String chr, int pos, String ref, String alt) {
