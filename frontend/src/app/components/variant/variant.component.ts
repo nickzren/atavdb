@@ -20,9 +20,6 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
   // search result
   variant: any;
 
-  // franklin api input
-  variantId: any;
-
   // predefined list
   GENDER_LIST = ["Male", "Female", "Ambiguous", "NA"];
   ANCESTRY_LIST = ["African", "Caucasian", "EastAsian", "Hispanic", "MiddleEastern", "SouthAsian", "NA"];
@@ -46,10 +43,6 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
       this.query = params.get('query');
       if (this.query) {
         this.onSearch(this.query);
-
-        // init variant id input for franklin api
-        var tmp = this.query.split('-'); // chr-pos-ref-alt
-        this.variantId = { ref: tmp[2], alt: tmp[3], chr: 'chr'+tmp[0], pos: tmp[1], };
       }
     });
 
