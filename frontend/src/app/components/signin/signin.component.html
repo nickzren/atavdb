@@ -1,43 +1,41 @@
-<div class="container h-100">
-    <div class="row align-items-center h-100">
-        <div class="form-signin">
-            <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+<div class="container main">
+    <div class="text-center form-signin w-100 m-auto ">
+        <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-                <div class="form-label-group">
-                    <input type="text" formControlName="username" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
-                        placeholder="MC username (usually your UNI)" required autofocus>
-                    <label for="username">MC username (usually your UNI)</label>
-                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                        <div *ngIf="f.username.errors.required">Username is required</div>
-                    </div>
+            <div class="form-floating">
+                <input type="text" formControlName="username" id="username" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                    placeholder="MC username (usually your UNI)" required autofocus>
+                <label for="username">MC username (usually your UNI)</label>
+                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                    <div *ngIf="f.username.errors.required">Username is required</div>
                 </div>
+            </div>
 
-                <div class="form-label-group">
-                    <input type="password" formControlName="password" class="form-control"
-                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="MC password" required>
-                    <label for="password">MC password</label>
-                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                        <div *ngIf="f.password.errors.required">Password is required</div>
-                    </div>
+            <div class="form-floating">
+                <input type="password" formControlName="password" id="password" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="MC password" required>
+                <label for="password">MC password</label>
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div *ngIf="f.password.errors.required">Password is required</div>
                 </div>
+            </div>
 
-                <button [disabled]="loading" class="btn btn-lg btn-primary btn-block" type="submit">
-                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                    <i class="fas fa-sign-in-alt"></i>&nbsp;Signin
-                </button>
+            <button [disabled]="loading" class="w-100 btn btn-lg btn-primary" type="submit">
+                <span *ngIf="loading" class="spinner-border"></span>
+                <i class="fas fa-sign-in-alt"></i>&nbsp;Signin
+            </button>
 
-                <div  class="alert alert-warning mt-3" *ngIf='errorMessage'>
-                    <i class="fas fa-exclamation-circle"></i>&nbsp;{{errorMessage}}
-                </div>
+            <div class="alert alert-warning mt-3" *ngIf='errorMessage'>
+                <i class="fas fa-exclamation-circle"></i>&nbsp;{{errorMessage}}
+            </div>
 
-                <small class="form-text text-muted mt-2">
-                    By using these resources, you agree to abide by Columbia University's
-                    <a href="http://policylibrary.columbia.edu/acceptable-usage-information-resources-policy"
-                        target="_blank">Acceptable Usage of Information Resources Policy.</a>
-                </small>
-            </form>
-        </div>
+            <small class="text-muted mt-5 mb-3">
+                By using these resources, you agree to abide by Columbia University's
+                <a href="http://policylibrary.columbia.edu/acceptable-usage-information-resources-policy"
+                    target="_blank">Acceptable Usage of Information Resources Policy.</a>
+            </small>
+        </form>
     </div>
 </div>

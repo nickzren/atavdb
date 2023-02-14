@@ -4,6 +4,7 @@ import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { AccountService } from '../../services/account.service';
 import { SearchService } from '../../services/search.service';
+import { Tooltip } from '../../../assets/js/bootstrap.bundle.min.js';
 
 @Component({
   selector: 'app-variant',
@@ -23,7 +24,7 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
   // predefined list
   GENDER_LIST = ["Male", "Female", "Ambiguous", "NA"];
   ANCESTRY_LIST = ["African", "Caucasian", "EastAsian", "Hispanic", "MiddleEastern", "SouthAsian", "NA"];
-  PHENOTYPE_LIST = ["amyotrophic lateral sclerosis","autoimmune disease","bone disease","brain malformation","cancer","cardiovascular disease","congenital disorder","control","control mild neuropsychiatric disease","covid-19","dementia","dermatological disease","diseases that affect the ear","endocrine disorder","epilepsy","febrile seizures","fetal ultrasound anomaly","gastrointestinal disease","healthy family member","hematological disease","infectious disease","intellectual disability","kidney and urological disease","liver disease","metabolic disease","neurodegenerative","nonhuman","obsessive compulsive disorder","ophthalmic disease","other","other neurodevelopmental disease","other neurological disease","other neuropsychiatric disease","primary immune deficiency","pulmonary disease","schizophrenia","sudden death","alzheimers disease","cerebral palsy","NA"];
+  PHENOTYPE_LIST = ["amyotrophic lateral sclerosis", "autoimmune disease", "bone disease", "brain malformation", "cancer", "cardiovascular disease", "congenital disorder", "control", "control mild neuropsychiatric disease", "covid-19", "dementia", "dermatological disease", "diseases that affect the ear", "endocrine disorder", "epilepsy", "febrile seizures", "fetal ultrasound anomaly", "gastrointestinal disease", "healthy family member", "hematological disease", "infectious disease", "intellectual disability", "kidney and urological disease", "liver disease", "metabolic disease", "neurodegenerative", "nonhuman", "obsessive compulsive disorder", "ophthalmic disease", "other", "other neurodevelopmental disease", "other neurological disease", "other neuropsychiatric disease", "primary immune deficiency", "pulmonary disease", "schizophrenia", "sudden death", "alzheimers disease", "cerebral palsy", "NA"];
 
   // carrier datatable
   @ViewChild(DataTableDirective, { static: false })
@@ -62,6 +63,9 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngAfterViewInit(): void {
+    Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      .forEach(tooltipNode => new Tooltip(tooltipNode));
+      
     this.dtTrigger.next();
   }
 
@@ -79,32 +83,32 @@ export class VariantComponent implements AfterViewInit, OnDestroy, OnInit {
       this.route.snapshot.queryParams['isUltraRareVariant'],
       this.route.snapshot.queryParams['isPubliclyAvailable'],
       this.route.snapshot.queryParams['experimentId']).subscribe(
-      data => {
-        this.variant = Object.values(data)[0];
+        data => {
+          this.variant = Object.values(data)[0];
 
-        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.destroy();
-          this.dtTrigger.next();
-        });
-      },
-      error => {
-        if (error.error) {
-          this.error = error.error.message;
-        } else {
-          this.error = "Unexpected error";
-        }
+          this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.destroy();
+            this.dtTrigger.next();
+          });
+        },
+        error => {
+          if (error.error) {
+            this.error = error.error.message;
+          } else {
+            this.error = "Unexpected error";
+          }
 
-        // no results found --> show search flanking region
-        var tmp = this.query.split('-');
-        if (tmp.length == 4) {
-          const regex = '^[atcgxymtATCGXYMT0-9-]+$';
-          if (this.query.match(regex)) {
-            var start = Number(tmp[1]) - 10;
-            var end = Number(tmp[1]) + 10;
-            this.flankingRegion = tmp[0] + ":" + start + "-" + end;
+          // no results found --> show search flanking region
+          var tmp = this.query.split('-');
+          if (tmp.length == 4) {
+            const regex = '^[atcgxymtATCGXYMT0-9-]+$';
+            if (this.query.match(regex)) {
+              var start = Number(tmp[1]) - 10;
+              var end = Number(tmp[1]) + 10;
+              this.flankingRegion = tmp[0] + ":" + start + "-" + end;
+            }
           }
         }
-      }
-    );
+      );
   }
 }

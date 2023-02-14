@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { SearchService } from '../../services/search.service';
+import { Tooltip } from '../../../assets/js/bootstrap.bundle.min.js';
 
 @Component({
   selector: 'app-gene',
@@ -57,6 +58,9 @@ export class GeneComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngAfterViewInit(): void {
+    Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    .forEach(tooltipNode => new Tooltip(tooltipNode));
+
     this.dtTrigger.next();
   }
 

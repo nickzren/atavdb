@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataTableDirective } from 'angular-datatables';
 import { Subject } from 'rxjs';
 import { SearchService } from '../../services/search.service';
+import { Tooltip } from '../../../assets/js/bootstrap.bundle.min.js';
 
 @Component({
   selector: 'app-region',
@@ -56,6 +57,9 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngAfterViewInit(): void {
+    Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      .forEach(tooltipNode => new Tooltip(tooltipNode));
+
     this.dtTrigger.next();
   }
 
@@ -75,21 +79,21 @@ export class RegionComponent implements AfterViewInit, OnDestroy, OnInit {
       this.route.snapshot.queryParams['isUltraRareVariant'],
       this.route.snapshot.queryParams['isPubliclyAvailable'],
       this.route.snapshot.queryParams['experimentId']).subscribe(
-      data => {
-        this.variants = data;
+        data => {
+          this.variants = data;
 
-        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          dtInstance.destroy();
-          this.dtTrigger.next();
-        });
-      },
-      error => {
-        if (error.error) {
-          this.error = error.error.message;
-        } else {
-          this.error = "Unexpected error";
+          this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.destroy();
+            this.dtTrigger.next();
+          });
+        },
+        error => {
+          if (error.error) {
+            this.error = error.error.message;
+          } else {
+            this.error = "Unexpected error";
+          }
         }
-      }
-    );
+      );
   }
 }

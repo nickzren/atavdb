@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { SampleCountService } from '../../services/sample-count.service';
 import { SearchService } from '../../services/search.service';
+import { Tooltip } from '../../../assets/js/bootstrap.bundle.min.js';
 
 @Component({
   selector: 'app-search',
@@ -63,6 +64,9 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    .forEach(tooltipNode => new Tooltip(tooltipNode));
+
     this.route.paramMap.subscribe(
       params => {
         this.query = params.get('query');

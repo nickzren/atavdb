@@ -53,7 +53,7 @@ npm install -g @angular/cli@9.0.7
 ```
 cd $ATAVDB/frontend/
 npm install
-ng build
+ng build --prod
 ```
 
 #### Compile backend spring boot api
