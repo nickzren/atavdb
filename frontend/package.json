@@ -23,6 +23,7 @@
     "datatables.net": "^1.10.20",
     "datatables.net-buttons-dt": "^1.6.4",
     "datatables.net-dt": "^1.10.20",
+    "igv": "^2.13.11",
     "jquery": "^3.4.1",
     "npm-check-updates": "^10.2.1",
     "rxjs": "~6.5.4",

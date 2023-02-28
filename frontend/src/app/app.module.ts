@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import {DataTablesModule} from 'angular-datatables';
@@ -20,6 +20,7 @@ import { SearchComponent } from './components/search/search.component';
 import { GeneComponent } from './components/gene/gene.component';
 import { VariantComponent } from './components/variant/variant.component';
 import { RegionComponent } from './components/region/region.component';
+import { IgvComponent } from './components/igv/igv.component';
 
 @NgModule({
   declarations: [
@@ -36,14 +37,16 @@ import { RegionComponent } from './components/region/region.component';
     SearchComponent,
     GeneComponent,
     VariantComponent,
-    RegionComponent
+    RegionComponent,
+    IgvComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    DataTablesModule
+    DataTablesModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [],
