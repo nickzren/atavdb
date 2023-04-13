@@ -10,7 +10,7 @@ import javax.naming.directory.InitialDirContext;
  */
 public class LDAP {
 
-    private static final String LDAP_SERVER = "ldap://rbwdcmc001.mc.cumc.columbia.edu:389";
+    private static final String LDAP_SERVER = "ldaps://rbwdcmc001.mc.cumc.columbia.edu:636";
 
     /*
         check whether user has a valid CUMC MC account
