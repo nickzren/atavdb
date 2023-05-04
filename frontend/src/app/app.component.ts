@@ -15,7 +15,7 @@ export class AppComponent {
     // Google Analytics track the URL a user has navigated to
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        gtag('config', 'UA-32885253-12', { 'page_path': event.urlAfterRedirects });
+        gtag('config', 'G-Z5Y524ZX0V', { 'page_path': event.urlAfterRedirects });
       }
     })
   }
