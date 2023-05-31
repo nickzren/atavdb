@@ -29,12 +29,6 @@ sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
 sudo yum install -y apache-maven
 ```
 
-#### Install Java
-```
-sudo yum install java-1.8.0-openjdk-devel -y
-export JAVA_HOME=/usr
-```
-
 #### Install NPM (Node Package Manager)  
 ```
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
