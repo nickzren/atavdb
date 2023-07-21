@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 
 @Component({
@@ -11,14 +11,14 @@ import { AccountService } from '../../services/account.service';
 
 export class SigninComponent implements OnInit {
 
-  signinForm: FormGroup;
+  signinForm: UntypedFormGroup;
   loading = false;
   submitted = false;
   returnUrl: string;
   errorMessage: string;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private accountService: AccountService) {

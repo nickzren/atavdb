@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { AccountService } from '../../services/account.service';
 import { SampleCountService } from '../../services/sample-count.service';
 import { SearchService } from '../../services/search.service';
@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
   isPubliclyAvailable: string;
   experimentId: string;
 
-  searchForm: FormGroup;
+  searchForm: UntypedFormGroup;
   loading = false;
 
   // total sample count
@@ -47,7 +47,7 @@ export class SearchComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     public accountService: AccountService,
     private sampleCountService: SampleCountService,
     private searchService: SearchService) {
