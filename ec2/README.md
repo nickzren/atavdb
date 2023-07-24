@@ -31,14 +31,14 @@ sudo yum install -y apache-maven
 
 #### Install NPM (Node Package Manager)  
 ```
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 . ~/.nvm/nvm.sh
-nvm install 12.11.0
+nvm install node
 ```
 
 #### Install Angular CLI
 ```
-npm install -g @angular/cli@9.0.7
+npm install -g @angular/cli@16.1.5
 ```
 
 ## Compile and Run
@@ -47,7 +47,7 @@ npm install -g @angular/cli@9.0.7
 ```
 cd $ATAVDB/frontend/
 npm install
-ng build --prod
+ng build --configuration production
 ```
 
 #### Compile backend spring boot api
