@@ -14,7 +14,7 @@
                 <a class="nav-item nav-link home-link" routerLink="terms">Terms</a>
                 <a class="nav-item nav-link home-link" routerLink="restapi">API</a>
                 <a class="nav-item nav-link home-link" routerLink="faq">FAQ</a>
-                <a class="nav-item nav-link home-link" routerLink="contact">Contact</a>
+                <!-- <a class="nav-item nav-link home-link" routerLink="contact">Contact</a> -->
                 <a *ngIf="accountService.isAuthenticated()" class="nav-item nav-link home-link" href="/" (click)="accountService.signout()"><i class="fas fa-sign-out-alt"></i>&nbsp;Sign Out</a>
                 <a *ngIf="!accountService.isAuthenticated()" class="nav-item nav-link home-link" href="/signin"><i class="fas fa-sign-in-alt"></i>&nbsp;SignIn</a>
             </div>
