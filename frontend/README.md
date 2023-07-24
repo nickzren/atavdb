@@ -2,7 +2,7 @@
 
 ATAV data browser view (frontend/client-side).
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.7.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.15.
 
 #### Build
 ```
